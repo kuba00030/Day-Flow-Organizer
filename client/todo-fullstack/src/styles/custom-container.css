@@ -1,0 +1,25 @@
+.login-container {
+  /* max-width: 400px; */
+  height: auto;
+}
+.login-form {
+  background-color: white;
+  box-shadow: 0px 0px 38px -20px rgba(66, 68, 90, 1);
+  padding: 30px;
+}
+.login-welcome-text {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.login-txt-large {
+  font-size: 26px;
+  font-weight: 700;
+}
+.login-txt-small {
+  font-size: 14px;
+}
+.login-provider-icon {
+  width: 20px;
+  height: 20px;
+}

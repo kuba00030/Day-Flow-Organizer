@@ -3,7 +3,13 @@ import "../styles/login-register-form.css";
 import Form from "react-bootstrap/Form";
 import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import InputLabeled from "../components/InputLabeled";
 export default function Register() {
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const [repeatPassword, setRepeatPassword] = useState<string | null>(null);
+  // createUserWithEmail
   return (
     <Container
       className="login-register-container"
@@ -17,24 +23,24 @@ export default function Register() {
         </div>
       </div>
       <Form className="login-register-form d-flex flex-column gap-2 rounded">
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="email@example.com"
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password"></Form.Control>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Repeat password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Repeat your password"
-          ></Form.Control>
-        </Form.Group>
+        <InputLabeled
+          label="Email"
+          placeholder="Email@example.com"
+          inputType="email"
+          setStateOnChange={setEmail}
+        />
+        <InputLabeled
+          label="Passowrd"
+          placeholder="Password"
+          inputType="password"
+          setStateOnChange={setPassword}
+        />
+        <InputLabeled
+          label="Repeat password"
+          placeholder="Repeat your password"
+          inputType="password"
+          setStateOnChange={setRepeatPassword}
+        />
         <Button className="rounded">Sign up</Button>
         <Form.Text className="text-center">
           Already have account? <Link to="/">Sign in here</Link>

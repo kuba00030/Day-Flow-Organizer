@@ -1,0 +1,66 @@
+/* styles for side navbar elements */
+.nav-gap {
+  gap: 10px;
+}
+.accordion-toogle-btn {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+}
+.accordion-item-icon {
+  width: 20px;
+  height: 20px;
+}
+.accordion-item-icon-dot {
+  background-color: red;
+}
+.accordion-header-txt {
+  font-size: 12px;
+}
+.accordion-item-txt {
+  font-size: 14px;
+}
+.accordion-body {
+}
+/* style for tasks-list section */
+.dashboard-task-lists-header {
+  font-size: 36px;
+}
+/* style for tasks-details */
+.dashboard-tasks-details {
+  padding: 20px 10px 20px 20px;
+}
+.dashboard-tasks-details-slider {
+  gap: 20px;
+}
+.dashboard-tasks-details-header {
+  font-size: 20px;
+}
+.dashboard-tasks-details-date-input {
+  outline: none;
+  font-size: 14px;
+}
+.dashboard-tasks-details-txt {
+  font-size: 14px;
+}
+/* style for taks-detail subtasks */
+.task-details-subtask {
+  font-size: 14px;
+  margin-top: 10px;
+}
+/* dashboard elements  */
+.checkbox {
+  width: 15px;
+  height: 15px;
+}
+.regular-icon {
+  width: 20px;
+  height: 20px;
+}
+.small-icon {
+  width: 15px;
+  height: 15px;
+}
+.radius-small {
+  border-radius: 5px;
+}

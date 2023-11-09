@@ -1,5 +1,8 @@
 import { Container } from "react-bootstrap";
+
 type TTaskDetailsInfo = {
+  editTask: (property: string, e: any) => void;
+  taskProperty: string;
   date: string;
 };
 export default function TaskDetailsInfo(props: TTaskDetailsInfo) {
@@ -29,6 +32,9 @@ export default function TaskDetailsInfo(props: TTaskDetailsInfo) {
         <input
           type="date"
           value={props.date}
+          onChange={(e) => {
+            props.editTask(props.taskProperty, e);
+          }}
           className="dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary"
         />
       </Container>

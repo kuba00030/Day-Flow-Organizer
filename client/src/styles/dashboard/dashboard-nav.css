@@ -45,14 +45,9 @@
 }
 /* style for taks-detail subtasks */
 .task-details-subtask {
-  font-size: 14px;
   margin-top: 10px;
 }
 /* dashboard elements  */
-.checkbox {
-  width: 15px;
-  height: 15px;
-}
 .regular-icon {
   width: 20px;
   height: 20px;
@@ -63,4 +58,7 @@
 }
 .radius-small {
   border-radius: 5px;
+}
+.txt-small {
+  font-size: 14px;
 }

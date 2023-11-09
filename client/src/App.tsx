@@ -8,12 +8,58 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config/firebaseConfig";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./context/authContext";
+import { TasksContext } from "./context/tasksContext";
+import { TaskType } from "./types/TaskType";
 function App() {
-  // when user visit page without previous signing in, set 'isLogged' to false.
   const [isLogged, setIsLogged] = useState<boolean>(true);
-  // false || window.localStorage.getItem("isLogged") === "true"
   const [token, setToken] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
+  const [tasksList, setTasksList] = useState<TaskType[]>([
+    {
+      title: "Title 1",
+      description: "Description 1",
+      list: "List 1",
+      date: "2023-11-09",
+      subtasks: [
+        {
+          title: "shopping",
+          description: "buy some onion",
+          isDone: false,
+        },
+      ],
+      taskStatus: false,
+    },
+  ]);
+  const [taskDetails, setTaskDetails] = useState<TaskType>({
+    title: "Title 1",
+    description: "Description 1",
+    list: "List 1",
+    date: "2023-11-09",
+    subtasks: [
+      {
+        title: "shopping",
+        description: "buy some onion",
+        isDone: false,
+      },
+    ],
+    taskStatus: false,
+  });
+  const [changedTask, setChangedTask] = useState<TaskType>({
+    title: "Title 1",
+    description: "Description 1",
+    list: "List 1",
+    date: "2023-11-09",
+    subtasks: [
+      {
+        title: "shopping",
+        description: "buy some onion",
+        isDone: false,
+      },
+    ],
+    taskStatus: false,
+  });
+  const [list, setLists] = useState();
   useEffect(() => {
     // create 'isLogged' in local storage as a value of 'isLogged' state
   }, [isLogged]);
@@ -28,7 +74,7 @@ function App() {
         window.localStorage.clear();
       }
     });
-    console.log(isLogged);
+    // console.log(isLogged);
   }, []);
 
   // router with protected 'dashboard' route
@@ -44,19 +90,32 @@ function App() {
           setUserEmail,
         }}
       >
-        <BrowserRouter>
-          <Routes>
-            <Route path="/">
-              <Route index element={<Login />} />
-              <Route path="signup" element={<Register />} />
-              {/* {isLogged === true ? (
+        <TasksContext.Provider
+          value={{
+            tasksList: tasksList,
+            setTasksList: setTasksList,
+            taskDetails: taskDetails,
+            setTaskDetails: setTaskDetails,
+            isTaskOpened: isTaskOpened,
+            setIsTaskOpened: setIsTaskOpened,
+            changedTask: changedTask,
+            setChangedTask: setChangedTask,
+          }}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route path="/">
+                <Route index element={<Login />} />
+                <Route path="signup" element={<Register />} />
+                {/* {isLogged === true ? (
                 <Route path="dashboard" element={<Dashboard />} />
               ) : null} */}
-              <Route path="dashboard" element={<Dashboard />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
+                <Route path="dashboard" element={<Dashboard />} />
+              </Route>
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TasksContext.Provider>
       </AuthContext.Provider>
     </div>
   );

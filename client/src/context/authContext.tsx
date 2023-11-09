@@ -7,13 +7,5 @@ type TAuthDefaultContext = {
   setUserEmail: React.Dispatch<React.SetStateAction<string>>;
   setToken: React.Dispatch<React.SetStateAction<string>>;
 };
-const authDefaultContext: TAuthDefaultContext = {
-  token: "",
-  userEmail: "",
-  isLogged: false,
-  setIsLogged: () => {},
-  setUserEmail: () => {},
-  setToken: () => {},
-};
 
-export const AuthContext = createContext(authDefaultContext);
+export const AuthContext = createContext<TAuthDefaultContext | null>(null);

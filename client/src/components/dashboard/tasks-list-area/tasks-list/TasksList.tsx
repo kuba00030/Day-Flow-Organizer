@@ -1,13 +1,18 @@
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../IconButton";
-import TaskListItem from "./TaskListItem";
+import TaskListItem from "./TasksListItem";
 import Header from "../../../Header";
+import { TaskType } from "../../../../types/TaskType";
 type TTaskList = {
-  state: boolean;
-  setState: (value: boolean) => void;
+  tasksList: TaskType[];
 };
 export default function TasksList(props: TTaskList) {
+  const renderTasks = (): React.ReactNode => {
+    return props.tasksList.map((task: TaskType, index: number) => (
+      <TaskListItem task={task} key={`task ${index}`} />
+    ));
+  };
   return (
     <div className="d-flex flex-column w-75">
       <Header
@@ -20,7 +25,7 @@ export default function TasksList(props: TTaskList) {
           txt="Add task"
           buttonStyle="d-flex flex-row align-items-center accordion-item-txt bg-transparent fw-semibold text-secondary border btn-outline-secondary rounded"
         />
-        <TaskListItem />
+        {renderTasks()}
       </Container>
     </div>
   );

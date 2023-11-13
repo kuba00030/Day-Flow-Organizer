@@ -4,10 +4,14 @@ import IconButton from "../../../IconButton";
 import TaskListItem from "./TasksListItem";
 import Header from "../../../Header";
 import { TaskType } from "../../../../types/TaskType";
+import { useContext } from "react";
+import { ModalContext } from "../../../../context/modalContext";
+import AddTaskModalContent from "../../../modal/AddTaskModalContent";
 type TTaskList = {
   tasksList: TaskType[];
 };
 export default function TasksList(props: TTaskList) {
+  const { setModalContent, setShowModal, showModal } = useContext(ModalContext);
   const renderTasks = (): React.ReactNode => {
     return props.tasksList.map((task: TaskType, index: number) => (
       <TaskListItem task={task} key={`task ${index}`} />
@@ -24,6 +28,10 @@ export default function TasksList(props: TTaskList) {
           icon={<AddIcon className="accordion-item-icon" />}
           txt="Add task"
           buttonStyle="d-flex flex-row align-items-center accordion-item-txt bg-transparent fw-semibold text-secondary border btn-outline-secondary rounded"
+          function={() => {
+            setModalContent(<AddTaskModalContent />);
+            setShowModal(!showModal);
+          }}
         />
         {renderTasks()}
       </Container>

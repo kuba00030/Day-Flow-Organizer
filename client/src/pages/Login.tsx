@@ -67,9 +67,7 @@ export default function Login() {
         // user info
         const user = result.user;
         setToken(token);
-        console.log(credential);
-        console.log(token);
-        console.log(user);
+        // sett all app components states
       })
       .catch((error: any) => {
         const errorCode = error.code;
@@ -112,12 +110,14 @@ export default function Login() {
           label="Email"
           placeholder="Email@example.com"
           inputType="email"
+          labelClass="login-register-label"
           setStateOnChange={setEmail}
         />
         <InputLabeled
           label="Password"
           placeholder="Password"
           inputType="password"
+          labelClass="login-register-label"
           setStateOnChange={setPassowrd}
         />
         <Button

@@ -4,11 +4,12 @@ type TInputLabeled = {
   inputType: string;
   placeholder: string;
   setStateOnChange: (e: any) => void;
+  labelClass: string;
 };
 export default function InputLabeled(props: TInputLabeled) {
   return (
     <Form.Group>
-      <Form.Label className="login-register-label">{props.label}</Form.Label>
+      <Form.Label className={props.labelClass}>{props.label}</Form.Label>
       <Form.Control
         size="sm"
         type={props.inputType}

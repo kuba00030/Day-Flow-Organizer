@@ -1,9 +1,11 @@
 export type SubtaskType = {
+  subtaskID: string;
   title: string;
-  isDone: boolean;
+  subtaskStatus: boolean;
   description: string;
 };
 export type TaskType = {
+  taskID: string;
   title: string;
   description: string;
   list: string;
@@ -11,3 +13,12 @@ export type TaskType = {
   subtasks: SubtaskType[];
   taskStatus: boolean;
 };
+export type MainTaskChangesType = {
+  taskID: string;
+  title: string;
+  description: string;
+  list: string;
+  date: string;
+  taskStatus: boolean;
+};
+export type SubtasksChangesType = SubtaskType[];

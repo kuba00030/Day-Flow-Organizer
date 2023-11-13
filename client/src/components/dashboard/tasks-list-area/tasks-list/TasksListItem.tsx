@@ -8,7 +8,7 @@ type TTaskListItem = {
   task: TaskType;
 };
 export default function TaskListItem(props: TTaskListItem) {
-  const { isTaskOpened, setIsTaskOpened, setTaskDetails, setChangedTask } =
+  const { isTaskOpened, setIsTaskOpened, setTaskDetails } =
     useContext(TasksContext);
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
@@ -24,10 +24,8 @@ export default function TaskListItem(props: TTaskListItem) {
           className="d-flex flex-row justify-content-between align-items-center bg-transparent border-0"
           style={{ flex: 1 }}
           onClick={() => {
-            console.log("open certain task details");
             setIsTaskOpened(!isTaskOpened);
             setTaskDetails(props.task);
-            setChangedTask(props.task);
           }}
         >
           <div>

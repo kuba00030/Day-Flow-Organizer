@@ -62,6 +62,7 @@ export default function NavBar() {
           icon={<AddIcon className="accordion-item-icon" />}
           txt="Add new list"
           buttonStyle="d-flex flex-row gap-2 ms-1 align-items-center accordion-item-txt text-secondary fw-semibold bg-transparent  border-0"
+          function={() => {}}
         />
       </Container>
       <Container className="d-flex flex-column gap-2 p-1 ">
@@ -69,11 +70,13 @@ export default function NavBar() {
           icon={<SettingsIcon className="accordion-item-icon" />}
           txt="Settings"
           buttonStyle="d-flex flex-row gap-2 align-items-center accordion-item-txt bg-transparent  border-0 text-secondary fw-semibold"
+          function={() => {}}
         />
         <IconButton
           icon={<SignOutIcon className="accordion-item-icon" />}
           txt="Sign out"
           buttonStyle="d-flex flex-row gap-2 align-items-center accordion-item-txt bg-transparent  border-0 text-secondary fw-semibold"
+          function={() => {}}
         />
       </Container>
     </Container>

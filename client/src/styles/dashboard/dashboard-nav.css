@@ -62,3 +62,7 @@
 .txt-small {
   font-size: 14px;
 }
+.scrollbar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}

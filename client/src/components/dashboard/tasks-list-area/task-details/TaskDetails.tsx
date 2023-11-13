@@ -1,87 +1,119 @@
 import { Button, Container } from "react-bootstrap";
 import TaskDetailsHeader from "./TaskDetailsHeader";
 import TaskDetailsInfo from "./TaskDetailsInfo";
-import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
-import { SubtaskType, TaskType } from "../../../../types/TaskType";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { TasksContext } from "../../../../context/tasksContext";
+import {
+  compareSubtaskChanges,
+  compareTaskChanges,
+} from "../../../../utils/task-details/CompareTaskChanges";
+import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
 export default function TaskDetails() {
-  const { taskDetails, changedTask, setChangedTask } = useContext(TasksContext);
+  const {
+    taskDetails,
+    isTaskOpened,
+    mainTaskChanges,
+    setMainTaskChanges,
+    setSubtasksChanges,
+    subTasksChanges,
+  } = useContext(TasksContext);
   const [hasTaskChanged, setHasTaskChanged] = useState<boolean>(false);
-  const editTask = (property: string, e: any) => {
-    setChangedTask({
-      ...changedTask,
-      [property]: e.target.value,
-    });
-  };
-  const compareTaskChanges = () => {
-    for (const key in changedTask) {
-      if (key !== "subtasks") {
-        if(changedTask[key] !== taskDetails[key])
-      }
-      if (key === "subtasks") {
-        subtaskHasChanged(changedTask[key], taskDetails[key]);
-      }
-      setHasTaskChanged(false);
-    }
-  };
-  const taskHasChanged = (
-    changedTask: TaskType,
-    originTask: TaskType,
-    key: string
-  ) => {
-    if (changedTask[key] !== originTask[key]) {
-      setHasTaskChanged(true);
-    }
-  };
-  const subtaskHasChanged = (
-    changedSubtasks: SubtaskType[],
-    originSubtaks: SubtaskType[]
-  ) => {
-    changedSubtasks.forEach((subtask: SubtaskType, index: number) => {
-      for (const key in subtask) {
-        if (subtask[key] !== originSubtaks[index][key]) {
-          setHasTaskChanged(true);
-        }
-      }
-    });
+  const [sliderHeight, setSliderHeight] = useState<number>();
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const taskDetailsRef = useRef<HTMLDivElement | null>(null);
+  const reloadDataTime = 510;
+  const editTask = () => {
+    //  add task into db
   };
   useEffect(() => {
-    compareTaskChanges();
-  }, [changedTask]);
+    compareTaskChanges(mainTaskChanges, taskDetails, setHasTaskChanged);
+  }, [mainTaskChanges]);
   useEffect(() => {
-    console.log(hasTaskChanged);
-  }, [hasTaskChanged]);
+    compareSubtaskChanges(
+      subTasksChanges,
+      taskDetails.subtasks,
+      setHasTaskChanged
+    );
+  }, [subTasksChanges]);
+  useEffect(() => {
+    setSliderHeight(taskDetailsRef.current.offsetHeight);
+  }, []);
+  useEffect(() => {
+    sliderRef.current.style.marginTop = `${sliderHeight}px`;
+    setTimeout(() => {
+      setMainTaskChanges({
+        taskID: taskDetails.taskID,
+        title: taskDetails.title,
+        description: taskDetails.description,
+        list: taskDetails.list,
+        date: taskDetails.date,
+        taskStatus: taskDetails.taskStatus,
+      });
+      setSubtasksChanges(taskDetails.subtasks);
+    }, reloadDataTime + 5);
+    setTimeout(() => {
+      sliderRef.current.style.marginTop = `${0}px`;
+    }, reloadDataTime + 10);
+  }, [isTaskOpened]);
   return (
     <div
-      className="bg-body-secondary rounded dashboard-tasks-details "
+      className="p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative "
       style={{
         flex: 1,
       }}
+      ref={taskDetailsRef}
     >
-      <Container className="p-0 d-flex flex-column dashboard-tasks-details-slider ">
+      <Container
+        className="p-4 d-flex flex-column dashboard-tasks-details-slider overflow-hidden"
+        style={{
+          transition: `margin-top ${reloadDataTime}ms ease-in-out`,
+        }}
+        ref={sliderRef}
+      >
         <TaskDetailsHeader
           header="Task"
-          description={changedTask.title}
-          editTask={editTask}
+          description={mainTaskChanges.title}
           taskProperty="title"
+          task={mainTaskChanges}
+          setTask={setMainTaskChanges}
         />
         <TaskDetailsHeader
           header="Description"
-          description={changedTask.description}
-          editTask={editTask}
+          description={mainTaskChanges.description}
           taskProperty="description"
+          task={mainTaskChanges}
+          setTask={setMainTaskChanges}
         />
         <TaskDetailsInfo
-          date={taskDetails.date}
-          editTask={editTask}
+          task={mainTaskChanges}
+          setTask={setMainTaskChanges}
+          date={mainTaskChanges.date}
           taskProperty="date"
         />
-        {/* <TaskDetailsSubtasks subtasks={taskDetails.subtasks} /> */}
+        <TaskDetailsSubtasks
+          subtasks={subTasksChanges}
+          setSubtasks={setSubtasksChanges}
+        />
       </Container>
-      {/* <Button>Delete task</Button>
-      <Button>save changes</Button> */}
+      <div className="position-absolute bg-body-secondary bottom-0 w-100 p-4 ">
+        <Button
+          size="sm"
+          className={`w-100 ${
+            hasTaskChanged === false
+              ? "bg-primary"
+              : "bg-warning text-secondary"
+          } border-0 fw-semibold`}
+          onClick={() => {
+            if (hasTaskChanged === false) {
+              console.log("task deleted");
+            } else {
+              console.log("changes saved");
+            }
+          }}
+        >
+          {hasTaskChanged === false ? "Delete task" : "Save changes"}
+        </Button>
+      </div>
     </div>
   );
 }
-// if values are diff change close button to 'save changes'

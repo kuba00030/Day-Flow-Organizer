@@ -27,18 +27,21 @@ export default function Register() {
           label="Email"
           placeholder="Email@example.com"
           inputType="email"
+          labelClass="login-register-label"
           setStateOnChange={setEmail}
         />
         <InputLabeled
           label="Passowrd"
           placeholder="Password"
           inputType="password"
+          labelClass="login-register-label"
           setStateOnChange={setPassword}
         />
         <InputLabeled
           label="Repeat password"
           placeholder="Repeat your password"
           inputType="password"
+          labelClass="login-register-label"
           setStateOnChange={setRepeatPassword}
         />
         <Button className="rounded">Sign up</Button>

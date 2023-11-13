@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
@@ -9,57 +9,154 @@ import { auth } from "./firebase-config/firebaseConfig";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./context/authContext";
 import { TasksContext } from "./context/tasksContext";
-import { TaskType } from "./types/TaskType";
+import {
+  MainTaskChangesType,
+  SubtasksChangesType,
+  TaskType,
+} from "./types/TaskType";
+import { ModalContext } from "./context/modalContext";
 function App() {
   const [isLogged, setIsLogged] = useState<boolean>(true);
   const [token, setToken] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode | null>(
+    null
+  );
   const [tasksList, setTasksList] = useState<TaskType[]>([
     {
+      taskID: "002AB42",
       title: "Title 1",
       description: "Description 1",
       list: "List 1",
       date: "2023-11-09",
       subtasks: [
         {
+          subtaskID: "001A2B41",
           title: "shopping",
           description: "buy some onion",
-          isDone: false,
+          subtaskStatus: false,
         },
+        {
+          subtaskID: "001A2B42",
+          title: "shopping",
+          description: "buy some bannanas",
+          subtaskStatus: false,
+        },
+        ,
       ],
       taskStatus: false,
     },
   ]);
   const [taskDetails, setTaskDetails] = useState<TaskType>({
+    taskID: "002AB42",
     title: "Title 1",
     description: "Description 1",
     list: "List 1",
     date: "2023-11-09",
     subtasks: [
       {
+        subtaskID: "001A2B41",
         title: "shopping",
         description: "buy some onion",
-        isDone: false,
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B42",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B41",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B41",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B41",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B41",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
+      },
+      {
+        subtaskID: "001A2B41",
+        title: "shopping",
+        description: "buy some onion",
+        subtaskStatus: false,
       },
     ],
     taskStatus: false,
   });
-  const [changedTask, setChangedTask] = useState<TaskType>({
+  const [mainTaskChanges, setMainTaskChanges] = useState<MainTaskChangesType>({
+    taskID: "002AB42",
     title: "Title 1",
     description: "Description 1",
     list: "List 1",
     date: "2023-11-09",
-    subtasks: [
-      {
-        title: "shopping",
-        description: "buy some onion",
-        isDone: false,
-      },
-    ],
     taskStatus: false,
   });
-  const [list, setLists] = useState();
+  const [subTasksChanges, setSubtasksChanges] = useState<SubtasksChangesType>([
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B42",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+    {
+      subtaskID: "001A2B41",
+      title: "shopping",
+      description: "buy some onion",
+      subtaskStatus: false,
+    },
+  ]);
+  const [categoryList, setCategoryList] = useState<string[]>([
+    "personal",
+    "work",
+  ]);
   useEffect(() => {
     // create 'isLogged' in local storage as a value of 'isLogged' state
   }, [isLogged]);
@@ -96,25 +193,38 @@ function App() {
             setTasksList: setTasksList,
             taskDetails: taskDetails,
             setTaskDetails: setTaskDetails,
+            categoryList: categoryList,
+            setCategoryList: setCategoryList,
             isTaskOpened: isTaskOpened,
             setIsTaskOpened: setIsTaskOpened,
-            changedTask: changedTask,
-            setChangedTask: setChangedTask,
+            mainTaskChanges: mainTaskChanges,
+            setMainTaskChanges: setMainTaskChanges,
+            subTasksChanges: subTasksChanges,
+            setSubtasksChanges: setSubtasksChanges,
           }}
         >
-          <BrowserRouter>
-            <Routes>
-              <Route path="/">
-                <Route index element={<Login />} />
-                <Route path="signup" element={<Register />} />
-                {/* {isLogged === true ? (
+          <ModalContext.Provider
+            value={{
+              showModal: modalShow,
+              setShowModal: setModalShow,
+              modalContent: modalContent,
+              setModalContent: setModalContent,
+            }}
+          >
+            <BrowserRouter>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Login />} />
+                  <Route path="signup" element={<Register />} />
+                  {/* {isLogged === true ? (
                 <Route path="dashboard" element={<Dashboard />} />
               ) : null} */}
-                <Route path="dashboard" element={<Dashboard />} />
-              </Route>
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </BrowserRouter>
+                  <Route path="dashboard" element={<Dashboard />} />
+                </Route>
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </ModalContext.Provider>
         </TasksContext.Provider>
       </AuthContext.Provider>
     </div>

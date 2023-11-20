@@ -15,6 +15,7 @@ import {
   TaskType,
 } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
+import { CategoryListType } from "./types/CategoryListType";
 function App() {
   const [isLogged, setIsLogged] = useState<boolean>(true);
   const [token, setToken] = useState("");
@@ -29,7 +30,8 @@ function App() {
       taskID: "002AB42",
       title: "Title 1",
       description: "Description 1",
-      list: "List 1",
+      list: "work",
+      listColor: "yellow",
       date: "2023-11-09",
       subtasks: [
         {
@@ -44,6 +46,11 @@ function App() {
           description: "buy some bannanas",
           subtaskStatus: false,
         },
+        {
+          subtaskID: "001A2B43",
+          title: "shopping",
+          subtaskStatus: false,
+        },
         ,
       ],
       taskStatus: false,
@@ -53,7 +60,8 @@ function App() {
     taskID: "002AB42",
     title: "Title 1",
     description: "Description 1",
-    list: "List 1",
+    list: "work",
+    listColor: "red",
     date: "2023-11-09",
     subtasks: [
       {
@@ -105,7 +113,8 @@ function App() {
     taskID: "002AB42",
     title: "Title 1",
     description: "Description 1",
-    list: "List 1",
+    list: "work",
+    listColor: "red",
     date: "2023-11-09",
     taskStatus: false,
   });
@@ -153,9 +162,10 @@ function App() {
       subtaskStatus: false,
     },
   ]);
-  const [categoryList, setCategoryList] = useState<string[]>([
-    "personal",
-    "work",
+  const [categoryList, setCategoryList] = useState<CategoryListType>([
+    { category: "personal", color: "#ff0000" },
+    { category: "work", color: "#001bff" },
+    { category: "projects", color: "#eeff00" },
   ]);
   useEffect(() => {
     // create 'isLogged' in local storage as a value of 'isLogged' state

@@ -12,9 +12,7 @@ import { useEffect, useContext } from "react";
 export default function Dashboard() {
   const { isTaskOpened, tasksList, taskDetails } = useContext(TasksContext);
   const { showModal, setShowModal, modalContent } = useContext(ModalContext);
-  useEffect(() => {
-    console.log(modalContent);
-  }, [modalContent]);
+
   useEffect(() => {}, [isTaskOpened]);
   // create context for tasks list and task details
   // isTaskOpened,taskValue,
@@ -27,7 +25,7 @@ export default function Dashboard() {
       </div>
       <DefaultModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={() => setShowModal(!showModal)}
         modalcontent={modalContent}
       />
     </div>

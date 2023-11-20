@@ -19,17 +19,16 @@ export const editTaskValue = (
 export const editSubtask = (
   subtasks: SubtasksChangesType,
   setSubtasks: (subtasks: SubtasksChangesType) => void,
-  subtaskProperty: string,
+  propertyToChange: string,
   newValue: string | boolean,
   subtaskID: string
 ) => {
-  // setSubtasks([...subtasks,subtasks[subtasks.findIndex()]])
   setSubtasks(
     subtasks.map((subtask) => {
       if (subtask.subtaskID === subtaskID) {
         return {
           ...subtask,
-          [subtaskProperty]: newValue,
+          [propertyToChange]: newValue,
         };
       }
       return subtask;

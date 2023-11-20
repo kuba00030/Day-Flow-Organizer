@@ -8,7 +8,7 @@ import "../styles/login-register-form.css";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
-import InputLabeled from "../components/InputLabeled";
+import InputLabeled from "../components/ui/inputs/InputLabeled";
 import {
   FacebookAuthProvider,
   GoogleAuthProvider,
@@ -107,18 +107,26 @@ export default function Login() {
       </div>
       <Form className="login-register-form d-flex flex-column gap-2 rounded">
         <InputLabeled
-          label="Email"
-          placeholder="Email@example.com"
+          labelValue="Email"
+          labelStyle="login-register-label"
+          inputPlaceholder="Email@example.com"
           inputType="email"
-          labelClass="login-register-label"
-          setStateOnChange={setEmail}
+          inputValue={email}
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
         <InputLabeled
-          label="Password"
-          placeholder="Password"
+          labelValue="Password"
+          labelStyle="login-register-label"
+          inputPlaceholder="Password"
+          inputValue={password}
           inputType="password"
-          labelClass="login-register-label"
-          setStateOnChange={setPassowrd}
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setPassowrd(e.target.value);
+          }}
         />
         <Button
           variant="primary"

@@ -1,15 +1,18 @@
 import {
+  Alert,
   ModalBody,
   ModalFooter,
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { useState } from "react";
-import InputLabeled from "../InputLabeled";
-export default function AddSubtaskModal(props) {
-  const [subtaskTitle, setSubtaskTitle] = useState<string>();
-  const [subtastDescription, setSubtaskDescription] = useState<string>();
+import { useState, useContext } from "react";
+import InputLabeled from "../ui/inputs/InputLabeled";
+import { ModalContext } from "../../context/modalContext";
+export default function AddSubtaskModalContent() {
+  const { showModal, setShowModal } = useContext(ModalContext);
+  const [subtaskTitle, setSubtaskTitle] = useState<string>("");
+  const [subtastDescription, setSubtaskDescription] = useState<string>("");
   return (
     <>
       <ModalHeader closeButton>
@@ -17,34 +20,40 @@ export default function AddSubtaskModal(props) {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 ">
         <InputLabeled
-          labelClass="text-secondary fw-semibold txt-small"
-          label="Title"
-          placeholder=""
+          labelStyle="text-secondary fw-semibold txt-small"
+          labelValue="Title"
           inputType="text"
-          setStateOnChange={setSubtaskTitle}
+          inputValue={subtaskTitle}
+          inputStyle="border border-secondary-subtle  focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setSubtaskTitle(e.target.value);
+          }}
         />
         <InputLabeled
-          labelClass="text-secondary fw-semibold txt-small"
-          label="Description"
-          placeholder=""
+          labelStyle="text-secondary fw-semibold txt-small"
+          labelValue="Description"
           inputType="text"
-          setStateOnChange={setSubtaskDescription}
+          inputValue={subtastDescription}
+          inputStyle="border border-secondary-subtle  focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setSubtaskDescription(e.target.value);
+          }}
         />
       </ModalBody>
       <ModalFooter>
         <Button
+          size="sm"
+          className="txt-small"
           onClick={() => {
             if (subtaskTitle !== "" && subtastDescription !== "") {
               // update in db then on snapschot update list
-              props.onHide();
+              setShowModal(!showModal);
             } else {
-              props.onHide();
+              <Alert variant="danger">Fill in title and description</Alert>;
             }
           }}
         >
-          {subtaskTitle !== "" && subtastDescription !== ""
-            ? "Add subtask"
-            : "Close"}
+          Add subtask
         </Button>
       </ModalFooter>
     </>

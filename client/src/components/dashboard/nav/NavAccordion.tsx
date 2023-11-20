@@ -17,7 +17,6 @@ export default function NavAccordion(props: TNavAccordion) {
   const AccordionToggle = ({ children, eventKey }) => {
     const toogle = useAccordionButton(eventKey, () => {
       setIsOpened(!isOpened);
-      console.log(isOpened);
     });
     return (
       <button

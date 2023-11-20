@@ -29,7 +29,7 @@ export default function TaskListItem(props: TTaskListItem) {
           }}
         >
           <div>
-            <span className="text-secondary fw-semibold accordion-item-txt">
+            <span className="text-secondary fw-semibold txt-small">
               {props.task.title}
             </span>
             {props.task.date !== currentDate ? (
@@ -41,7 +41,7 @@ export default function TaskListItem(props: TTaskListItem) {
             ) : null}
           </div>
           <ArrowIcon
-            className="text-secondary accordion-item-icon"
+            className="text-secondary regular-icon"
             style={{
               transform: `rotate(90deg)`,
             }}
@@ -50,17 +50,20 @@ export default function TaskListItem(props: TTaskListItem) {
       </Container>
       {props.task.date !== currentDate ? (
         <Container className="d-flex align-items-center flex-row  gap-4 mt-2">
-          <div className="d-flex flex-row align-items-center text-secondary accordion-item-txt fw-semibold gap-2">
+          <div className="d-flex flex-row align-items-center text-secondary txt-small fw-semibold gap-2">
             <DateIcon className="small-icon " />
             <span>{props.task.date}</span>
           </div>
-          <div className="d-flex flex-row align-items-center text-secondary accordion-item-txt fw-semibold gap-2">
+          <div className="d-flex flex-row align-items-center text-secondary txt-small fw-semibold gap-2">
             <span>Subtasks</span>
             <span>{props.task.subtasks.length}</span>
           </div>
-          <div className="d-flex flex-row align-items-center text-secondary fw-semibold accordion-item-txt gap-2">
-            <div className="small-icon radius-small accordion-item-icon-dot"></div>
-            <span>{props.task.list}</span>
+          <div className="d-flex flex-row align-items-center text-secondary fw-semibold txt-small gap-2">
+            <div
+              className="small-icon radius-small"
+              style={{ backgroundColor: `${props.task.listColor}` }}
+            ></div>
+            <span>{props.task.listColor}</span>
           </div>
         </Container>
       ) : null}

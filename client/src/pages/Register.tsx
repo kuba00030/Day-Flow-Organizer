@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import InputLabeled from "../components/InputLabeled";
+import InputLabeled from "../components/ui/inputs/InputLabeled";
 export default function Register() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
@@ -24,25 +24,37 @@ export default function Register() {
       </div>
       <Form className="login-register-form d-flex flex-column gap-2 rounded">
         <InputLabeled
-          label="Email"
-          placeholder="Email@example.com"
+          labelValue="Email"
+          labelStyle="login-register-label"
+          inputPlaceholder="Email@example.com"
           inputType="email"
-          labelClass="login-register-label"
-          setStateOnChange={setEmail}
+          inputValue={email}
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
         <InputLabeled
-          label="Passowrd"
-          placeholder="Password"
+          labelValue="Passowrd"
+          labelStyle="login-register-label"
+          inputPlaceholder="Password"
           inputType="password"
-          labelClass="login-register-label"
-          setStateOnChange={setPassword}
+          inputValue={password}
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
         />
         <InputLabeled
-          label="Repeat password"
-          placeholder="Repeat your password"
+          labelValue="Repeat password"
+          labelStyle="login-register-label"
+          inputPlaceholder="Repeat your password"
           inputType="password"
-          labelClass="login-register-label"
-          setStateOnChange={setRepeatPassword}
+          inputValue={repeatPassword}
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          onChange={(e) => {
+            setRepeatPassword(e.target.value);
+          }}
         />
         <Button className="rounded">Sign up</Button>
         <Form.Text className="text-center">

@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MdAdd as AddIcon } from "react-icons/md";
-import IconButton from "../../../IconButton";
+import IconButton from "../../../ui/buttons/IconButton";
 import TaskDetailsSubtask from "./TaskDetailsSubtask";
 import { SubtaskType, SubtasksChangesType } from "../../../../types/TaskType";
 import { ModalContext } from "../../../../context/modalContext";
@@ -29,20 +29,23 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
   };
   return (
     <Container className=" p-0 d-flex flex-column overflow-hidden">
-      <div className="dashboard-tasks-details-header text-dark-emphasis fw-bold">
+      <div className="text-dark-emphasis fw-bold txt-medium">
         <span>Subtasks:</span>
       </div>
       <IconButton
         icon={<AddIcon className="regular-icon" />}
         txt="Add subtask"
-        buttonStyle="d-flex flex-row align-items-center accordion-item-txt bg-transparent text-secondary fw-semibold border-0 rounded"
+        size="sm"
+        buttonClass="d-flex flex-row align-items-center txt-small bg-transparent text-secondary fw-semibold border-0 rounded"
         function={() => {
           setModalContent(<AddSubtaskModal />);
           setShowModal(!showModal);
         }}
       />
 
-      <div className="d-flex flex-column scrollbar">{renderSubtasks()}</div>
+      <div className="d-flex flex-column scrollbar pb-1">
+        {renderSubtasks()}
+      </div>
     </Container>
   );
 }

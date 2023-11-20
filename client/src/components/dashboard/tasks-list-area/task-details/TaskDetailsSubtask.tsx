@@ -4,7 +4,7 @@ import {
   MainTaskChangesType,
   SubtasksChangesType,
 } from "../../../../types/TaskType";
-import { editSubtask } from "../../../../utils/task-details/EditTaskValue";
+import { editSubtask } from "../../../../utils/task-details/editTaskValue";
 type TTaskDetailsSubtask = {
   title: string;
   subtaskStatus: boolean;
@@ -15,10 +15,12 @@ type TTaskDetailsSubtask = {
 };
 export default function TaskDetailsSubtask(props: TTaskDetailsSubtask) {
   return (
-    <Container className=" d-flex flex-column  task-details-info task-details-subtask ">
+    <Container className=" d-flex flex-column mt-2">
       <div className="d-flex flex-row align-items-center justify-content-between">
         <input
-          className="border-0 bg-transparent rounded text-secondary fw-semibold txt-small"
+          className={`${
+            props.title !== "" ? "border-0" : "border border-secondary-subtle"
+          } bg-transparent rounded text-secondary fw-semibold txt-small focus-ring`}
           value={props.title}
           onChange={(e: any) => {
             editSubtask(
@@ -30,12 +32,32 @@ export default function TaskDetailsSubtask(props: TTaskDetailsSubtask) {
             );
           }}
         />
+        {props.description === undefined ? (
+          <input
+            type="checkbox"
+            checked={props.subtaskStatus === true ? true : false}
+            onClick={(e: any) => {
+              editSubtask(
+                props.subtasks,
+                props.setSubtasks,
+                "subtaskStatus",
+                e.target.checked,
+                props.subtaskID
+              );
+            }}
+            className="small-icon flex-shrink-0 ms-auto"
+          />
+        ) : null}
       </div>
-      {props.description === null ? null : (
+      {props.description === undefined ? null : (
         <div className="d-flex flex-row  mt-1">
           <SubtaskIcon className="small-icon ms-1 flex-shrink-0" />
           <input
-            className="border-0 bg-transparent rounded text-secondary fw-semibold txt-small ms-1 text-break"
+            className={`${
+              props.description !== ""
+                ? "border-0"
+                : "border border-secondary-subtle"
+            } bg-transparent rounded text-secondary fw-semibold txt-small focus-ring`}
             value={props.description}
             onChange={(e: any) => {
               editSubtask(

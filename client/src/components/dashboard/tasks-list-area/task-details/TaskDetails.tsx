@@ -1,13 +1,15 @@
 import { Button, Container } from "react-bootstrap";
-import TaskDetailsHeader from "./TaskDetailsHeader";
-import TaskDetailsInfo from "./TaskDetailsInfo";
 import { useContext, useEffect, useState, useRef } from "react";
 import { TasksContext } from "../../../../context/tasksContext";
+import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
+import InputLabeled from "../../../ui/inputs/InputLabeled";
 import {
   compareSubtaskChanges,
   compareTaskChanges,
-} from "../../../../utils/task-details/CompareTaskChanges";
-import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
+} from "../../../../utils/task-details/compareTaskChanges";
+import { editTaskValue } from "../../../../utils/task-details/editTaskValue";
+import ListSelect from "../../../ui/inputs/ListSelect";
+import InputDate from "../../../ui/inputs/InputDate";
 export default function TaskDetails() {
   const {
     taskDetails,
@@ -16,6 +18,7 @@ export default function TaskDetails() {
     setMainTaskChanges,
     setSubtasksChanges,
     subTasksChanges,
+    categoryList,
   } = useContext(TasksContext);
   const [hasTaskChanged, setHasTaskChanged] = useState<boolean>(false);
   const [sliderHeight, setSliderHeight] = useState<number>();
@@ -46,6 +49,7 @@ export default function TaskDetails() {
         title: taskDetails.title,
         description: taskDetails.description,
         list: taskDetails.list,
+        listColor: taskDetails.listColor,
         date: taskDetails.date,
         taskStatus: taskDetails.taskStatus,
       });
@@ -64,32 +68,62 @@ export default function TaskDetails() {
       ref={taskDetailsRef}
     >
       <Container
-        className="p-4 d-flex flex-column dashboard-tasks-details-slider overflow-hidden"
+        className="p-4 d-flex flex-column dashboard-tasks-details-slider overflow-hidden gap-4"
         style={{
           transition: `margin-top ${reloadDataTime}ms ease-in-out`,
         }}
         ref={sliderRef}
       >
-        <TaskDetailsHeader
-          header="Task"
-          description={mainTaskChanges.title}
-          taskProperty="title"
-          task={mainTaskChanges}
-          setTask={setMainTaskChanges}
+        <InputLabeled
+          labelStyle="text-secondary fw-semibold txt-large"
+          labelValue="Task:"
+          inputType="text"
+          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputValue={mainTaskChanges.title}
+          onChange={(e) => {
+            editTaskValue(mainTaskChanges, setMainTaskChanges, "title", e);
+          }}
         />
-        <TaskDetailsHeader
-          header="Description"
-          description={mainTaskChanges.description}
-          taskProperty="description"
-          task={mainTaskChanges}
-          setTask={setMainTaskChanges}
+        <InputLabeled
+          labelStyle="text-secondary fw-semibold txt-large"
+          labelValue="Description:"
+          inputType="text"
+          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputValue={mainTaskChanges.description}
+          onChange={(e) => {
+            editTaskValue(
+              mainTaskChanges,
+              setMainTaskChanges,
+              "description",
+              e
+            );
+          }}
         />
-        <TaskDetailsInfo
-          task={mainTaskChanges}
-          setTask={setMainTaskChanges}
-          date={mainTaskChanges.date}
-          taskProperty="date"
-        />
+        <div className="d-flex flex-column p-0 gap-2">
+          <ListSelect
+            containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
+            label="List"
+            labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
+            optionsProperty="category"
+            selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
+            options={categoryList}
+            optionStyle="text-secondary fw-semibold txt-small"
+            selectValue={mainTaskChanges.list}
+            onChange={(e) => {
+              editTaskValue(mainTaskChanges, setMainTaskChanges, "list", e);
+            }}
+          />
+          <InputDate
+            containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
+            labelValue="Due date"
+            inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputType="date"
+            inputValue={mainTaskChanges.date}
+            onChange={(e) => {
+              editTaskValue(mainTaskChanges, setMainTaskChanges, "date", e);
+            }}
+          />
+        </div>
         <TaskDetailsSubtasks
           subtasks={subTasksChanges}
           setSubtasks={setSubtasksChanges}

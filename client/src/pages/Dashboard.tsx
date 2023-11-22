@@ -1,7 +1,6 @@
 import NavBar from "../components/dashboard/nav/NavBar";
 import TaskDetails from "../components/dashboard/tasks-list-area/task-details/TaskDetails";
 import TasksList from "../components/dashboard/tasks-list-area/tasks-list/TasksList";
-import AddSubtaskModal from "../components/modal/AddSubtaskModalContent";
 import DefaultModal from "../components/modal/ModalDefault";
 import { ModalContext } from "../context/modalContext";
 import { TasksContext } from "../context/tasksContext";
@@ -21,7 +20,7 @@ export default function Dashboard() {
       <NavBar />
       <div className="d-flex flex-row p-0 container-fluid">
         <TasksList tasksList={tasksList} />
-        <TaskDetails />
+        {tasksList.length > 0 ? <TaskDetails /> : null}
       </div>
       <DefaultModal
         show={showModal}

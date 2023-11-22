@@ -24,40 +24,46 @@ export default function SettingsModalContent() {
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 ">
-        {categoryList.map((category: CategoryType) => {
-          return (
-            <div className="d-flex flex-row gap-4 ">
-              <InputLabeled
-                inputType="text"
-                inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-                inputValue={category.category}
-                onChange={(e) => {
-                  editCategoryList(
-                    category.category,
-                    "category",
-                    e.target.value,
-                    categoryList,
-                    setCategoryList
-                  );
-                }}
-              />
-              <InputLabeled
-                inputType="color"
-                inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-                inputValue={category.color}
-                onChange={(e) => {
-                  editCategoryList(
-                    category.category,
-                    "color",
-                    e.target.value,
-                    categoryList,
-                    setCategoryList
-                  );
-                }}
-              />
-            </div>
-          );
-        })}
+        {categoryList.length > 0 ? (
+          categoryList.map((category: CategoryType) => {
+            return (
+              <div className="d-flex flex-row gap-4 ">
+                <InputLabeled
+                  inputType="text"
+                  inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+                  inputValue={category.category}
+                  onChange={(e) => {
+                    editCategoryList(
+                      category.category,
+                      "category",
+                      e.target.value,
+                      categoryList,
+                      setCategoryList
+                    );
+                  }}
+                />
+                <InputLabeled
+                  inputType="color"
+                  inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+                  inputValue={category.color}
+                  onChange={(e) => {
+                    editCategoryList(
+                      category.category,
+                      "color",
+                      e.target.value,
+                      categoryList,
+                      setCategoryList
+                    );
+                  }}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className="text-center text-secondary fw-semibold txt-small">
+            Add your first tasks list
+          </div>
+        )}
       </ModalBody>
     </>
   );

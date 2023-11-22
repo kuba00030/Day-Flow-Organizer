@@ -29,7 +29,7 @@ export default function Register() {
           inputPlaceholder="Email@example.com"
           inputType="email"
           inputValue={email}
-          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small focus-ring"
           onChange={(e) => {
             setEmail(e.target.value);
           }}
@@ -40,7 +40,7 @@ export default function Register() {
           inputPlaceholder="Password"
           inputType="password"
           inputValue={password}
-          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small focus-ring"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -51,7 +51,7 @@ export default function Register() {
           inputPlaceholder="Repeat your password"
           inputType="password"
           inputValue={repeatPassword}
-          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small focus-ring"
           onChange={(e) => {
             setRepeatPassword(e.target.value);
           }}

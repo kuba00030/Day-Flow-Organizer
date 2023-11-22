@@ -18,12 +18,12 @@ export default function TasksList(props: TTaskList) {
     ));
   };
   return (
-    <div className="d-flex flex-column w-75">
+    <div className="d-flex flex-column" style={{ flex: 1 }}>
       <Header
         txt="Today"
         className="txt-larger fw-semibold ms-2 mb-2 text-dark-emphasis"
       />
-      <Container className="d-flex flex-column gap-2">
+      <Container className="d-flex flex-column gap-2" style={{ flex: 1 }}>
         <IconButton
           icon={<AddIcon className="accordion-item-icon" />}
           txt="Add task"
@@ -34,7 +34,16 @@ export default function TasksList(props: TTaskList) {
             setShowModal(!showModal);
           }}
         />
-        {renderTasks()}
+        {props.tasksList.length > 0 ? (
+          renderTasks()
+        ) : (
+          <div
+            className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
+            style={{ flex: 1 }}
+          >
+            Add your first task
+          </div>
+        )}
       </Container>
     </div>
   );

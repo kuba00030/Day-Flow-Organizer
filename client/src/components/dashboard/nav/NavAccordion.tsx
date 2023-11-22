@@ -48,7 +48,13 @@ export default function NavAccordion(props: TNavAccordion) {
         </Card.Header>
         <Accordion.Collapse eventKey="0">
           <Card.Body className="d-flex flex-column  bg-light rounded p-1 gap-2">
-            {renderItems()}
+            {props.items.length > 0 ? (
+              renderItems()
+            ) : (
+              <div className="text-center text-secondary fw-semibold txt-small">
+                Add your first tasks list
+              </div>
+            )}
           </Card.Body>
         </Accordion.Collapse>
       </Card>

@@ -61,10 +61,7 @@ export default function TaskDetails() {
   }, [isTaskOpened]);
   return (
     <div
-      className="p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative "
-      style={{
-        flex: 1,
-      }}
+      className="w-25 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative "
       ref={taskDetailsRef}
     >
       <Container

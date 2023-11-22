@@ -60,21 +60,19 @@ export default function NavBar() {
         <NavAccordion
           header="LISTS"
           items={categoryList.map((category: CategoryType) => {
-            return (
-              <NavAccordionItem
-                itemStyle="accordion-item-txt text-secondary ms-auto"
-                headerStyle="txt-small text-secondary"
-                containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
-                header={`${category.category}`}
-                key={`list category: ${category.category}`}
-                icon={
-                  <div
-                    className="regular-icon me-2 rounded border-0 p-0"
-                    style={{ backgroundColor: `${category.color}` }}
-                  ></div>
-                }
-              />
-            );
+            <NavAccordionItem
+              itemStyle="accordion-item-txt text-secondary ms-auto"
+              headerStyle="txt-small text-secondary"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+              header={`${category.category}`}
+              key={`list category: ${category.category}`}
+              icon={
+                <div
+                  className="regular-icon me-2 rounded border-0 p-0"
+                  style={{ backgroundColor: `${category.color}` }}
+                ></div>
+              }
+            />;
           })}
         />
         <div className="d-flex flex-row justify-content-between">
@@ -101,13 +99,6 @@ export default function NavBar() {
         </div>
       </Container>
       <Container className="d-flex flex-column gap-2 p-1 ">
-        {/* <IconButton
-          icon={<SettingsIcon className="accordion-item-icon" />}
-          txt="Settings"
-          size="sm"
-          buttonClass="d-flex flex-row gap-2 align-items-center txt-small bg-transparent  border-0 text-secondary fw-semibold"
-          function={() => {}}
-        /> */}
         <IconButton
           icon={<SignOutIcon className="accordion-item-icon" />}
           txt="Sign out"

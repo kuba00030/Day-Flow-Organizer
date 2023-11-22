@@ -1,32 +1,25 @@
-import Container from "react-bootstrap/Container";
+import "../styles/custom-container.css";
+import "../styles/login-register-form.css";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import "../styles/custom-container.css";
-import "../styles/login-register-form.css";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import InputLabeled from "../components/ui/inputs/InputLabeled";
 import {
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  TwitterAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import {
-  auth,
   facebookProvider,
   googleProvider,
   twitterProvider,
 } from "../firebase-config/firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/authContext";
+import handleSignInWithPassword from "../utils/login/signInWithPassword";
+import handleSignInWithProvider from "../utils/login/signInWithProvider";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
-  const { setToken, isLogged } = useContext(AuthContext);
+  const { isLogged } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
     if (isLogged === true) {
@@ -34,63 +27,6 @@ export default function Login() {
       console.log(isLogged);
     }
   }, [isLogged]);
-
-  /* instead of writing separeted funciton for each provider used,
-  check which instance of provider was used and return its class
-  imported from firebase
-  (needed for credential while signing in with certain authentication provider) 
-   */
-  const handleProviderCheck = (provider: any) => {
-    switch (provider) {
-      case googleProvider:
-        return GoogleAuthProvider;
-        break;
-      case facebookProvider:
-        return FacebookAuthProvider;
-        break;
-      case twitterProvider:
-        return TwitterAuthProvider;
-        break;
-      default:
-        return null;
-    }
-  };
-
-  // login with given provide (google,facebook,twitter) as parameter
-  const handleSignInWithProvider = (provider: any) => {
-    signInWithPopup(auth, provider)
-      .then((result: any) => {
-        const credential =
-          handleProviderCheck(provider).credentialFromResult(result);
-        // google acces token
-        const token = credential.accessToken;
-        // user info
-        const user = result.user;
-        setToken(token);
-        // sett all app components states
-      })
-      .catch((error: any) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
-  };
-  // sign in with email & password
-  const handleSignInWithPassword = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
-  };
-
   return (
     <div className="login-register-container">
       <div className="login-register-welcome-text mb-3">
@@ -112,7 +48,7 @@ export default function Login() {
           inputPlaceholder="Email@example.com"
           inputType="email"
           inputValue={email}
-          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small focus-ring"
           onChange={(e) => {
             setEmail(e.target.value);
           }}
@@ -123,7 +59,7 @@ export default function Login() {
           inputPlaceholder="Password"
           inputValue={password}
           inputType="password"
-          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border p-2 bg-transparent rounded text-secondary fw-semibold txt-small focus-ring"
           onChange={(e) => {
             setPassowrd(e.target.value);
           }}
@@ -132,7 +68,9 @@ export default function Login() {
           variant="primary"
           className="rounded"
           size="sm"
-          onClick={handleSignInWithPassword}
+          onClick={() => {
+            handleSignInWithPassword(email, password);
+          }}
         >
           <span className="login-register-txt-small">Sign in</span>
         </Button>

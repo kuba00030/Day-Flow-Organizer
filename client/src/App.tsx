@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config/firebaseConfig";
+import { auth, db } from "./firebase-config/firebaseConfig";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./context/authContext";
 import { TasksContext } from "./context/tasksContext";
@@ -16,172 +16,53 @@ import {
 } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
 import { CategoryListType } from "./types/CategoryListType";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocFromCache,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 function App() {
-  const [isLogged, setIsLogged] = useState<boolean>(true);
-  const [token, setToken] = useState("");
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState("");
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(
     null
   );
-  const [tasksList, setTasksList] = useState<TaskType[]>([
-    {
-      taskID: "002AB42",
-      title: "Title 1",
-      description: "Description 1",
-      list: "work",
-      listColor: "yellow",
-      date: "2023-11-09",
-      subtasks: [
-        {
-          subtaskID: "001A2B41",
-          title: "shopping",
-          description: "buy some onion",
-          subtaskStatus: false,
-        },
-        {
-          subtaskID: "001A2B42",
-          title: "shopping",
-          description: "buy some bannanas",
-          subtaskStatus: false,
-        },
-        {
-          subtaskID: "001A2B43",
-          title: "shopping",
-          subtaskStatus: false,
-        },
-        ,
-      ],
-      taskStatus: false,
-    },
-  ]);
-  const [taskDetails, setTaskDetails] = useState<TaskType>({
-    taskID: "002AB42",
-    title: "Title 1",
-    description: "Description 1",
-    list: "work",
-    listColor: "red",
-    date: "2023-11-09",
-    subtasks: [
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B42",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-      {
-        subtaskID: "001A2B41",
-        title: "shopping",
-        description: "buy some onion",
-        subtaskStatus: false,
-      },
-    ],
-    taskStatus: false,
-  });
-  const [mainTaskChanges, setMainTaskChanges] = useState<MainTaskChangesType>({
-    taskID: "002AB42",
-    title: "Title 1",
-    description: "Description 1",
-    list: "work",
-    listColor: "red",
-    date: "2023-11-09",
-    taskStatus: false,
-  });
-  const [subTasksChanges, setSubtasksChanges] = useState<SubtasksChangesType>([
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B42",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-    {
-      subtaskID: "001A2B41",
-      title: "shopping",
-      description: "buy some onion",
-      subtaskStatus: false,
-    },
-  ]);
-  const [categoryList, setCategoryList] = useState<CategoryListType>([
-    { category: "personal", color: "#ff0000" },
-    { category: "work", color: "#001bff" },
-    { category: "projects", color: "#eeff00" },
-  ]);
-  useEffect(() => {
-    // create 'isLogged' in local storage as a value of 'isLogged' state
-  }, [isLogged]);
+  const [tasksList, setTasksList] = useState<TaskType[]>([]);
+  const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
+    undefined
+  );
+  const [mainTaskChanges, setMainTaskChanges] = useState<
+    MainTaskChangesType | undefined
+  >(undefined);
+  const [subTasksChanges, setSubtasksChanges] = useState<
+    SubtasksChangesType | undefined
+  >(undefined);
+  const [categoryList, setCategoryList] = useState<
+    CategoryListType | undefined
+  >([]);
   useEffect(() => {
     // authetntication observer.
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLogged(true);
         window.localStorage.setItem("isLogged", "true");
+        try {
+          // get data from db
+          // const docRef = doc(db, `users/${user.uid}.categoryList.personal`);
+        } catch (error) {
+          console.log(error);
+        }
+        console.log(user);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
       }
     });
-    // console.log(isLogged);
   }, []);
 
   // router with protected 'dashboard' route
@@ -189,11 +70,9 @@ function App() {
     <div className="App">
       <AuthContext.Provider
         value={{
-          token,
           userEmail,
           isLogged,
           setIsLogged,
-          setToken,
           setUserEmail,
         }}
       >
@@ -226,10 +105,9 @@ function App() {
                 <Route path="/">
                   <Route index element={<Login />} />
                   <Route path="signup" element={<Register />} />
-                  {/* {isLogged === true ? (
-                <Route path="dashboard" element={<Dashboard />} />
-              ) : null} */}
-                  <Route path="dashboard" element={<Dashboard />} />
+                  {isLogged === true ? (
+                    <Route path="dashboard" element={<Dashboard />} />
+                  ) : null}
                 </Route>
                 <Route path="*" element={<PageNotFound />} />
               </Routes>

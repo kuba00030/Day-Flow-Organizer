@@ -15,8 +15,12 @@ import IconButton from "../ui/buttons/IconButton";
 import { MdAdd as AddIcon } from "react-icons/md";
 import { ModalContext } from "../../context/modalContext";
 import ListSelect from "../ui/inputs/ListSelect";
-export default function AddTaskModalContent(props) {
+import addNewTask from "../../utils/api/post-data/addNewTask";
+import { AuthContext } from "../../context/authContext";
+import addNewSubtask from "../../utils/api/post-data/addSubtask";
+export default function AddTaskModalContent() {
   const { categoryList } = useContext(TasksContext);
+  const { userID } = useContext(AuthContext);
   const { showModal, setShowModal } = useContext(ModalContext);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -58,7 +62,7 @@ export default function AddTaskModalContent(props) {
         />
         <div className="d-flex flex-column p-0 gap-2 " style={{ width: "30%" }}>
           <ListSelect
-            containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
+            containerStyle="p-0 d-flex flex-row w-100 justify-content-between "
             options={categoryList}
             optionsProperty="category"
             optionStyle="text-secondary fw-semibold txt-small"
@@ -70,7 +74,7 @@ export default function AddTaskModalContent(props) {
               setList(e.target.value);
             }}
           />
-          <Container className="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0">
+          <Container className="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0 ">
             <span>Due date</span>
             <input
               type="date"
@@ -78,7 +82,7 @@ export default function AddTaskModalContent(props) {
               onChange={(e) => {
                 setDate(e.target.value);
               }}
-              className="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+              className="break-words dashboard-tasks-details-date-input border focus-ring border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             />
           </Container>
         </div>
@@ -99,7 +103,10 @@ export default function AddTaskModalContent(props) {
         />
         {subtasks.map((subtask, index) => {
           return (
-            <div className="d-flex flex-column gap-2">
+            <div
+              className="d-flex flex-column gap-2"
+              key={`${index + 1}subtask for ${title}`}
+            >
               <div className="d-flex flex-row align-items-center ">
                 <input
                   className={`${
@@ -133,7 +140,7 @@ export default function AddTaskModalContent(props) {
                     setSubtasks([...subtasks]);
                   }}
                 >
-                  Delete task
+                  Delete subttask
                 </Button>
               </div>
               {subtask.description !== undefined ? (
@@ -170,9 +177,22 @@ export default function AddTaskModalContent(props) {
         <Button
           size="sm"
           className="txt-small"
-          onClick={() => {
+          onClick={async () => {
             if (title !== "" && description !== "" && date !== "") {
-              // update in db then on snapschot update list
+              await addNewTask(userID, list, title, description, date);
+              if (subtasks.length > 0) {
+                subtasks.forEach(async (subtask) => {
+                  await addNewSubtask(
+                    userID,
+                    list,
+                    title,
+                    subtask.title,
+                    subtask.description
+                  );
+                });
+              }
+              setShowModal(!showModal);
+            } else {
               setShowModal(!showModal);
             }
           }}

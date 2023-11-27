@@ -7,11 +7,14 @@ import { TaskType } from "../../../../types/TaskType";
 import { useContext } from "react";
 import { ModalContext } from "../../../../context/modalContext";
 import AddTaskModalContent from "../../../modal/AddTaskModalContent";
+import { TasksContext } from "../../../../context/tasksContext";
+import AddNewListModalContent from "../../../modal/AddNewListModalContent";
 type TTaskList = {
   tasksList: TaskType[];
 };
 export default function TasksList(props: TTaskList) {
   const { setModalContent, setShowModal, showModal } = useContext(ModalContext);
+  const { categoryList } = useContext(TasksContext);
   const renderTasks = (): React.ReactNode => {
     return props.tasksList.map((task: TaskType, index: number) => (
       <TaskListItem task={task} key={`task ${index}`} />
@@ -30,8 +33,16 @@ export default function TasksList(props: TTaskList) {
           size="sm"
           buttonClass="d-flex flex-row align-items-center accordion-item-txt bg-transparent fw-semibold text-secondary border border-secondary-subtle btn-outline-secondary rounded"
           function={() => {
-            setModalContent(<AddTaskModalContent />);
-            setShowModal(!showModal);
+            if (categoryList.length > 0) {
+              setModalContent(<AddTaskModalContent />);
+              setShowModal(!showModal);
+            } else {
+              setModalContent(<AddNewListModalContent />);
+              window.alert(
+                "You have no task list created yet. Please create new task list first."
+              );
+              setShowModal(!showModal);
+            }
           }}
         />
         {props.tasksList.length > 0 ? (

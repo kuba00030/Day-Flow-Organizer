@@ -6,13 +6,17 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import InputLabeled from "../ui/inputs/InputLabeled";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import addNewtasksList from "../../utils/api/post-data/addNewTasksList";
+import { AuthContext } from "../../context/authContext";
+import { ModalContext } from "../../context/modalContext";
+import { TasksContext } from "../../context/tasksContext";
 export default function AddNewListModalContent() {
+  const { userID } = useContext(AuthContext);
+  const { setCategoryList, categoryList } = useContext(TasksContext);
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [newList, setNewList] = useState<string>("");
   const [colorList, setColorList] = useState<string>("#563d7c");
-  useEffect(() => {
-    console.log(colorList);
-  }, [colorList]);
   return (
     <>
       <ModalHeader closeButton>
@@ -47,7 +51,23 @@ export default function AddNewListModalContent() {
         />
       </ModalBody>
       <ModalFooter>
-        <Button size="sm">Add list</Button>
+        <Button
+          size="sm"
+          onClick={() => {
+            if (newList !== "" && colorList !== "#563d7c") {
+              addNewtasksList(newList, colorList, userID);
+              setShowModal(!showModal);
+              setCategoryList([
+                ...categoryList,
+                { category: newList, color: colorList, numberOfTasks: 0 },
+              ]);
+            } else {
+              setShowModal(!showModal);
+            }
+          }}
+        >
+          {newList !== "" && colorList !== "#563d7c" ? "Add list" : "Close"}
+        </Button>
       </ModalFooter>
     </>
   );

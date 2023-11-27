@@ -16,22 +16,17 @@ import {
 } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
 import { CategoryListType } from "./types/CategoryListType";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocFromCache,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
+import getCategoryList from "./utils/api/get-data/getCategoryList";
 function App() {
+  const [userID, setUserID] = useState("");
   const [isLogged, setIsLogged] = useState<boolean>(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(
     null
   );
+  const [categoryList, setCategoryList] = useState<CategoryListType>([]);
+
+  const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
   const [tasksList, setTasksList] = useState<TaskType[]>([]);
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
@@ -42,22 +37,16 @@ function App() {
   const [subTasksChanges, setSubtasksChanges] = useState<
     SubtasksChangesType | undefined
   >(undefined);
-  const [categoryList, setCategoryList] = useState<
-    CategoryListType | undefined
-  >([]);
+
   useEffect(() => {
     // authetntication observer.
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLogged(true);
+        setUserID(user.uid);
         window.localStorage.setItem("isLogged", "true");
-        try {
-          // get data from db
-          // const docRef = doc(db, `users/${user.uid}.categoryList.personal`);
-        } catch (error) {
-          console.log(error);
-        }
-        console.log(user);
+        const categories = await getCategoryList(user.uid);
+        setCategoryList([...categoryList, ...categories]);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
@@ -70,10 +59,10 @@ function App() {
     <div className="App">
       <AuthContext.Provider
         value={{
-          userEmail,
+          userID,
           isLogged,
           setIsLogged,
-          setUserEmail,
+          setUserID,
         }}
       >
         <TasksContext.Provider

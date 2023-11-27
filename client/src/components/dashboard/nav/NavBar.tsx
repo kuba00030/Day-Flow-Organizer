@@ -35,6 +35,8 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Upcoming"
+              itemValue={`${0}`}
+              onClick={() => {}}
               icon={
                 <UpcomingIcon className="regular-icon me-2 text-secondary" />
               }
@@ -44,6 +46,8 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Today"
+              itemValue={`${0}`}
+              onClick={() => {}}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
             />,
             <NavAccordionItem
@@ -51,6 +55,8 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Calendar"
+              itemValue={`${0}`}
+              onClick={() => {}}
               icon={
                 <CalendarIcon className="regular-icon me-2 text-secondary" />
               }
@@ -60,19 +66,23 @@ export default function NavBar() {
         <NavAccordion
           header="LISTS"
           items={categoryList.map((category: CategoryType) => {
-            <NavAccordionItem
-              itemStyle="accordion-item-txt text-secondary ms-auto"
-              headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
-              header={`${category.category}`}
-              key={`list category: ${category.category}`}
-              icon={
-                <div
-                  className="regular-icon me-2 rounded border-0 p-0"
-                  style={{ backgroundColor: `${category.color}` }}
-                ></div>
-              }
-            />;
+            return (
+              <NavAccordionItem
+                itemStyle="accordion-item-txt text-secondary ms-auto"
+                headerStyle="txt-small text-secondary"
+                containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+                header={`${category.category}`}
+                itemValue={`${category.numberOfTasks}`}
+                onClick={() => {}}
+                key={`list category: ${category.category}`}
+                icon={
+                  <div
+                    className="regular-icon me-2 rounded border-0 p-0"
+                    style={{ backgroundColor: `${category.color}` }}
+                  ></div>
+                }
+              />
+            );
           })}
         />
         <div className="d-flex flex-row justify-content-between">

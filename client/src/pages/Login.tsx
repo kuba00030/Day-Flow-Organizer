@@ -14,8 +14,8 @@ import {
   twitterProvider,
 } from "../firebase-config/firebaseConfig";
 import { AuthContext } from "../context/authContext";
-import handleSignInWithPassword from "../utils/login/signInWithPassword";
-import handleSignInWithProvider from "../utils/login/signInWithProvider";
+import handleSignInWithPassword from "../utils/api/login/signInWithPassword";
+import handleSignInWithProvider from "../utils/api/login/signInWithProvider";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
@@ -124,3 +124,15 @@ export default function Login() {
     </div>
   );
 }
+// const categoryCollection = collection(
+//   doc(db, "users", user.uid),
+//   "personal"
+// );
+// const taskDocRef = doc(categoryCollection, "plant a tree");
+// await setDoc(taskDocRef, {});
+// const subtasksCollection = collection(
+//   doc(db, "users", user.uid, "garden", "plant a tree"),
+//   "subtasks"
+// );
+// const subtaskDocRef = doc(subtasksCollection, "cut grass first");
+// await setDoc(subtaskDocRef, { description: "" });

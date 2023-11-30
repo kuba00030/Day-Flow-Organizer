@@ -25,9 +25,6 @@ export default function TaskDetails() {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
-  const editTask = () => {
-    //  add task into db
-  };
   useEffect(() => {
     compareTaskChanges(mainTaskChanges, taskDetails, setHasTaskChanged);
   }, [mainTaskChanges]);

@@ -1,15 +1,14 @@
-import { RefObject } from "react";
 import { MainTaskChangesType, SubtasksChangesType, TaskType } from "./TaskType";
-import { CategoryListType } from "./CategoryListType";
+import { TaskListsType } from "./CategoryListType";
 
 export type TasksContextType = {
-  tasksList: TaskType[];
-  setTasksList: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  taskList: TaskType[];
+  setTaskList: React.Dispatch<React.SetStateAction<TaskType[]>>;
   taskDetails: TaskType;
   setTaskDetails: React.Dispatch<React.SetStateAction<TaskType>>;
   isTaskOpened: boolean;
-  categoryList: CategoryListType;
-  setCategoryList: React.Dispatch<React.SetStateAction<CategoryListType>>;
+  categoryList: TaskListsType;
+  setCategoryList: React.Dispatch<React.SetStateAction<TaskListsType>>;
   setIsTaskOpened: React.Dispatch<React.SetStateAction<boolean>>;
   mainTaskChanges: MainTaskChangesType;
   setMainTaskChanges: React.Dispatch<React.SetStateAction<MainTaskChangesType>>;

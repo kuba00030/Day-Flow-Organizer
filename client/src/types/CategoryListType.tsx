@@ -1,6 +1,6 @@
-export type CategoryType = {
+export type TaskListType = {
   category: string;
   color: string;
-  numberOfTasks: number;
+  tasks: [];
 };
-export type CategoryListType = CategoryType[];
+export type TaskListsType = TaskListType[];

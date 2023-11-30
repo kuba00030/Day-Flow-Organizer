@@ -59,7 +59,7 @@ export default function AddNewListModalContent() {
               setShowModal(!showModal);
               setCategoryList([
                 ...categoryList,
-                { category: newList, color: colorList, numberOfTasks: 0 },
+                { category: newList, color: colorList, tasks: [] },
               ]);
             } else {
               setShowModal(!showModal);

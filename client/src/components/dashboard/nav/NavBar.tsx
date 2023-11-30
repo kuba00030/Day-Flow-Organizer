@@ -18,8 +18,9 @@ import { useContext } from "react";
 import { TasksContext } from "../../../context/tasksContext";
 import { ModalContext } from "../../../context/modalContext";
 import AddNewList from "../../modal/AddNewListModalContent";
-import { CategoryType } from "../../../types/CategoryListType";
+import { TaskListType } from "../../../types/CategoryListType";
 import SettingsModalContent from "../../modal/SettingModalContent";
+import countTasks from "../../../utils/countTasks";
 export default function NavBar() {
   const { categoryList } = useContext(TasksContext);
   const { showModal, setModalContent, setShowModal } = useContext(ModalContext);
@@ -65,14 +66,14 @@ export default function NavBar() {
         />
         <NavAccordion
           header="LISTS"
-          items={categoryList.map((category: CategoryType) => {
+          items={categoryList.map((category: TaskListType) => {
             return (
               <NavAccordionItem
                 itemStyle="accordion-item-txt text-secondary ms-auto"
                 headerStyle="txt-small text-secondary"
                 containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
                 header={`${category.category}`}
-                itemValue={`${category.numberOfTasks}`}
+                itemValue={`${countTasks(category)}`}
                 onClick={() => {}}
                 key={`list category: ${category.category}`}
                 icon={

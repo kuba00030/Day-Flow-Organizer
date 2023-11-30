@@ -21,9 +21,9 @@ export default async function addNewSubtask(
       subtaskName
     ),
     {
-      title: taskName,
+      title: subtaskName,
       description: description ? description : "",
-      taskStatus: false,
+      subtaskStatus: false,
     }
   );
 }

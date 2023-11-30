@@ -136,11 +136,14 @@ export default function AddTaskModalContent() {
                   type="button"
                   className="ms-auto border-0 p-2 rounded btn btn-primary "
                   onClick={() => {
-                    subtasks.splice(index, 1);
-                    setSubtasks([...subtasks]);
+                    setSubtasks(
+                      subtasks.filter(
+                        (deleteSub) => deleteSub.title !== subtask.title
+                      )
+                    );
                   }}
                 >
-                  Delete subttask
+                  Delete subtask
                 </Button>
               </div>
               {subtask.description !== undefined ? (

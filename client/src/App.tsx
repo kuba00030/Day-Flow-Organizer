@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
@@ -15,8 +15,8 @@ import {
   TaskType,
 } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
-import { CategoryListType } from "./types/CategoryListType";
-import getCategoryList from "./utils/api/get-data/getCategoryList";
+import { TaskListsType } from "./types/CategoryListType";
+import getTaskLists from "./utils/api/get-data/getTaskLists";
 function App() {
   const [userID, setUserID] = useState("");
   const [isLogged, setIsLogged] = useState<boolean>(false);
@@ -24,10 +24,9 @@ function App() {
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(
     null
   );
-  const [categoryList, setCategoryList] = useState<CategoryListType>([]);
-
+  const [taskLists, setTaskLists] = useState<TaskListsType>([]);
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
-  const [tasksList, setTasksList] = useState<TaskType[]>([]);
+  const [taskList, setTaskList] = useState<TaskType[]>([]);
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
   );
@@ -37,7 +36,9 @@ function App() {
   const [subTasksChanges, setSubtasksChanges] = useState<
     SubtasksChangesType | undefined
   >(undefined);
-
+  useEffect(() => {
+    console.log(taskLists);
+  }, [taskLists]);
   useEffect(() => {
     // authetntication observer.
     onAuthStateChanged(auth, async (user) => {
@@ -45,16 +46,14 @@ function App() {
         setIsLogged(true);
         setUserID(user.uid);
         window.localStorage.setItem("isLogged", "true");
-        const categories = await getCategoryList(user.uid);
-        setCategoryList([...categoryList, ...categories]);
+        const categories = await getTaskLists(user.uid, false);
+        setTaskLists([...taskLists, ...categories]);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
       }
     });
   }, []);
-
-  // router with protected 'dashboard' route
   return (
     <div className="App">
       <AuthContext.Provider
@@ -67,12 +66,12 @@ function App() {
       >
         <TasksContext.Provider
           value={{
-            tasksList: tasksList,
-            setTasksList: setTasksList,
+            taskList: taskList,
+            setTaskList: setTaskList,
             taskDetails: taskDetails,
             setTaskDetails: setTaskDetails,
-            categoryList: categoryList,
-            setCategoryList: setCategoryList,
+            categoryList: taskLists,
+            setCategoryList: setTaskLists,
             isTaskOpened: isTaskOpened,
             setIsTaskOpened: setIsTaskOpened,
             mainTaskChanges: mainTaskChanges,

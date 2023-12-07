@@ -1,4 +1,4 @@
-import { TaskType } from "../types/TaskType";
+import { TaskType } from "../../types/TaskType";
 
 // count tasks from certain task list.
 // if task has no subtasks consider it as signle task and add 1 to tasksAmount

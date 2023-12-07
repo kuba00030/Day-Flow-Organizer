@@ -4,7 +4,7 @@ import { BsFillCalendar2XFill as DateIcon } from "react-icons/bs";
 import { TaskType } from "../../../../types/TaskType";
 import { TasksContext } from "../../../../context/tasksContext";
 import { useContext } from "react";
-import getCurrentDate from "../../../../utils/getCurrentDate";
+import getCurrentDate from "../../../../utils/task-list/getCurrentDate";
 type TTaskListItem = {
   task: TaskType;
 };

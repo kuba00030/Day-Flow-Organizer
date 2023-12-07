@@ -6,20 +6,17 @@ import { ModalContext } from "../context/modalContext";
 import { TasksContext } from "../context/tasksContext";
 import "../styles/custom-container.css";
 import "../styles/dashboard/dashboard-nav.css";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 
 export default function Dashboard() {
-  const { isTaskOpened, taskList } = useContext(TasksContext);
+  const { taskList } = useContext(TasksContext);
   const { showModal, setShowModal, modalContent } = useContext(ModalContext);
 
-  useEffect(() => {}, [isTaskOpened]);
-  // create context for tasks list and task details
-  // isTaskOpened,taskValue,
   return (
     <div className="d-flex flex-row dashboard-container overflow-hidden">
       <NavBar />
       <div className="d-flex flex-row p-0 container-fluid">
-        <TasksList tasksList={taskList.tasks} />
+        <TasksList />
         {taskList.tasks.length > 0 ? <TaskDetails /> : null}
       </div>
       <DefaultModal

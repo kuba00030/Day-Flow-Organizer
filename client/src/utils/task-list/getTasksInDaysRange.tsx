@@ -1,5 +1,5 @@
-import { TaskListsType } from "../types/CategoryListType";
-import { TaskType } from "../types/TaskType";
+import { TaskListsType } from "../../types/CategoryListType";
+import { TaskType } from "../../types/TaskType";
 import countListTasks from "./countListTasks";
 import getCurrentDate from "./getCurrentDate";
 
@@ -25,6 +25,5 @@ export default function getTasksInDaysRange(
     );
   });
   tasksAmount = countListTasks(tasks);
-  console.log(taskLists);
   return { tasks, tasksAmount };
 }

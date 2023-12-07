@@ -15,7 +15,7 @@ import {
   TaskType,
 } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
-import { TaskListsType } from "./types/CategoryListType";
+import { TaskListType, TaskListsType } from "./types/CategoryListType";
 import getTaskLists from "./utils/api/get-data/getTaskLists";
 function App() {
   const [userID, setUserID] = useState("");
@@ -26,10 +26,11 @@ function App() {
   );
   const [taskLists, setTaskLists] = useState<TaskListsType>([]);
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
-  const [taskList, setTaskList] = useState<{
-    tasks: TaskType[];
-    listName: string;
-  }>({ listName: "Today", tasks: [] });
+  const [taskList, setTaskList] = useState<TaskListType>({
+    category: "Today",
+    tasks: [],
+    color: "",
+  });
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
   );

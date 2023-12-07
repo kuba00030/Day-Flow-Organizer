@@ -20,8 +20,8 @@ import { ModalContext } from "../../../context/modalContext";
 import AddNewList from "../../modal/AddNewListModalContent";
 import { TaskListType } from "../../../types/CategoryListType";
 import SettingsModalContent from "../../modal/SettingModalContent";
-import countListTasks from "../../../utils/countListTasks";
-import getTasksInDaysRange from "../../../utils/getTasksInDaysRange";
+import countListTasks from "../../../utils/task-list/countListTasks";
+import getTasksInDaysRange from "../../../utils/task-list/getTasksInDaysRange";
 export default function NavBar() {
   const {
     categoryList,
@@ -47,19 +47,26 @@ export default function NavBar() {
               onClick={() => {
                 const { tasks } = getTasksInDaysRange(categoryList, 7);
                 setTaskList({
-                  listName: "Upcoming",
+                  category: "Upcoming",
                   tasks: tasks,
+                  color: "",
                 });
-                setTaskDetails(tasks[0]);
-                setMainTaskChanges({
-                  date: tasks[0].date,
-                  description: tasks[0].description,
-                  title: tasks[0].title,
-                  list: tasks[0].list,
-                  listColor: tasks[0].listColor,
-                  taskStatus: tasks[0].taskStatus,
-                });
-                setSubtasksChanges([...tasks[0].subtasks]);
+                if (tasks.length) {
+                  setTaskDetails(tasks[0]);
+                  setMainTaskChanges({
+                    date: tasks[0].date,
+                    description: tasks[0].description,
+                    title: tasks[0].title,
+                    list: tasks[0].list,
+                    listColor: tasks[0].listColor,
+                    taskStatus: tasks[0].taskStatus,
+                  });
+                  setSubtasksChanges([...tasks[0].subtasks]);
+                } else {
+                  setTaskDetails(undefined);
+                  setMainTaskChanges(undefined);
+                  setSubtasksChanges(undefined);
+                }
               }}
               icon={
                 <UpcomingIcon className="regular-icon me-2 text-secondary" />
@@ -74,8 +81,9 @@ export default function NavBar() {
               onClick={() => {
                 const { tasks } = getTasksInDaysRange(categoryList, 0);
                 setTaskList({
-                  listName: "Today",
+                  category: "Today",
                   tasks: tasks,
+                  color: "",
                 });
                 if (tasks.length) {
                   setTaskDetails(tasks[0]);
@@ -121,19 +129,26 @@ export default function NavBar() {
                 itemValue={`${countListTasks(category.tasks)}`}
                 onClick={() => {
                   setTaskList({
-                    listName: category.category,
+                    category: category.category,
                     tasks: category.tasks,
+                    color: category.color,
                   });
-                  setTaskDetails(category.tasks[0]);
-                  setMainTaskChanges({
-                    date: category.tasks[0].date,
-                    description: category.tasks[0].description,
-                    title: category.tasks[0].title,
-                    list: category.tasks[0].list,
-                    listColor: category.tasks[0].listColor,
-                    taskStatus: category.tasks[0].taskStatus,
-                  });
-                  setSubtasksChanges([...category.tasks[0].subtasks]);
+                  if (category.tasks.length) {
+                    setTaskDetails(category.tasks[0]);
+                    setMainTaskChanges({
+                      date: category.tasks[0].date,
+                      description: category.tasks[0].description,
+                      title: category.tasks[0].title,
+                      list: category.tasks[0].list,
+                      listColor: category.tasks[0].listColor,
+                      taskStatus: category.tasks[0].taskStatus,
+                    });
+                    setSubtasksChanges([...category.tasks[0].subtasks]);
+                  } else {
+                    setTaskDetails(undefined);
+                    setMainTaskChanges(undefined);
+                    setSubtasksChanges(undefined);
+                  }
                 }}
                 key={`list category: ${category.category}`}
                 icon={

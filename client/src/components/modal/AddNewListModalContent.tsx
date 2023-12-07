@@ -7,10 +7,10 @@ import {
 } from "react-bootstrap";
 import InputLabeled from "../ui/inputs/InputLabeled";
 import { useState, useContext } from "react";
-import addNewtasksList from "../../utils/api/post-data/addNewTasksList";
 import { AuthContext } from "../../context/authContext";
 import { ModalContext } from "../../context/modalContext";
 import { TasksContext } from "../../context/tasksContext";
+import addNewTasksListDB from "../../utils/api/post-data/post/addNewTasksListDB";
 export default function AddNewListModalContent() {
   const { userID } = useContext(AuthContext);
   const { setCategoryList, categoryList } = useContext(TasksContext);
@@ -55,7 +55,7 @@ export default function AddNewListModalContent() {
           size="sm"
           onClick={() => {
             if (newList !== "" && colorList !== "#563d7c") {
-              addNewtasksList(newList, colorList, userID);
+              addNewTasksListDB(newList, colorList, userID);
               setShowModal(!showModal);
               setCategoryList([
                 ...categoryList,

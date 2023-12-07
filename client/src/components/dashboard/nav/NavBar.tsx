@@ -20,9 +20,16 @@ import { ModalContext } from "../../../context/modalContext";
 import AddNewList from "../../modal/AddNewListModalContent";
 import { TaskListType } from "../../../types/CategoryListType";
 import SettingsModalContent from "../../modal/SettingModalContent";
-import countTasks from "../../../utils/countTasks";
+import countListTasks from "../../../utils/countListTasks";
+import getTasksInDaysRange from "../../../utils/getTasksInDaysRange";
 export default function NavBar() {
-  const { categoryList } = useContext(TasksContext);
+  const {
+    categoryList,
+    setTaskList,
+    setTaskDetails,
+    setMainTaskChanges,
+    setSubtasksChanges,
+  } = useContext(TasksContext);
   const { showModal, setModalContent, setShowModal } = useContext(ModalContext);
   return (
     <Container className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
@@ -36,8 +43,24 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Upcoming"
-              itemValue={`${0}`}
-              onClick={() => {}}
+              itemValue={`${getTasksInDaysRange(categoryList, 7).tasksAmount}`}
+              onClick={() => {
+                const { tasks } = getTasksInDaysRange(categoryList, 7);
+                setTaskList({
+                  listName: "Upcoming",
+                  tasks: tasks,
+                });
+                setTaskDetails(tasks[0]);
+                setMainTaskChanges({
+                  date: tasks[0].date,
+                  description: tasks[0].description,
+                  title: tasks[0].title,
+                  list: tasks[0].list,
+                  listColor: tasks[0].listColor,
+                  taskStatus: tasks[0].taskStatus,
+                });
+                setSubtasksChanges([...tasks[0].subtasks]);
+              }}
               icon={
                 <UpcomingIcon className="regular-icon me-2 text-secondary" />
               }
@@ -47,8 +70,30 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Today"
-              itemValue={`${0}`}
-              onClick={() => {}}
+              itemValue={`${getTasksInDaysRange(categoryList, 0).tasksAmount}`}
+              onClick={() => {
+                const { tasks } = getTasksInDaysRange(categoryList, 0);
+                setTaskList({
+                  listName: "Today",
+                  tasks: tasks,
+                });
+                if (tasks.length) {
+                  setTaskDetails(tasks[0]);
+                  setMainTaskChanges({
+                    date: tasks[0].date,
+                    description: tasks[0].description,
+                    title: tasks[0].title,
+                    list: tasks[0].list,
+                    listColor: tasks[0].listColor,
+                    taskStatus: tasks[0].taskStatus,
+                  });
+                  setSubtasksChanges([...tasks[0].subtasks]);
+                } else {
+                  setTaskDetails(undefined);
+                  setMainTaskChanges(undefined);
+                  setSubtasksChanges(undefined);
+                }
+              }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
             />,
             <NavAccordionItem
@@ -73,8 +118,23 @@ export default function NavBar() {
                 headerStyle="txt-small text-secondary"
                 containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
                 header={`${category.category}`}
-                itemValue={`${countTasks(category)}`}
-                onClick={() => {}}
+                itemValue={`${countListTasks(category.tasks)}`}
+                onClick={() => {
+                  setTaskList({
+                    listName: category.category,
+                    tasks: category.tasks,
+                  });
+                  setTaskDetails(category.tasks[0]);
+                  setMainTaskChanges({
+                    date: category.tasks[0].date,
+                    description: category.tasks[0].description,
+                    title: category.tasks[0].title,
+                    list: category.tasks[0].list,
+                    listColor: category.tasks[0].listColor,
+                    taskStatus: category.tasks[0].taskStatus,
+                  });
+                  setSubtasksChanges([...category.tasks[0].subtasks]);
+                }}
                 key={`list category: ${category.category}`}
                 icon={
                   <div

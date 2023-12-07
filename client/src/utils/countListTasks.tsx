@@ -1,11 +1,11 @@
-import { TaskListType } from "../types/CategoryListType";
+import { TaskType } from "../types/TaskType";
 
 // count tasks from certain task list.
 // if task has no subtasks consider it as signle task and add 1 to tasksAmount
 // if task has subtasks consider each subtask as single, separated task and add 1 to tasksAmount if subtask status is false
-export default function countTasks(taskList: TaskListType): number {
+export default function countListTasks(taskList: TaskType[]): number {
   let tasksAmount = 0;
-  taskList.tasks.forEach((task) => {
+  taskList.forEach((task) => {
     if (task.subtasks.length > 0) {
       tasksAmount =
         1 +

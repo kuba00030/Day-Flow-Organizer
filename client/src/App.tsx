@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase-config/firebaseConfig";
+import { auth } from "./firebase-config/firebaseConfig";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./context/authContext";
 import { TasksContext } from "./context/tasksContext";
@@ -26,7 +26,10 @@ function App() {
   );
   const [taskLists, setTaskLists] = useState<TaskListsType>([]);
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
-  const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [taskList, setTaskList] = useState<{
+    tasks: TaskType[];
+    listName: string;
+  }>({ listName: "Today", tasks: [] });
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
   );
@@ -37,17 +40,13 @@ function App() {
     SubtasksChangesType | undefined
   >(undefined);
   useEffect(() => {
-    console.log(taskLists);
-  }, [taskLists]);
-  useEffect(() => {
     // authetntication observer.
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLogged(true);
         setUserID(user.uid);
         window.localStorage.setItem("isLogged", "true");
-        const categories = await getTaskLists(user.uid, false);
-        setTaskLists([...taskLists, ...categories]);
+        setTaskLists([...(await getTaskLists(user.uid, false))]);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
@@ -94,7 +93,7 @@ function App() {
                   <Route index element={<Login />} />
                   <Route path="signup" element={<Register />} />
                   {isLogged === true ? (
-                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path={`dashboard`} element={<Dashboard />} />
                   ) : null}
                 </Route>
                 <Route path="*" element={<PageNotFound />} />

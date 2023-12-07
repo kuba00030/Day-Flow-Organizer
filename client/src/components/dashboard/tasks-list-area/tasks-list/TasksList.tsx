@@ -14,16 +14,59 @@ type TTaskList = {
 };
 export default function TasksList(props: TTaskList) {
   const { setModalContent, setShowModal, showModal } = useContext(ModalContext);
-  const { categoryList } = useContext(TasksContext);
+  const { categoryList, taskList } = useContext(TasksContext);
   const renderTasks = (): React.ReactNode => {
-    return props.tasksList.map((task: TaskType, index: number) => (
-      <TaskListItem task={task} key={`task ${index}`} />
-    ));
+    if (taskList.listName !== "Upcoming" && taskList.listName !== "Today") {
+      if (taskList.tasks.length > 0) {
+        return props.tasksList.map((task: TaskType, index: number) => (
+          <TaskListItem task={task} key={`task ${index}`} />
+        ));
+      } else {
+        return (
+          <div
+            className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
+            style={{ flex: 1 }}
+          >
+            Add your first task
+          </div>
+        );
+      }
+    }
+    if (taskList.listName === "Upcoming") {
+      if (taskList.tasks.length > 0) {
+        return props.tasksList.map((task: TaskType, index: number) => (
+          <TaskListItem task={task} key={`task ${index}`} />
+        ));
+      } else {
+        return (
+          <div
+            className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
+            style={{ flex: 1 }}
+          >
+            No tasks to do in upcoming days.
+          </div>
+        );
+      }
+    }
+    if (taskList.listName === "Today") {
+      if (taskList.tasks.length > 0) {
+        return props.tasksList.map((task: TaskType, index: number) => (
+          <TaskListItem task={task} key={`task ${index}`} />
+        ));
+      } else {
+        <div
+          className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
+          style={{ flex: 1 }}
+        >
+          No tasks for today.
+        </div>;
+      }
+    }
   };
   return (
     <div className="d-flex flex-column" style={{ flex: 1 }}>
       <Header
-        txt="Today"
+        txt={`${taskList.listName}`}
         className="txt-larger fw-semibold ms-2 mb-2 text-dark-emphasis"
       />
       <Container className="d-flex flex-column gap-2" style={{ flex: 1 }}>
@@ -45,16 +88,7 @@ export default function TasksList(props: TTaskList) {
             }
           }}
         />
-        {props.tasksList.length > 0 ? (
-          renderTasks()
-        ) : (
-          <div
-            className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
-            style={{ flex: 1 }}
-          >
-            Add your first task
-          </div>
-        )}
+        {renderTasks()}
       </Container>
     </div>
   );

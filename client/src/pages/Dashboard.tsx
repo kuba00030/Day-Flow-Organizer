@@ -9,7 +9,7 @@ import "../styles/dashboard/dashboard-nav.css";
 import { useEffect, useContext } from "react";
 
 export default function Dashboard() {
-  const { isTaskOpened, taskList, taskDetails } = useContext(TasksContext);
+  const { isTaskOpened, taskList } = useContext(TasksContext);
   const { showModal, setShowModal, modalContent } = useContext(ModalContext);
 
   useEffect(() => {}, [isTaskOpened]);
@@ -19,8 +19,8 @@ export default function Dashboard() {
     <div className="d-flex flex-row dashboard-container overflow-hidden">
       <NavBar />
       <div className="d-flex flex-row p-0 container-fluid">
-        <TasksList tasksList={taskList} />
-        {taskList.length > 0 ? <TaskDetails /> : null}
+        <TasksList tasksList={taskList.tasks} />
+        {taskList.tasks.length > 0 ? <TaskDetails /> : null}
       </div>
       <DefaultModal
         show={showModal}

@@ -2,8 +2,10 @@ import { MainTaskChangesType, SubtasksChangesType, TaskType } from "./TaskType";
 import { TaskListsType } from "./CategoryListType";
 
 export type TasksContextType = {
-  taskList: TaskType[];
-  setTaskList: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  taskList: { listName: string; tasks: TaskType[] };
+  setTaskList: React.Dispatch<
+    React.SetStateAction<{ listName: string; tasks: TaskType[] }>
+  >;
   taskDetails: TaskType;
   setTaskDetails: React.Dispatch<React.SetStateAction<TaskType>>;
   isTaskOpened: boolean;

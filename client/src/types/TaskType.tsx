@@ -1,7 +1,7 @@
 export type SubtaskType = {
   title: string;
   subtaskStatus: boolean;
-  description?: string;
+  description: string | undefined;
 };
 export type TaskType = {
   date: string;
@@ -13,7 +13,6 @@ export type TaskType = {
   subtasks: SubtaskType[];
 };
 export type MainTaskChangesType = {
-  taskID: string;
   title: string;
   description: string;
   list: string;

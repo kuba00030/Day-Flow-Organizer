@@ -72,7 +72,10 @@ export default async function getTaskLists(
               return {
                 title: subtaskDoc.data().title,
                 subtaskStatus: subtaskDoc.data().subtaskStatus,
-                description: subtaskDoc.data().description,
+                description:
+                  subtaskDoc.data().description === ""
+                    ? undefined
+                    : subtaskDoc.data().description,
               };
             }),
           });

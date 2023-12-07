@@ -2,10 +2,10 @@ import { Container } from "react-bootstrap";
 import { useContext } from "react";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
-import TaskDetailsSubtask from "./TaskDetailsSubtask";
 import { SubtaskType, SubtasksChangesType } from "../../../../types/TaskType";
 import { ModalContext } from "../../../../context/modalContext";
 import AddSubtaskModal from "../../../modal/AddSubtaskModalContent";
+import Subtask from "../../task-details/Subtask";
 type TTaskDetailsSubtasks = {
   subtasks: SubtasksChangesType;
   setSubtasks: (subtasks: SubtasksChangesType) => void;
@@ -15,12 +15,10 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
   const renderSubtasks = (): React.ReactNode => {
     return props.subtasks.map((subtask: SubtaskType, index) => {
       return (
-        <TaskDetailsSubtask
+        <Subtask
+          subtask={subtask}
           title={subtask.title}
-          description={subtask.description}
-          subtaskStatus={subtask.subtaskStatus}
-          subtaskID={subtask.subtaskID}
-          key={`Subtask ${index}`}
+          index={index}
           subtasks={props.subtasks}
           setSubtasks={props.setSubtasks}
         />

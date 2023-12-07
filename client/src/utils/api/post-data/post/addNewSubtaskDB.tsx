@@ -1,7 +1,7 @@
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../firebase-config/firebaseConfig";
+import { db } from "../../../../firebase-config/firebaseConfig";
 
-export default async function addNewSubtask(
+export default async function addNewSubtaskDB(
   userID: string,
   listName: string,
   taskName: string,

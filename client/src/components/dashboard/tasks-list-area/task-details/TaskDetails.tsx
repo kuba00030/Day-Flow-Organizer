@@ -7,24 +7,33 @@ import {
   compareSubtaskChanges,
   compareTaskChanges,
 } from "../../../../utils/task-details/compareTaskChanges";
-import { editTaskValue } from "../../../../utils/task-details/editTaskValue";
+
 import ListSelect from "../../../ui/inputs/ListSelect";
 import InputDate from "../../../ui/inputs/InputDate";
+import { editTask } from "../../../../utils/task-details/editTask";
+import updateTaskDB from "../../../../utils/api/post-data/update/updateTaskDB";
+import { AuthContext } from "../../../../context/authContext";
 export default function TaskDetails() {
   const {
     taskDetails,
+    setTaskDetails,
     isTaskOpened,
     mainTaskChanges,
     setMainTaskChanges,
     setSubtasksChanges,
     subTasksChanges,
     categoryList,
+    taskList,
   } = useContext(TasksContext);
+  const { userID } = useContext(AuthContext);
   const [hasTaskChanged, setHasTaskChanged] = useState<boolean>(false);
   const [sliderHeight, setSliderHeight] = useState<number>();
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
+  useEffect(() => {
+    setMainTaskChanges(taskList.tasks[0]);
+  }, [taskList]);
   useEffect(() => {
     compareTaskChanges(mainTaskChanges, taskDetails, setHasTaskChanged);
   }, [mainTaskChanges]);
@@ -42,12 +51,11 @@ export default function TaskDetails() {
     sliderRef.current.style.marginTop = `${sliderHeight}px`;
     setTimeout(() => {
       setMainTaskChanges({
-        taskID: taskDetails.taskID,
-        title: taskDetails.title,
+        date: taskDetails.date,
         description: taskDetails.description,
+        title: taskDetails.title,
         list: taskDetails.list,
         listColor: taskDetails.listColor,
-        date: taskDetails.date,
         taskStatus: taskDetails.taskStatus,
       });
       setSubtasksChanges(taskDetails.subtasks);
@@ -58,7 +66,7 @@ export default function TaskDetails() {
   }, [isTaskOpened]);
   return (
     <div
-      className="w-25 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative "
+      className="w-25 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative overflow-hidden"
       ref={taskDetailsRef}
     >
       <Container
@@ -75,7 +83,7 @@ export default function TaskDetails() {
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={mainTaskChanges.title}
           onChange={(e) => {
-            editTaskValue(mainTaskChanges, setMainTaskChanges, "title", e);
+            editTask(mainTaskChanges, setMainTaskChanges, "title", e);
           }}
         />
         <InputLabeled
@@ -85,12 +93,7 @@ export default function TaskDetails() {
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={mainTaskChanges.description}
           onChange={(e) => {
-            editTaskValue(
-              mainTaskChanges,
-              setMainTaskChanges,
-              "description",
-              e
-            );
+            editTask(mainTaskChanges, setMainTaskChanges, "description", e);
           }}
         />
         <div className="d-flex flex-column p-0 gap-2">
@@ -104,7 +107,7 @@ export default function TaskDetails() {
             optionStyle="text-secondary fw-semibold txt-small"
             selectValue={mainTaskChanges.list}
             onChange={(e) => {
-              editTaskValue(mainTaskChanges, setMainTaskChanges, "list", e);
+              editTask(mainTaskChanges, setMainTaskChanges, "list", e);
             }}
           />
           <InputDate
@@ -114,7 +117,7 @@ export default function TaskDetails() {
             inputType="date"
             inputValue={mainTaskChanges.date}
             onChange={(e) => {
-              editTaskValue(mainTaskChanges, setMainTaskChanges, "date", e);
+              editTask(mainTaskChanges, setMainTaskChanges, "date", e);
             }}
           />
         </div>
@@ -135,6 +138,12 @@ export default function TaskDetails() {
             if (hasTaskChanged === false) {
               console.log("task deleted");
             } else {
+              // updateTaskDB(
+              //   userID,
+              //   taskList.listName,
+              //   { ...mainTaskChanges, subtasks: subTasksChanges },
+              //   mainTaskChanges.title
+              // );
               console.log("changes saved");
             }
           }}

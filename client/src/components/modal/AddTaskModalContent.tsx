@@ -1,23 +1,23 @@
 import {
   Button,
-  Container,
   ModalBody,
   ModalFooter,
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
 import { useState, useContext } from "react";
-import { PiArrowElbowDownRightThin as SubtaskIcon } from "react-icons/pi";
-import { MdDeleteForever as DeleteSubtaskIcon } from "react-icons/md";
 import InputLabeled from "../ui/inputs/InputLabeled";
 import { TasksContext } from "../../context/tasksContext";
 import IconButton from "../ui/buttons/IconButton";
 import { MdAdd as AddIcon } from "react-icons/md";
 import { ModalContext } from "../../context/modalContext";
 import ListSelect from "../ui/inputs/ListSelect";
-import addNewTask from "../../utils/api/post-data/addNewTask";
 import { AuthContext } from "../../context/authContext";
-import addNewSubtask from "../../utils/api/post-data/addSubtask";
+import addNewSubtaskDB from "../../utils/api/post-data/post/addNewSubtaskDB";
+import addNewTaskDB from "../../utils/api/post-data/post/addNewTaskDB";
+import InputDate from "../ui/inputs/InputDate";
+import Subtask from "../dashboard/task-details/Subtask";
+import { SubtaskType } from "../../types/TaskType";
 export default function AddTaskModalContent() {
   const { categoryList } = useContext(TasksContext);
   const { userID } = useContext(AuthContext);
@@ -26,13 +26,7 @@ export default function AddTaskModalContent() {
   const [description, setDescription] = useState<string>("");
   const [list, setList] = useState<string>(categoryList[0].category);
   const [date, setDate] = useState<string>("");
-  const [subtasks, setSubtasks] = useState<
-    {
-      title: string;
-      description?: string;
-      subtaskStatus: boolean;
-    }[]
-  >([]);
+  const [subtasks, setSubtasks] = useState<SubtaskType[]>([]);
   return (
     <>
       <ModalHeader closeButton>
@@ -49,7 +43,6 @@ export default function AddTaskModalContent() {
             setTitle(e.target.value);
           }}
         />
-
         <InputLabeled
           labelValue="Description"
           labelStyle="text-secondary fw-semibold txt-small"
@@ -60,7 +53,7 @@ export default function AddTaskModalContent() {
             setDescription(e.target.value);
           }}
         />
-        <div className="d-flex flex-column p-0 gap-2 " style={{ width: "30%" }}>
+        <div className="d-flex flex-column p-0 gap-2 me-auto">
           <ListSelect
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between "
             options={categoryList}
@@ -74,17 +67,16 @@ export default function AddTaskModalContent() {
               setList(e.target.value);
             }}
           />
-          <Container className="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0 ">
-            <span>Due date</span>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => {
-                setDate(e.target.value);
-              }}
-              className="break-words dashboard-tasks-details-date-input border focus-ring border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
-            />
-          </Container>
+          <InputDate
+            containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
+            labelValue="Due date"
+            inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle focus-ring rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputType="date"
+            inputValue={date}
+            onChange={(e) => {
+              setDate(e.target.value);
+            }}
+          />
         </div>
         <IconButton
           icon={<AddIcon className="regular-icon" />}
@@ -96,6 +88,7 @@ export default function AddTaskModalContent() {
               ...subtasks,
               {
                 title: "",
+                description: "",
                 subtaskStatus: false,
               },
             ]);
@@ -103,76 +96,14 @@ export default function AddTaskModalContent() {
         />
         {subtasks.map((subtask, index) => {
           return (
-            <div
-              className="d-flex flex-column gap-2"
-              key={`${index + 1}subtask for ${title}`}
-            >
-              <div className="d-flex flex-row align-items-center ">
-                <input
-                  className={`${
-                    subtasks[index].title !== ""
-                      ? "border-0"
-                      : "border border-secondary-subtle focus-ring"
-                  } bg-transparent rounded text-secondary fw-semibold txt-small d-flex`}
-                  value={subtask.title}
-                  onChange={(e) => {
-                    subtasks[index].title = e.target.value;
-                    setSubtasks([...subtasks]);
-                  }}
-                />
-                {/* Code below: add subtask description if subtask doesnt have it */}
-                {subtask.description === undefined ? (
-                  <IconButton
-                    icon={<AddIcon className="regular-icon" />}
-                    size="sm"
-                    buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent"
-                    function={() => {
-                      subtasks[index].description = "";
-                      setSubtasks([...subtasks]);
-                    }}
-                  />
-                ) : null}
-                <Button
-                  type="button"
-                  className="ms-auto border-0 p-2 rounded btn btn-primary "
-                  onClick={() => {
-                    setSubtasks(
-                      subtasks.filter(
-                        (deleteSub) => deleteSub.title !== subtask.title
-                      )
-                    );
-                  }}
-                >
-                  Delete subtask
-                </Button>
-              </div>
-              {subtask.description !== undefined ? (
-                <div className="d-flex flex-row mt-1">
-                  <SubtaskIcon className="small-icon ms-1 flex-shrink-0" />
-                  <input
-                    className={`${
-                      subtasks[index].description !== ""
-                        ? "border-0"
-                        : "border border-secondary-subtle focus-ring"
-                    } bg-transparent rounded text-secondary fw-semibold txt-small`}
-                    value={subtask.description}
-                    onChange={(e) => {
-                      subtasks[index].description = e.target.value;
-                      setSubtasks([...subtasks]);
-                    }}
-                  />
-                  <IconButton
-                    icon={<DeleteSubtaskIcon className="regular-icon" />}
-                    size="sm"
-                    buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent"
-                    function={() => {
-                      delete subtasks[index].description;
-                      setSubtasks([...subtasks]);
-                    }}
-                  />
-                </div>
-              ) : null}
-            </div>
+            <Subtask
+              key={`subtask ${index + 1}`}
+              index={index}
+              subtask={subtask}
+              subtasks={subtasks}
+              title={subtask.title}
+              setSubtasks={setSubtasks}
+            />
           );
         })}
       </ModalBody>
@@ -182,10 +113,10 @@ export default function AddTaskModalContent() {
           className="txt-small"
           onClick={async () => {
             if (title !== "" && description !== "" && date !== "") {
-              await addNewTask(userID, list, title, description, date);
+              await addNewTaskDB(userID, list, title, description, date);
               if (subtasks.length > 0) {
                 subtasks.forEach(async (subtask) => {
-                  await addNewSubtask(
+                  await addNewSubtaskDB(
                     userID,
                     list,
                     title,

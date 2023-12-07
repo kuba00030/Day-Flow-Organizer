@@ -1,18 +1,15 @@
-import {
-  Button,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  ModalTitle,
-} from "react-bootstrap";
+import { ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
 import InputLabeled from "../ui/inputs/InputLabeled";
 import { useState, useEffect, useContext } from "react";
 import { TasksContext } from "../../context/tasksContext";
-import { CategoryType } from "../../types/CategoryListType";
+import { TaskListType } from "../../types/CategoryListType";
 import { editCategoryList } from "../../utils/task-details/editCategoryList";
+import updateTaskListDB from "../../utils/api/post-data/update/updateTaskListDB";
+import { AuthContext } from "../../context/authContext";
 
 export default function SettingsModalContent() {
   const { categoryList, setCategoryList } = useContext(TasksContext);
+  const { userID } = useContext(AuthContext);
   return (
     <>
       <ModalHeader closeButton>
@@ -25,14 +22,18 @@ export default function SettingsModalContent() {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 ">
         {categoryList.length > 0 ? (
-          categoryList.map((category: CategoryType) => {
+          categoryList.map((category: TaskListType, index: number) => {
             return (
-              <div className="d-flex flex-row gap-4 ">
+              <div
+                className="d-flex flex-row gap-4 "
+                key={`Edit tasks list ${index}`}
+              >
                 <InputLabeled
                   inputType="text"
                   inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
                   inputValue={category.category}
                   onChange={(e) => {
+                    updateTaskListDB(userID, e.target.value, category.color);
                     editCategoryList(
                       category.category,
                       "category",
@@ -47,6 +48,7 @@ export default function SettingsModalContent() {
                   inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
                   inputValue={category.color}
                   onChange={(e) => {
+                    updateTaskListDB(userID, category.category, e.target.value);
                     editCategoryList(
                       category.category,
                       "color",

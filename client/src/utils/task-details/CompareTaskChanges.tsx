@@ -25,6 +25,7 @@ export const compareSubtaskChanges = (
   // check if any subtask was deleted or added
   if (changedSubtasks.length !== originSubtaks.length) {
     setHasTaskChanged(true);
+    return;
   }
   // check if any property of subtask was changed
   for (let i = 0; i < changedSubtasks.length; i++) {

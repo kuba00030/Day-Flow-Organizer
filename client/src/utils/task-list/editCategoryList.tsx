@@ -1,14 +1,14 @@
-import { CategoryType } from "../../types/CategoryListType";
+import { TaskListType } from "../../types/CategoryListType";
 
 export const editCategoryList = (
-  categoryName,
-  propertyToChange,
-  newValue,
+  categoryName: string,
+  propertyToChange: string,
+  newValue: string,
   categoryList,
   setCategoryList
 ) => {
   setCategoryList(
-    categoryList.map((category: CategoryType) => {
+    categoryList.map((category: TaskListType) => {
       if (category.category === categoryName) {
         return {
           ...category,

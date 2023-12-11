@@ -1,18 +1,34 @@
-import { ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
-import InputLabeled from "../ui/inputs/InputLabeled";
-import { useState, useEffect, useContext } from "react";
+import { Button, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
+import { useState, useEffect, useContext, useRef } from "react";
 import { TasksContext } from "../../context/tasksContext";
-import { TaskListType } from "../../types/CategoryListType";
-import { editCategoryList } from "../../utils/task-details/editCategoryList";
 import updateTaskListDB from "../../utils/api/post-data/update/updateTaskListDB";
 import { AuthContext } from "../../context/authContext";
+import { ModalContext } from "../../context/modalContext";
+import { TaskListsType } from "../../types/CategoryListType";
+import ListSettings from "../dashboard/settings/ListSettings";
+import hasListChanged from "../../utils/settings/hasListChanged";
 
 export default function SettingsModalContent() {
   const { categoryList, setCategoryList } = useContext(TasksContext);
   const { userID } = useContext(AuthContext);
+  const { setShowModal, showModal } = useContext(ModalContext);
+  const [editedLists, setEditedLists] = useState<TaskListsType>([]);
+  const [listHasChanged, setListHasChanged] = useState(false);
+
+  useEffect(() => {
+    setEditedLists(categoryList);
+  }, [categoryList]);
+  useEffect(() => {
+    if (editedLists.length) {
+      hasListChanged(categoryList, editedLists, setListHasChanged);
+    }
+  }, [editedLists]);
+  useEffect(() => {
+    console.log(listHasChanged);
+  }, [listHasChanged]);
   return (
     <>
-      <ModalHeader closeButton>
+      <ModalHeader>
         <ModalTitle
           id="contained-modal-title-vcenter"
           className=" text-dark-emphasis fw-semibold"
@@ -21,46 +37,51 @@ export default function SettingsModalContent() {
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 ">
-        {categoryList.length > 0 ? (
-          categoryList.map((category: TaskListType, index: number) => {
-            return (
-              <div
-                className="d-flex flex-row gap-4 "
-                key={`Edit tasks list ${index}`}
-              >
-                <InputLabeled
-                  inputType="text"
-                  inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-                  inputValue={category.category}
-                  onChange={(e) => {
-                    updateTaskListDB(userID, e.target.value, category.color);
-                    editCategoryList(
-                      category.category,
-                      "category",
-                      e.target.value,
-                      categoryList,
-                      setCategoryList
-                    );
-                  }}
+        {editedLists.length > 0 ? (
+          <>
+            {editedLists.map((list, index: number) => {
+              return (
+                <ListSettings
+                  list={list}
+                  index={index}
+                  setListHasChanged={setListHasChanged}
+                  editedLists={editedLists}
+                  setEditedLists={setEditedLists}
                 />
-                <InputLabeled
-                  inputType="color"
-                  inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-                  inputValue={category.color}
-                  onChange={(e) => {
-                    updateTaskListDB(userID, category.category, e.target.value);
-                    editCategoryList(
-                      category.category,
-                      "color",
-                      e.target.value,
-                      categoryList,
-                      setCategoryList
-                    );
-                  }}
-                />
-              </div>
-            );
-          })
+              );
+            })}
+            <Button
+              type="button"
+              className={`${
+                listHasChanged === false
+                  ? "bg-primary "
+                  : "bg-warning text-secondary"
+              } border-0 fw-semibold`}
+              onClick={async () => {
+                if (listHasChanged === false) {
+                  setShowModal(!showModal);
+                } else {
+                  categoryList.forEach((list, index) => {
+                    if (list.category !== editedLists[index].category) {
+                      updateTaskListDB(
+                        userID,
+                        list.category,
+                        editedLists[index].category,
+                        editedLists[index].color,
+                        editedLists[index].tasks
+                      );
+                      console.log(editedLists[index]);
+                    }
+                  });
+                  setShowModal(!showModal);
+                  setCategoryList(editedLists);
+                  console.log("list changed");
+                }
+              }}
+            >
+              {listHasChanged === false ? "Close" : "Confirm changes"}
+            </Button>
+          </>
         ) : (
           <div className="text-center text-secondary fw-semibold txt-small">
             Add your first tasks list

@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/authContext";
 import addNewSubtaskDB from "../../utils/api/post-data/post/addNewSubtaskDB";
 import addNewTaskDB from "../../utils/api/post-data/post/addNewTaskDB";
 import InputDate from "../ui/inputs/InputDate";
-import Subtask from "../dashboard/task-details/Subtask";
+import Subtask from "../dashboard/tasks-list-area/task-details/Subtask";
 import { SubtaskType } from "../../types/TaskType";
 export default function AddTaskModalContent() {
   const { categoryList } = useContext(TasksContext);

@@ -1,11 +1,11 @@
-import IconButton from "../../ui/buttons/IconButton";
-import InputLabeled from "../../ui/inputs/InputLabeled";
+import IconButton from "../../../ui/buttons/IconButton";
+import InputLabeled from "../../../ui/inputs/InputLabeled";
 import { MdAdd as AddIcon } from "react-icons/md";
 import { MdDeleteForever as DeleteDescriptionIcon } from "react-icons/md";
 import { RiDeleteBack2Fill as DeleteSubtaskIcon } from "react-icons/ri";
 import { PiArrowElbowDownRightThin as SubtaskIcon } from "react-icons/pi";
-import { SubtaskType } from "../../../types/TaskType";
-import { editSubtask } from "../../../utils/task-details/editSubtask";
+import { SubtaskType } from "../../../../types/TaskType";
+import { editSubtask } from "../../../../utils/task-details/editSubtask";
 type TSubtask = {
   subtask: SubtaskType;
   title: string;

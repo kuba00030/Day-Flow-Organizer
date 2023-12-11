@@ -5,7 +5,7 @@ import IconButton from "../../../ui/buttons/IconButton";
 import { SubtaskType, SubtasksChangesType } from "../../../../types/TaskType";
 import { ModalContext } from "../../../../context/modalContext";
 import AddSubtaskModal from "../../../modal/AddSubtaskModalContent";
-import Subtask from "../../task-details/Subtask";
+import Subtask from "./Subtask";
 type TTaskDetailsSubtasks = {
   subtasks: SubtasksChangesType;
   setSubtasks: (subtasks: SubtasksChangesType) => void;

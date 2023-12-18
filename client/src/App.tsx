@@ -17,6 +17,7 @@ import {
 import { ModalContext } from "./context/modalContext";
 import { TaskListType, TaskListsType } from "./types/CategoryListType";
 import getTaskLists from "./utils/api/get-data/getTaskLists";
+import getTasksInDaysRange from "./utils/task-list/getTasksInDaysRange";
 function App() {
   const [userID, setUserID] = useState("");
   const [isLogged, setIsLogged] = useState<boolean>(false);
@@ -25,12 +26,14 @@ function App() {
     null
   );
   const [taskLists, setTaskLists] = useState<TaskListsType>([]);
-  const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<TaskListType>({
-    category: "Today",
+    listName: "Today",
+    listColor: "",
+    listID: "",
+    listActive: true,
     tasks: [],
-    color: "",
   });
+  const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
   );
@@ -40,6 +43,7 @@ function App() {
   const [subTasksChanges, setSubtasksChanges] = useState<
     SubtasksChangesType | undefined
   >(undefined);
+  useEffect(() => {}, [taskDetails]);
   useEffect(() => {
     // authetntication observer.
     onAuthStateChanged(auth, async (user) => {
@@ -47,7 +51,16 @@ function App() {
         setIsLogged(true);
         setUserID(user.uid);
         window.localStorage.setItem("isLogged", "true");
-        setTaskLists([...(await getTaskLists(user.uid, false))]);
+        const fetchedTaskLists = await getTaskLists(user.uid, false);
+        setTaskLists([...fetchedTaskLists]);
+        setTaskList({
+          listName: "Today",
+          listColor: "",
+          listID: "",
+          listActive: true,
+          tasks: [...getTasksInDaysRange(fetchedTaskLists, 1).tasks],
+        });
+        setTaskDetails(getTasksInDaysRange(fetchedTaskLists, 1).tasks[0]);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
@@ -70,8 +83,8 @@ function App() {
             setTaskList: setTaskList,
             taskDetails: taskDetails,
             setTaskDetails: setTaskDetails,
-            categoryList: taskLists,
-            setCategoryList: setTaskLists,
+            taskLists: taskLists,
+            setTaskLists: setTaskLists,
             isTaskOpened: isTaskOpened,
             setIsTaskOpened: setIsTaskOpened,
             mainTaskChanges: mainTaskChanges,

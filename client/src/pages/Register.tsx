@@ -9,7 +9,6 @@ export default function Register() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [repeatPassword, setRepeatPassword] = useState<string | null>(null);
-  // createUserWithEmail
   return (
     <Container
       className="login-register-container"

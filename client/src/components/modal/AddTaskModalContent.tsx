@@ -5,7 +5,7 @@ import {
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import InputLabeled from "../ui/inputs/InputLabeled";
 import { TasksContext } from "../../context/tasksContext";
 import IconButton from "../ui/buttons/IconButton";
@@ -18,15 +18,19 @@ import addNewTaskDB from "../../utils/api/post-data/post/addNewTaskDB";
 import InputDate from "../ui/inputs/InputDate";
 import Subtask from "../dashboard/tasks-list-area/task-details/Subtask";
 import { SubtaskType } from "../../types/TaskType";
+import { TaskListType } from "../../types/CategoryListType";
+import addTask from "../../utils/task-list/addTask";
 export default function AddTaskModalContent() {
-  const { categoryList } = useContext(TasksContext);
+  const { taskLists, setTaskLists, setTaskList, taskList } =
+    useContext(TasksContext);
   const { userID } = useContext(AuthContext);
   const { showModal, setShowModal } = useContext(ModalContext);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [list, setList] = useState<string>(categoryList[0].category);
+  const [list, setList] = useState<TaskListType>(taskLists[0]);
   const [date, setDate] = useState<string>("");
   const [subtasks, setSubtasks] = useState<SubtaskType[]>([]);
+
   return (
     <>
       <ModalHeader closeButton>
@@ -56,15 +60,17 @@ export default function AddTaskModalContent() {
         <div className="d-flex flex-column p-0 gap-2 me-auto">
           <ListSelect
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between "
-            options={categoryList}
-            optionsProperty="category"
+            options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
-            selectValue={list}
+            selectedList={list.listName}
             onChange={(e) => {
-              setList(e.target.value);
+              let listIndex = taskLists
+                .map((list) => list.listName)
+                .indexOf(e.target.value);
+              setList(taskLists[listIndex]);
             }}
           />
           <InputDate
@@ -113,25 +119,49 @@ export default function AddTaskModalContent() {
           className="txt-small"
           onClick={async () => {
             if (title !== "" && description !== "" && date !== "") {
-              await addNewTaskDB(userID, list, title, description, date);
+              await addNewTaskDB(
+                userID,
+                list.listID,
+                title,
+                description,
+                date,
+                false
+              );
               if (subtasks.length > 0) {
                 subtasks.forEach(async (subtask) => {
                   await addNewSubtaskDB(
                     userID,
-                    list,
+                    list.listID,
                     title,
                     subtask.title,
+                    false,
                     subtask.description
                   );
                 });
               }
               setShowModal(!showModal);
+              addTask(
+                taskLists,
+                taskList,
+                setTaskList,
+                setTaskLists,
+                list.listID,
+                date,
+                description,
+                title,
+                list.listName,
+                list.listColor,
+                subtasks
+              );
             } else {
               setShowModal(!showModal);
             }
           }}
         >
-          {title !== "" && description !== "" && list !== "" && date !== ""
+          {title !== "" &&
+          description !== "" &&
+          list !== undefined &&
+          date !== ""
             ? "Add task"
             : "Close"}
         </Button>

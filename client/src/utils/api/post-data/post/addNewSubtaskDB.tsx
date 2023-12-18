@@ -3,9 +3,10 @@ import { db } from "../../../../firebase-config/firebaseConfig";
 
 export default async function addNewSubtaskDB(
   userID: string,
-  listName: string,
-  taskName: string,
-  subtaskName: string,
+  listID: string,
+  taskTitle: string,
+  subtaskTitle: string,
+  subtaskStatus: boolean,
   description?: string
 ) {
   await setDoc(
@@ -14,16 +15,16 @@ export default async function addNewSubtaskDB(
       "users",
       userID,
       "task-lists",
-      listName,
+      listID,
       "tasks",
-      taskName,
+      taskTitle,
       "subtasks",
-      subtaskName
+      subtaskTitle
     ),
     {
-      title: subtaskName,
+      title: subtaskTitle,
       description: description ? description : "",
-      subtaskStatus: false,
+      subtaskStatus: subtaskStatus,
     }
   );
 }

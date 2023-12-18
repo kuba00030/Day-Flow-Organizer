@@ -7,8 +7,8 @@ export type TasksContextType = {
   taskDetails: TaskType;
   setTaskDetails: React.Dispatch<React.SetStateAction<TaskType>>;
   isTaskOpened: boolean;
-  categoryList: TaskListsType;
-  setCategoryList: React.Dispatch<React.SetStateAction<TaskListsType>>;
+  taskLists: TaskListsType;
+  setTaskLists: React.Dispatch<React.SetStateAction<TaskListsType>>;
   setIsTaskOpened: React.Dispatch<React.SetStateAction<boolean>>;
   mainTaskChanges: MainTaskChangesType;
   setMainTaskChanges: React.Dispatch<React.SetStateAction<MainTaskChangesType>>;

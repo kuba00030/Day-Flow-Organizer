@@ -1,48 +1,22 @@
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config/firebaseConfig";
-import { SubtaskType, TaskType } from "../../../../types/TaskType";
+import { TaskListsType } from "../../../../types/CategoryListType";
 
 export default async function updateTaskListDB(
   userID: string,
-  oldListName: string,
-  newListName: string,
-  newColor: string,
-  tasks: TaskType[]
+  originLists: TaskListsType,
+  editedLists: TaskListsType
 ) {
-  const oldTaskListRef = doc(db, "users", userID, "task-lists", oldListName);
-  const newTaskListRef = doc(db, "users", userID, "task-lists", newListName);
-  await deleteDoc(oldTaskListRef);
-  await setDoc(newTaskListRef, { category: newListName, color: newColor });
-  tasks.forEach(async (task) => {
-    await setDoc(
-      doc(db, "users", userID, "task-lists", newListName, "tasks", task.title),
-      {
-        title: task.title,
-        description: task.description,
-        date: task.date,
-        taskStatus: task.taskStatus,
-      }
-    );
-    if (task.subtasks.length) {
-      task.subtasks.forEach(async (subtask) => {
-        await setDoc(
-          doc(
-            db,
-            "users",
-            userID,
-            "task-lists",
-            newListName,
-            "tasks",
-            task.title,
-            "subtasks",
-            subtask.title
-          ),
-          {
-            title: subtask.title,
-            description: subtask.description ? subtask.description : "",
-            subtaskStatus: subtask.subtaskStatus,
-          }
-        );
+  originLists.forEach(async (list, index) => {
+    if (
+      list.listName !== editedLists[index].listName ||
+      list.listColor !== editedLists[index].listColor ||
+      list.listActive !== editedLists[index].listActive
+    ) {
+      await updateDoc(doc(db, "users", userID, "task-lists", list.listID), {
+        list_name: editedLists[index].listName,
+        list_color: editedLists[index].listColor,
+        list_active: editedLists[index].listActive,
       });
     }
   });

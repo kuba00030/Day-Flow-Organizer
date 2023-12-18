@@ -12,7 +12,6 @@ import {
   LuCalendarDays as CalendarIcon,
 } from "react-icons/lu";
 import { CiSettings as SettingsIcon } from "react-icons/ci";
-// import { RiListSettingsLine as SettingsIcon } from "react-icons/ri";
 import { PiSignOutBold as SignOutIcon } from "react-icons/pi";
 import { useContext } from "react";
 import { TasksContext } from "../../../context/tasksContext";
@@ -24,7 +23,7 @@ import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/getTasksInDaysRange";
 export default function NavBar() {
   const {
-    categoryList,
+    taskLists,
     setTaskList,
     setTaskDetails,
     setMainTaskChanges,
@@ -43,13 +42,27 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Upcoming"
-              itemValue={`${getTasksInDaysRange(categoryList, 7).tasksAmount}`}
+              itemValue={`${
+                getTasksInDaysRange(
+                  taskLists.filter(
+                    (list: TaskListType) => list.listActive === true
+                  ),
+                  7
+                ).tasksAmount
+              }`}
               onClick={() => {
-                const { tasks } = getTasksInDaysRange(categoryList, 7);
+                const { tasks } = getTasksInDaysRange(
+                  taskLists.filter(
+                    (list: TaskListType) => list.listActive === true
+                  ),
+                  7
+                );
                 setTaskList({
-                  category: "Upcoming",
+                  listName: "Upcoming",
+                  listColor: "",
+                  listActive: "",
+                  listID: "",
                   tasks: tasks,
-                  color: "",
                 });
                 if (tasks.length) {
                   setTaskDetails(tasks[0]);
@@ -77,13 +90,27 @@ export default function NavBar() {
               headerStyle="txt-small text-secondary"
               containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
               header="Today"
-              itemValue={`${getTasksInDaysRange(categoryList, 0).tasksAmount}`}
+              itemValue={`${
+                getTasksInDaysRange(
+                  taskLists.filter(
+                    (list: TaskListType) => list.listActive === true
+                  ),
+                  0
+                ).tasksAmount
+              }`}
               onClick={() => {
-                const { tasks } = getTasksInDaysRange(categoryList, 0);
+                const { tasks } = getTasksInDaysRange(
+                  taskLists.filter(
+                    (list: TaskListType) => list.listActive === true
+                  ),
+                  0
+                );
                 setTaskList({
-                  category: "Today",
+                  listName: "Today",
+                  listColor: "",
+                  listID: "",
+                  listActive: "",
                   tasks: tasks,
-                  color: "",
                 });
                 if (tasks.length) {
                   setTaskDetails(tasks[0]);
@@ -119,47 +146,52 @@ export default function NavBar() {
         />
         <NavAccordion
           header="LISTS"
-          items={categoryList.map((category: TaskListType) => {
-            return (
-              <NavAccordionItem
-                itemStyle="accordion-item-txt text-secondary ms-auto"
-                headerStyle="txt-small text-secondary"
-                containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
-                header={`${category.category}`}
-                itemValue={`${countListTasks(category.tasks)}`}
-                onClick={() => {
-                  setTaskList({
-                    category: category.category,
-                    tasks: category.tasks,
-                    color: category.color,
-                  });
-                  if (category.tasks.length) {
-                    setTaskDetails(category.tasks[0]);
-                    setMainTaskChanges({
-                      date: category.tasks[0].date,
-                      description: category.tasks[0].description,
-                      title: category.tasks[0].title,
-                      list: category.tasks[0].list,
-                      listColor: category.tasks[0].listColor,
-                      taskStatus: category.tasks[0].taskStatus,
+          items={taskLists
+            .filter((list) => list.listActive === true)
+            .map((list: TaskListType) => {
+              return (
+                <NavAccordionItem
+                  itemStyle="accordion-item-txt text-secondary ms-auto"
+                  headerStyle="txt-small text-secondary"
+                  containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+                  header={`${list.listName}`}
+                  itemValue={`${countListTasks(list.tasks)}`}
+                  onClick={() => {
+                    setTaskList({
+                      listName: list.listName,
+                      tasks: list.tasks,
+                      listColor: list.listColor,
+                      listActive: list.listActive,
+                      listID: list.listID,
                     });
-                    setSubtasksChanges([...category.tasks[0].subtasks]);
-                  } else {
-                    setTaskDetails(undefined);
-                    setMainTaskChanges(undefined);
-                    setSubtasksChanges(undefined);
+                    if (list.tasks.length) {
+                      setTaskDetails(list.tasks[0]);
+                      setMainTaskChanges({
+                        date: list.tasks[0].date,
+                        description: list.tasks[0].description,
+                        title: list.tasks[0].title,
+                        list: list.tasks[0].list,
+                        listColor: list.tasks[0].listColor,
+                        taskStatus: list.tasks[0].taskStatus,
+                      });
+                      setSubtasksChanges([...list.tasks[0].subtasks]);
+                    } else {
+                      setTaskDetails(undefined);
+                      setMainTaskChanges(undefined);
+                      setSubtasksChanges(undefined);
+                    }
+                    console.log(list);
+                  }}
+                  key={`list category: ${list.listName}`}
+                  icon={
+                    <div
+                      className="regular-icon me-2 rounded border-0 p-0"
+                      style={{ backgroundColor: `${list.listColor}` }}
+                    ></div>
                   }
-                }}
-                key={`list category: ${category.category}`}
-                icon={
-                  <div
-                    className="regular-icon me-2 rounded border-0 p-0"
-                    style={{ backgroundColor: `${category.color}` }}
-                  ></div>
-                }
-              />
-            );
-          })}
+                />
+              );
+            })}
         />
         <div className="d-flex flex-row justify-content-between">
           <IconButton

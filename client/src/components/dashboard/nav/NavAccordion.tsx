@@ -52,7 +52,7 @@ export default function NavAccordion(props: TNavAccordion) {
               renderItems()
             ) : (
               <div className="text-center text-secondary fw-semibold txt-small">
-                Add your first tasks list
+                Add your first list
               </div>
             )}
           </Card.Body>

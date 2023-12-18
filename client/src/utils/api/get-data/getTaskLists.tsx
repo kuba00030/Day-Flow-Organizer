@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../firebase-config/firebaseConfig";
-import { TaskListsType } from "../../../types/CategoryListType";
 import { TaskType } from "../../../types/TaskType";
+import { TaskListsType } from "../../../types/CategoryListType";
 
 export default async function getTaskLists(
   userID: string,
@@ -19,7 +19,7 @@ export default async function getTaskLists(
           "users",
           userID,
           "task-lists",
-          list.data().category,
+          list.data().list_id,
           "tasks"
         ),
         where("taskStatus", "==", taskStatus)
@@ -28,8 +28,10 @@ export default async function getTaskLists(
 
     if (taskListSnapshot.empty === true) {
       taskLists.push({
-        category: list.data().category,
-        color: list.data().color,
+        listName: list.data().list_name,
+        listColor: list.data().list_color,
+        listID: list.data().list_id,
+        listActive: list.data().list_active,
         tasks: [],
       });
     } else {
@@ -43,7 +45,7 @@ export default async function getTaskLists(
               "users",
               userID,
               "task-lists",
-              list.data().category,
+              list.data().list_id,
               "tasks",
               taskDoc.data().title,
               "subtasks"
@@ -56,8 +58,8 @@ export default async function getTaskLists(
             description: taskDoc.data().description,
             title: taskDoc.data().title,
             taskStatus: taskDoc.data().taskStatus,
-            list: list.data().category,
-            listColor: list.data().color,
+            list: list.data().list_name,
+            listColor: list.data().list_color,
             subtasks: [],
           });
         } else {
@@ -66,8 +68,8 @@ export default async function getTaskLists(
             description: taskDoc.data().description,
             title: taskDoc.data().title,
             taskStatus: taskDoc.data().taskStatus,
-            list: list.data().category,
-            listColor: list.data().color,
+            list: list.data().list_name,
+            listColor: list.data().list_color,
             subtasks: subtasksSnapshot.docs.map((subtaskDoc) => {
               return {
                 title: subtaskDoc.data().title,
@@ -82,8 +84,10 @@ export default async function getTaskLists(
         }
       }
       taskLists.push({
-        category: list.data().category,
-        color: list.data().color,
+        listName: list.data().list_name,
+        listColor: list.data().list_color,
+        listID: list.data().list_id,
+        listActive: list.data().list_active,
         tasks: tasks,
       });
     }

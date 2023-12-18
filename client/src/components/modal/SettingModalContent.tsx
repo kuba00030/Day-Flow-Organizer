@@ -1,31 +1,24 @@
 import { Button, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import { TasksContext } from "../../context/tasksContext";
 import updateTaskListDB from "../../utils/api/post-data/update/updateTaskListDB";
 import { AuthContext } from "../../context/authContext";
 import { ModalContext } from "../../context/modalContext";
 import { TaskListsType } from "../../types/CategoryListType";
 import ListSettings from "../dashboard/settings/ListSettings";
-import hasListChanged from "../../utils/settings/hasListChanged";
+import hasListChangedHook from "./hooks/settings/hasListChangedHook";
 
 export default function SettingsModalContent() {
-  const { categoryList, setCategoryList } = useContext(TasksContext);
+  const { taskLists, setTaskLists } = useContext(TasksContext);
   const { userID } = useContext(AuthContext);
   const { setShowModal, showModal } = useContext(ModalContext);
   const [editedLists, setEditedLists] = useState<TaskListsType>([]);
   const [listHasChanged, setListHasChanged] = useState(false);
 
   useEffect(() => {
-    setEditedLists(categoryList);
-  }, [categoryList]);
-  useEffect(() => {
-    if (editedLists.length) {
-      hasListChanged(categoryList, editedLists, setListHasChanged);
-    }
-  }, [editedLists]);
-  useEffect(() => {
-    console.log(listHasChanged);
-  }, [listHasChanged]);
+    setEditedLists(taskLists);
+  }, [taskLists]);
+  hasListChangedHook(taskLists, editedLists, setListHasChanged);
   return (
     <>
       <ModalHeader>
@@ -44,6 +37,7 @@ export default function SettingsModalContent() {
                 <ListSettings
                   list={list}
                   index={index}
+                  listActive={list.listActive}
                   setListHasChanged={setListHasChanged}
                   editedLists={editedLists}
                   setEditedLists={setEditedLists}
@@ -58,24 +52,12 @@ export default function SettingsModalContent() {
                   : "bg-warning text-secondary"
               } border-0 fw-semibold`}
               onClick={async () => {
-                if (listHasChanged === false) {
+                if (listHasChanged === true) {
+                  await updateTaskListDB(userID, taskLists, editedLists);
                   setShowModal(!showModal);
+                  setTaskLists(editedLists);
                 } else {
-                  categoryList.forEach((list, index) => {
-                    if (list.category !== editedLists[index].category) {
-                      updateTaskListDB(
-                        userID,
-                        list.category,
-                        editedLists[index].category,
-                        editedLists[index].color,
-                        editedLists[index].tasks
-                      );
-                      console.log(editedLists[index]);
-                    }
-                  });
                   setShowModal(!showModal);
-                  setCategoryList(editedLists);
-                  console.log("list changed");
                 }
               }}
             >
@@ -84,7 +66,7 @@ export default function SettingsModalContent() {
           </>
         ) : (
           <div className="text-center text-secondary fw-semibold txt-small">
-            Add your first tasks list
+            Add your first list
           </div>
         )}
       </ModalBody>

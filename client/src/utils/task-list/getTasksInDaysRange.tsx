@@ -11,7 +11,9 @@ export default function getTasksInDaysRange(
   let tasksAmount: number;
 
   taskLists.forEach((list) => {
-    tasks.push(...list.tasks);
+    if (list.tasks.length) {
+      tasks.push(...list.tasks);
+    }
   });
   tasks = tasks.filter((task) => {
     const taskDate = new Date(task.date);

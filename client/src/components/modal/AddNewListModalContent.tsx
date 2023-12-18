@@ -10,13 +10,14 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import { ModalContext } from "../../context/modalContext";
 import { TasksContext } from "../../context/tasksContext";
-import addNewTasksListDB from "../../utils/api/post-data/post/addNewTasksListDB";
+import addTaskListDB from "../../utils/api/post-data/post/addTaskListDB";
+import addTaskList from "../../utils/task-list/addTaskList";
 export default function AddNewListModalContent() {
   const { userID } = useContext(AuthContext);
-  const { setCategoryList, categoryList } = useContext(TasksContext);
+  const { setTaskLists, taskLists } = useContext(TasksContext);
   const { showModal, setShowModal } = useContext(ModalContext);
-  const [newList, setNewList] = useState<string>("");
-  const [colorList, setColorList] = useState<string>("#563d7c");
+  const [newListName, setNewListName] = useState<string>("");
+  const [newColorList, setnewColorList] = useState<string>("#563d7c");
   return (
     <>
       <ModalHeader closeButton>
@@ -34,9 +35,9 @@ export default function AddNewListModalContent() {
           inputType="text"
           inputPlaceholder="New list"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={newList}
+          inputValue={newListName}
           onChange={(e) => {
-            setNewList(e.target.value);
+            setNewListName(e.target.value);
           }}
         />
         <InputLabeled
@@ -44,29 +45,40 @@ export default function AddNewListModalContent() {
           labelValue="List color"
           inputType="color"
           inputStyle=""
-          inputValue={colorList}
+          inputValue={newColorList}
           onChange={(e) => {
-            setColorList(e.target.value);
+            setnewColorList(e.target.value);
           }}
         />
       </ModalBody>
       <ModalFooter>
         <Button
           size="sm"
-          onClick={() => {
-            if (newList !== "" && colorList !== "#563d7c") {
-              addNewTasksListDB(newList, colorList, userID);
+          onClick={async () => {
+            if (newListName !== "" && newColorList !== "#563d7c") {
+              const newListID = new Date().getTime();
+              await addTaskListDB(
+                newListName,
+                newColorList,
+                userID,
+                `${newListID}`
+              );
               setShowModal(!showModal);
-              setCategoryList([
-                ...categoryList,
-                { category: newList, color: colorList, tasks: [] },
-              ]);
+              addTaskList(
+                taskLists,
+                setTaskLists,
+                newListName,
+                newColorList,
+                newListID
+              );
             } else {
               setShowModal(!showModal);
             }
           }}
         >
-          {newList !== "" && colorList !== "#563d7c" ? "Add list" : "Close"}
+          {newListName !== "" && newColorList !== "#563d7c"
+            ? "Add list"
+            : "Close"}
         </Button>
       </ModalFooter>
     </>

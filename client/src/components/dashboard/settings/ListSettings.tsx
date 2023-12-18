@@ -1,11 +1,13 @@
 import { editCategoryList } from "../../../utils/task-list/editCategoryList";
 import InputLabeled from "../../ui/inputs/InputLabeled";
-import { MdDeleteForever as DeleteSubtaskIcon } from "react-icons/md";
+import { MdDeleteForever as DeleteListIcon } from "react-icons/md";
+import { MdRestoreFromTrash as RestoreListIcon } from "react-icons/md";
 import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
 
 type TListSettings = {
   list: TaskListType;
   index: number;
+  listActive: boolean | string;
   setListHasChanged: (hasChanged: boolean) => void;
   editedLists: TaskListsType;
   setEditedLists: (editedLists: TaskListsType) => void;
@@ -20,44 +22,60 @@ export default function ListSettings(props: TListSettings) {
       <InputLabeled
         inputType="text"
         inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-        inputValue={props.list.category}
+        inputValue={props.list.listName}
         onChange={(e) => {
           editCategoryList(
-            props.list.category,
-            "category",
+            props.list.listName,
+            "listName",
             e.target.value,
             props.editedLists,
             props.setEditedLists
           );
-          // updateTaskListDB(userID, e.target.value, category.color);
         }}
       />
       <InputLabeled
         inputType="color"
         inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-        inputValue={props.list.color}
+        inputValue={props.list.listColor}
         onChange={(e) => {
           editCategoryList(
-            props.list.category,
-            "color",
+            props.list.listName,
+            "listColor",
             e.target.value,
             props.editedLists,
             props.setEditedLists
           );
-          // props.setEditedLists()
         }}
       />
-      <DeleteSubtaskIcon
-        type="button"
-        className="ms-1 mt-1 regular-icon text-secondary"
-        onClick={() => {
-          props.setEditedLists(
-            props.editedLists.filter((list, index) => index !== props.index)
-          );
-        }}
-      >
-        Delete
-      </DeleteSubtaskIcon>
+      {props.listActive ? (
+        <DeleteListIcon
+          type="button"
+          className="ms-1 mt-1 large-icon text-secondary"
+          onClick={() => {
+            editCategoryList(
+              props.list.listName,
+              "listActive",
+              !props.listActive,
+              props.editedLists,
+              props.setEditedLists
+            );
+          }}
+        />
+      ) : (
+        <RestoreListIcon
+          type="button"
+          className="ms-1 mt-1 large-icon text-secondary"
+          onClick={() => {
+            editCategoryList(
+              props.list.listName,
+              "listActive",
+              !props.listActive,
+              props.editedLists,
+              props.setEditedLists
+            );
+          }}
+        />
+      )}
     </div>
   );
 }

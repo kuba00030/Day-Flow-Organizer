@@ -14,13 +14,17 @@
   font-size: 14px;
 }
 /* dashboard elements  */
+.small-icon {
+  width: 15px;
+  height: 15px;
+}
 .regular-icon {
   width: 20px;
   height: 20px;
 }
-.small-icon {
-  width: 15px;
-  height: 15px;
+.large-icon {
+  width: 25px;
+  height: 25px;
 }
 .radius-small {
   border-radius: 5px;

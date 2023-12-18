@@ -1,8 +1,10 @@
 import { TaskType } from "./TaskType";
 
 export type TaskListType = {
-  category: string;
-  color: string;
+  listName: string;
+  listColor: string;
+  listID: string;
+  listActive: boolean | string;
   tasks: TaskType[];
 };
 export type TaskListsType = TaskListType[];

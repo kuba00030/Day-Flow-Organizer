@@ -22,7 +22,7 @@ export default function TaskDetails() {
     setMainTaskChanges,
     setSubtasksChanges,
     subTasksChanges,
-    categoryList,
+    taskLists,
     taskList,
   } = useContext(TasksContext);
   const { userID } = useContext(AuthContext);
@@ -101,11 +101,10 @@ export default function TaskDetails() {
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
-            optionsProperty="category"
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
-            options={categoryList}
+            options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
-            selectValue={mainTaskChanges.list}
+            selectedList={mainTaskChanges.list}
             onChange={(e) => {
               editTask(mainTaskChanges, setMainTaskChanges, "list", e);
             }}

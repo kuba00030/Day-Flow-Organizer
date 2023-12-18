@@ -1,14 +1,15 @@
 import { Container } from "react-bootstrap";
+import { TaskListsType } from "../../../types/CategoryListType";
+
 type TListSelect = {
   containerStyle: string;
-  options: any[];
-  optionsProperty?: string;
+  options: TaskListsType;
   optionStyle: string;
   label: string;
   labelStyle: string;
-  selectStyle: string;
   onChange: (e?: any) => void;
-  selectValue: string;
+  selectStyle: string;
+  selectedList: string;
 };
 export default function ListSelect(props: TListSelect) {
   return (
@@ -18,18 +19,16 @@ export default function ListSelect(props: TListSelect) {
       </div>
       <select
         className={props.selectStyle}
-        value={props.selectValue}
+        value={props.selectedList}
         onChange={props.onChange}
       >
         {props.options.map((option): React.ReactNode => {
           return (
             <option
               className={props.optionStyle}
-              key={`category task details: ${
-                props.optionsProperty ? option[props.optionsProperty] : option
-              }`}
+              key={`category task details: ${option.listName}`}
             >
-              {props.optionsProperty ? option[props.optionsProperty] : option}
+              {option.listName}
             </option>
           );
         })}

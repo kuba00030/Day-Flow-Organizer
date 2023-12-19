@@ -7,11 +7,16 @@ import { TasksContext } from "../context/tasksContext";
 import "../styles/custom-container.css";
 import "../styles/dashboard/dashboard-nav.css";
 import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
+import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
 
 export default function Dashboard() {
+  const { isLogged } = useContext(AuthContext);
   const { taskList } = useContext(TasksContext);
   const { showModal, setShowModal, modalContent } = useContext(ModalContext);
-
+  const navigate = useNavigate();
+  onLoggedRedirectHook(isLogged, navigate);
   return (
     <div className="d-flex flex-row dashboard-container overflow-hidden">
       <NavBar />

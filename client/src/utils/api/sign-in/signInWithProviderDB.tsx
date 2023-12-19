@@ -2,7 +2,7 @@ import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../../firebase-config/firebaseConfig";
 
-export default async function handleSignInWithProvider(provider: any) {
+export default async function handleSignInWithProviderDB(provider: any) {
   try {
     const { user } = await signInWithPopup(auth, provider);
     const userRef = doc(db, "users", user.uid);

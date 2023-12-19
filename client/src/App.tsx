@@ -43,9 +43,10 @@ function App() {
   const [subTasksChanges, setSubtasksChanges] = useState<
     SubtasksChangesType | undefined
   >(undefined);
+
   useEffect(() => {}, [taskDetails]);
+  // onAuthObserver
   useEffect(() => {
-    // authetntication observer.
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLogged(true);
@@ -106,9 +107,7 @@ function App() {
                 <Route path="/">
                   <Route index element={<Login />} />
                   <Route path="signup" element={<Register />} />
-                  {isLogged === true ? (
-                    <Route path={`dashboard`} element={<Dashboard />} />
-                  ) : null}
+                  <Route path="dashboard" element={<Dashboard />} />
                 </Route>
                 <Route path="*" element={<PageNotFound />} />
               </Routes>

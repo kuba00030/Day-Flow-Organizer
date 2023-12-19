@@ -16,11 +16,13 @@ import { PiSignOutBold as SignOutIcon } from "react-icons/pi";
 import { useContext } from "react";
 import { TasksContext } from "../../../context/tasksContext";
 import { ModalContext } from "../../../context/modalContext";
-import AddNewList from "../../modal/AddNewListModalContent";
 import { TaskListType } from "../../../types/CategoryListType";
 import SettingsModalContent from "../../modal/SettingModalContent";
 import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/getTasksInDaysRange";
+import AddNewList from "../../modal/AddNewListModalContent";
+import signOutDB from "../../../utils/api/sign-out/signOut";
+import { useNavigate } from "react-router-dom";
 export default function NavBar() {
   const {
     taskLists,
@@ -30,6 +32,7 @@ export default function NavBar() {
     setSubtasksChanges,
   } = useContext(TasksContext);
   const { showModal, setModalContent, setShowModal } = useContext(ModalContext);
+  const navigate = useNavigate();
   return (
     <Container className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
       <Container className="d-flex flex-column p-0 gap-2">
@@ -222,7 +225,9 @@ export default function NavBar() {
           txt="Sign out"
           size="sm"
           buttonClass="d-flex flex-row gap-2 align-items-center txt-small bg-transparent  border-0 text-secondary fw-semibold"
-          function={() => {}}
+          function={async () => {
+            await signOutDB();
+          }}
         />
       </Container>
     </Container>

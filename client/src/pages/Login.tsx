@@ -14,19 +14,15 @@ import {
   twitterProvider,
 } from "../firebase-config/firebaseConfig";
 import { AuthContext } from "../context/authContext";
-import handleSignInWithPassword from "../utils/api/login/signInWithPassword";
-import handleSignInWithProvider from "../utils/api/login/signInWithProvider";
+import handleSignInWithPasswordDB from "../utils/api/sign-in/signInWithPasswordDB";
+import handleSignInWithProviderDB from "../utils/api/sign-in/signInWithProviderDB";
+import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
   const { isLogged } = useContext(AuthContext);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (isLogged === true) {
-      navigate("/dashboard");
-      console.log(isLogged);
-    }
-  }, [isLogged]);
+  onLoggedRedirectHook(isLogged, navigate);
   return (
     <div className="login-register-container">
       <div className="login-register-welcome-text mb-3">
@@ -69,7 +65,7 @@ export default function Login() {
           className="rounded"
           size="sm"
           onClick={() => {
-            handleSignInWithPassword(email, password);
+            handleSignInWithPasswordDB(email, password);
           }}
         >
           <span className="login-register-txt-small">Sign in</span>
@@ -81,7 +77,7 @@ export default function Login() {
           <Button
             className="d-flex flex-row rounded gap-2 border-0 border-bottom bg-white text-dark align-items-center justify-content-center"
             onClick={() => {
-              handleSignInWithProvider(googleProvider);
+              handleSignInWithProviderDB(googleProvider);
             }}
           >
             <FcGoogle className="login-register-provider-icon" />
@@ -92,7 +88,7 @@ export default function Login() {
           <Button
             className="d-flex flex-row rounded gap-2 border-0 border-bottom bg-white text-dark align-items-center justify-content-center"
             onClick={() => {
-              handleSignInWithProvider(facebookProvider);
+              handleSignInWithProviderDB(facebookProvider);
             }}
           >
             <FaFacebook className="text-primary login-register-provider-icon" />
@@ -103,7 +99,7 @@ export default function Login() {
           <Button
             className="d-flex flex-row rounded gap-2 border-0 border-bottom bg-white text-dark align-items-center justify-content-center"
             onClick={() => {
-              handleSignInWithProvider(twitterProvider);
+              handleSignInWithProviderDB(twitterProvider);
             }}
           >
             <FaTwitter className="text-primary login-register-provider-icon" />
@@ -124,15 +120,3 @@ export default function Login() {
     </div>
   );
 }
-// const categoryCollection = collection(
-//   doc(db, "users", user.uid),
-//   "personal"
-// );
-// const taskDocRef = doc(categoryCollection, "plant a tree");
-// await setDoc(taskDocRef, {});
-// const subtasksCollection = collection(
-//   doc(db, "users", user.uid, "garden", "plant a tree"),
-//   "subtasks"
-// );
-// const subtaskDocRef = doc(subtasksCollection, "cut grass first");
-// await setDoc(subtaskDocRef, { description: "" });

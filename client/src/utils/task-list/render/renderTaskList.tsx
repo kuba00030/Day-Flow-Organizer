@@ -1,8 +1,8 @@
-import { TaskListType } from "../../types/CategoryListType";
+import { TaskListType } from "../../../types/CategoryListType";
 import renderTask from "./renderTask";
 
 export default function renderTaskList(taskList: TaskListType) {
-  if (taskList.category === "Upcoming") {
+  if (taskList.listName === "Upcoming") {
     if (taskList.tasks.length) {
       return renderTask(taskList.tasks);
     } else {
@@ -16,7 +16,7 @@ export default function renderTaskList(taskList: TaskListType) {
       );
     }
   }
-  if (taskList.category === "Today") {
+  if (taskList.listName === "Today") {
     if (taskList.tasks.length) {
       return renderTask(taskList.tasks);
     } else {
@@ -30,7 +30,7 @@ export default function renderTaskList(taskList: TaskListType) {
       );
     }
   }
-  if (taskList.category !== "Upcoming" && taskList.category !== " Today") {
+  if (taskList.listName !== "Upcoming" && taskList.listName !== " Today") {
     if (taskList.tasks.length) {
       return renderTask(taskList.tasks);
     } else {

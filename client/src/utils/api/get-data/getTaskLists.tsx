@@ -19,10 +19,10 @@ export default async function getTaskLists(
           "users",
           userID,
           "task-lists",
-          list.data().list_id,
+          list.data().list_name,
           "tasks"
         ),
-        where("taskStatus", "==", taskStatus)
+        where("task_status", "==", taskStatus)
       )
     );
 
@@ -30,7 +30,6 @@ export default async function getTaskLists(
       taskLists.push({
         listName: list.data().list_name,
         listColor: list.data().list_color,
-        listID: list.data().list_id,
         listActive: list.data().list_active,
         tasks: [],
       });
@@ -38,59 +37,34 @@ export default async function getTaskLists(
       const tasks: TaskType[] = [];
       // single task from a list
       for (const taskDoc of taskListSnapshot.docs) {
-        const subtasksSnapshot = await getDocs(
-          query(
-            collection(
-              db,
-              "users",
-              userID,
-              "task-lists",
-              list.data().list_id,
-              "tasks",
-              taskDoc.data().title,
-              "subtasks"
-            )
-          )
-        );
-        if (subtasksSnapshot.empty === true) {
-          tasks.push({
-            date: taskDoc.data().date,
-            description: taskDoc.data().description,
-            title: taskDoc.data().title,
-            taskStatus: taskDoc.data().taskStatus,
-            list: list.data().list_name,
-            listColor: list.data().list_color,
-            subtasks: [],
-          });
-        } else {
-          tasks.push({
-            date: taskDoc.data().date,
-            description: taskDoc.data().description,
-            title: taskDoc.data().title,
-            taskStatus: taskDoc.data().taskStatus,
-            list: list.data().list_name,
-            listColor: list.data().list_color,
-            subtasks: subtasksSnapshot.docs.map((subtaskDoc) => {
-              return {
-                title: subtaskDoc.data().title,
-                subtaskStatus: subtaskDoc.data().subtaskStatus,
-                description:
-                  subtaskDoc.data().description === ""
-                    ? undefined
-                    : subtaskDoc.data().description,
-              };
-            }),
-          });
-        }
+        tasks.push({
+          taskID: taskDoc.data().task_id,
+          date: taskDoc.data().task_date,
+          description: taskDoc.data().task_description,
+          title: taskDoc.data().task_title,
+          taskStatus: taskDoc.data().task_status,
+          list: list.data().list_name,
+          listColor: list.data().list_color,
+          subtasks: taskDoc.data().subtasks.map((subtask) => {
+            return {
+              subtaskID: subtask.subtask_id,
+              title: subtask.subtask_title,
+              subtaskStatus: subtask.subtask_status,
+              description:
+                subtask.subtask_description === ""
+                  ? undefined
+                  : subtask.subtask_description,
+            };
+          }),
+        });
       }
       taskLists.push({
         listName: list.data().list_name,
         listColor: list.data().list_color,
-        listID: list.data().list_id,
         listActive: list.data().list_active,
         tasks: tasks,
       });
     }
   }
-  return taskLists;
+  return taskLists.reverse();
 }

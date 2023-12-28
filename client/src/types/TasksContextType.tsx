@@ -1,4 +1,4 @@
-import { MainTaskChangesType, SubtasksChangesType, TaskType } from "./TaskType";
+import { TaskType } from "./TaskType";
 import { TaskListType, TaskListsType } from "./CategoryListType";
 
 export type TasksContextType = {
@@ -10,8 +10,6 @@ export type TasksContextType = {
   taskLists: TaskListsType;
   setTaskLists: React.Dispatch<React.SetStateAction<TaskListsType>>;
   setIsTaskOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  mainTaskChanges: MainTaskChangesType;
-  setMainTaskChanges: React.Dispatch<React.SetStateAction<MainTaskChangesType>>;
-  subTasksChanges: SubtasksChangesType;
-  setSubtasksChanges: React.Dispatch<React.SetStateAction<SubtasksChangesType>>;
+  taskChanges: TaskType;
+  setTaskChanges: React.Dispatch<React.SetStateAction<TaskType>>;
 };

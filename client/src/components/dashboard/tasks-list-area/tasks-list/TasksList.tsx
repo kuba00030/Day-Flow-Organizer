@@ -7,7 +7,7 @@ import { ModalContext } from "../../../../context/modalContext";
 import AddTaskModalContent from "../../../modal/AddTaskModalContent";
 import { TasksContext } from "../../../../context/tasksContext";
 import AddNewListModalContent from "../../../modal/AddNewListModalContent";
-import renderTaskList from "../../../../utils/task-list/renderTaskList";
+import renderTaskList from "../../../../utils/task-list/render/renderTaskList";
 
 export default function TasksList() {
   const { setModalContent, setShowModal, showModal } = useContext(ModalContext);

@@ -1,50 +1,45 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config/firebaseConfig";
 import { TaskType } from "../../../../types/TaskType";
+import deleteTaskDB from "../../delete-data/deleteTaskDB";
+import addNewTaskDB from "../post/addNewTaskDB";
 
 export default async function updateTaskDB(
   userID: string,
-  listName: string,
-  task: TaskType,
-  taskTitle: string
+  originTask: TaskType,
+  editedTask: TaskType
 ) {
   const taskRef = doc(
     db,
     "users",
     userID,
     "task-lists",
-    listName,
+    editedTask.list,
     "tasks",
-    taskTitle
+    editedTask.taskID
   );
-  const subtaskRef = doc(
-    db,
-    "users",
-    userID,
-    "task-lists",
-    listName,
-    "tasks",
-    taskTitle,
-    "subtasks"
-  );
-  if (task.subtasks.length > 0) {
+
+  if (originTask.list === editedTask.list) {
     await updateDoc(taskRef, {
-      title: task.title,
-      description: task.description,
-      list: task.list,
-      listColor: task.listColor,
-      date: task.date,
-      taskStatus: task.taskStatus,
+      task_date: editedTask.date,
+      task_description: editedTask.description,
+      task_id: editedTask.taskID,
+      task_status: editedTask.taskStatus,
+      task_title: editedTask.title,
+      subtasks: editedTask.subtasks.map((subtask) => {
+        return {
+          subtask_id: subtask.subtaskID,
+          subtask_title: subtask.title,
+          subtask_status: subtask.subtaskStatus,
+          subtask_description:
+            subtask.description !== undefined ? subtask.description : "",
+        };
+      }),
     });
-    await updateDoc(subtaskRef, []);
   } else {
-    await updateDoc(taskRef, {
-      title: task.title,
-      description: task.description,
-      list: task.list,
-      listColor: task.listColor,
-      date: task.date,
-      taskStatus: task.taskStatus,
-    });
+    // delete origin task from origin task list
+    await deleteTaskDB(userID, originTask);
+    // push edited task to new selected list
+    await addNewTaskDB(userID, editedTask);
   }
 }

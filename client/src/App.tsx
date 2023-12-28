@@ -9,15 +9,11 @@ import { auth } from "./firebase-config/firebaseConfig";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./context/authContext";
 import { TasksContext } from "./context/tasksContext";
-import {
-  MainTaskChangesType,
-  SubtasksChangesType,
-  TaskType,
-} from "./types/TaskType";
+import { TaskType } from "./types/TaskType";
 import { ModalContext } from "./context/modalContext";
 import { TaskListType, TaskListsType } from "./types/CategoryListType";
 import getTaskLists from "./utils/api/get-data/getTaskLists";
-import getTasksInDaysRange from "./utils/task-list/getTasksInDaysRange";
+import getTasksInDaysRange from "./utils/task-list/get/getTasksInDaysRange";
 function App() {
   const [userID, setUserID] = useState("");
   const [isLogged, setIsLogged] = useState<boolean>(false);
@@ -29,7 +25,6 @@ function App() {
   const [taskList, setTaskList] = useState<TaskListType>({
     listName: "Today",
     listColor: "",
-    listID: "",
     listActive: true,
     tasks: [],
   });
@@ -37,31 +32,29 @@ function App() {
   const [taskDetails, setTaskDetails] = useState<TaskType | undefined>(
     undefined
   );
-  const [mainTaskChanges, setMainTaskChanges] = useState<
-    MainTaskChangesType | undefined
-  >(undefined);
-  const [subTasksChanges, setSubtasksChanges] = useState<
-    SubtasksChangesType | undefined
-  >(undefined);
-
-  useEffect(() => {}, [taskDetails]);
+  const [taskChanges, setTaskChanges] = useState<TaskType | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    console.log(taskLists);
+  }, [taskLists]);
   // onAuthObserver
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        window.localStorage.setItem("isLogged", "true");
         setIsLogged(true);
         setUserID(user.uid);
-        window.localStorage.setItem("isLogged", "true");
         const fetchedTaskLists = await getTaskLists(user.uid, false);
         setTaskLists([...fetchedTaskLists]);
         setTaskList({
           listName: "Today",
           listColor: "",
-          listID: "",
           listActive: true,
-          tasks: [...getTasksInDaysRange(fetchedTaskLists, 1).tasks],
+          tasks: [...getTasksInDaysRange(fetchedTaskLists, 0).tasks],
         });
-        setTaskDetails(getTasksInDaysRange(fetchedTaskLists, 1).tasks[0]);
+        setTaskDetails(getTasksInDaysRange(fetchedTaskLists, 0).tasks[0]);
+        setTaskChanges(getTasksInDaysRange(fetchedTaskLists, 0).tasks[0]);
       } else {
         setIsLogged(false);
         window.localStorage.clear();
@@ -88,10 +81,8 @@ function App() {
             setTaskLists: setTaskLists,
             isTaskOpened: isTaskOpened,
             setIsTaskOpened: setIsTaskOpened,
-            mainTaskChanges: mainTaskChanges,
-            setMainTaskChanges: setMainTaskChanges,
-            subTasksChanges: subTasksChanges,
-            setSubtasksChanges: setSubtasksChanges,
+            taskChanges: taskChanges,
+            setTaskChanges: setTaskChanges,
           }}
         >
           <ModalContext.Provider

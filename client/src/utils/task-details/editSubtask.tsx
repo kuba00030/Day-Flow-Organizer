@@ -1,14 +1,15 @@
-import { SubtasksChangesType } from "../../types/TaskType";
+import { TaskType } from "../../types/TaskType";
 
 export const editSubtask = (
-  subtasks: SubtasksChangesType,
-  setSubtasks: (subtasks: SubtasksChangesType) => void,
+  taskChanges: TaskType,
+  setTaskChanges: (task: TaskType) => void,
   propertyToChange: string,
   newValue: string | boolean,
   subtaskTitle: string
 ) => {
-  setSubtasks(
-    subtasks.map((subtask) => {
+  setTaskChanges({
+    ...taskChanges,
+    subtasks: taskChanges.subtasks.map((subtask) => {
       if (subtask.title === subtaskTitle) {
         return {
           ...subtask,
@@ -16,6 +17,6 @@ export const editSubtask = (
         };
       }
       return subtask;
-    })
-  );
+    }),
+  });
 };

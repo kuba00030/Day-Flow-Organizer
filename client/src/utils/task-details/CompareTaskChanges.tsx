@@ -1,41 +1,37 @@
-import {
-  MainTaskChangesType,
-  SubtaskType,
-  TaskType,
-} from "../../types/TaskType";
+import { TaskType } from "../../types/TaskType";
 
 export const compareTaskChanges = (
-  taskChanges: MainTaskChangesType,
-  taskDetails: TaskType,
+  editedTask: TaskType,
+  originTask: TaskType,
   setHasTaskChanged: (val: boolean) => void
 ) => {
-  for (const key in taskChanges) {
-    if (taskChanges[key] !== taskDetails[key]) {
-      setHasTaskChanged(true);
-      return;
-    }
-    setHasTaskChanged(false);
-  }
-};
-export const compareSubtaskChanges = (
-  changedSubtasks: SubtaskType[],
-  originSubtaks: SubtaskType[],
-  setHasTaskChanged: (val: boolean) => void
-) => {
-  // check if any subtask was deleted or added
-  if (changedSubtasks.length !== originSubtaks.length) {
-    setHasTaskChanged(true);
-    return;
-  }
-  // check if any property of subtask was changed
-  for (let i = 0; i < changedSubtasks.length; i++) {
+  for (const property in editedTask) {
     if (
-      JSON.stringify(changedSubtasks[i]) !== JSON.stringify(originSubtaks[i])
+      editedTask[property] !== originTask[property] &&
+      property !== "subtasks"
     ) {
       setHasTaskChanged(true);
       return;
     }
+    if (property === "subtasks") {
+      if (editedTask[property].length !== originTask[property].length) {
+        setHasTaskChanged(true);
+        return;
+      }
+      for (const subtask in editedTask[property]) {
+        const editedSubtask = editedTask[property][subtask];
+        const originSubtask = originTask[property][subtask];
+        if (
+          editedSubtask.description !== originSubtask.description ||
+          editedSubtask.title !== originSubtask.title ||
+          editedSubtask.subtaskStatus !== originSubtask.subtaskStatus
+        ) {
+          setHasTaskChanged(true);
+          return;
+        }
+      }
+      return;
+    }
+    setHasTaskChanged(false);
   }
-
-  setHasTaskChanged(false);
 };

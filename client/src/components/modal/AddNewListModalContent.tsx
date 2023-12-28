@@ -11,13 +11,27 @@ import { AuthContext } from "../../context/authContext";
 import { ModalContext } from "../../context/modalContext";
 import { TasksContext } from "../../context/tasksContext";
 import addTaskListDB from "../../utils/api/post-data/post/addTaskListDB";
-import addTaskList from "../../utils/task-list/addTaskList";
+import addTaskList from "../../utils/task-list/add/addTaskList";
+import { TaskListsType } from "../../types/CategoryListType";
 export default function AddNewListModalContent() {
   const { userID } = useContext(AuthContext);
   const { setTaskLists, taskLists } = useContext(TasksContext);
   const { showModal, setShowModal } = useContext(ModalContext);
   const [newListName, setNewListName] = useState<string>("");
-  const [newColorList, setnewColorList] = useState<string>("#563d7c");
+  const [newColorList, setNewColorList] = useState<string>("#563d7c");
+
+  const listAlreadyExists = (
+    taskLists: TaskListsType,
+    newListName: string
+  ): boolean => {
+    let listExists: boolean = false;
+    if (taskLists.length) {
+      for (let i = 0; i < taskLists.length; i++) {
+        if (taskLists[i].listName === newListName) listExists = true;
+      }
+    }
+    return listExists;
+  };
   return (
     <>
       <ModalHeader closeButton>
@@ -47,7 +61,7 @@ export default function AddNewListModalContent() {
           inputStyle=""
           inputValue={newColorList}
           onChange={(e) => {
-            setnewColorList(e.target.value);
+            setNewColorList(e.target.value);
           }}
         />
       </ModalBody>
@@ -55,30 +69,19 @@ export default function AddNewListModalContent() {
         <Button
           size="sm"
           onClick={async () => {
-            if (newListName !== "" && newColorList !== "#563d7c") {
-              const newListID = new Date().getTime();
-              await addTaskListDB(
-                newListName,
-                newColorList,
-                userID,
-                `${newListID}`
-              );
+            if (
+              newListName !== "" &&
+              listAlreadyExists(taskLists, newListName) === false
+            ) {
+              await addTaskListDB(newListName, newColorList, userID);
+              addTaskList(taskLists, setTaskLists, newListName, newColorList);
               setShowModal(!showModal);
-              addTaskList(
-                taskLists,
-                setTaskLists,
-                newListName,
-                newColorList,
-                newListID
-              );
             } else {
               setShowModal(!showModal);
             }
           }}
         >
-          {newListName !== "" && newColorList !== "#563d7c"
-            ? "Add list"
-            : "Close"}
+          {newListName !== "" ? "Add list" : "Close"}
         </Button>
       </ModalFooter>
     </>

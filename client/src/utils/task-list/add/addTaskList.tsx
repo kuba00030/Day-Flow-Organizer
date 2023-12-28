@@ -1,19 +1,18 @@
-import { TaskListsType } from "../../types/CategoryListType";
+import { TaskListsType } from "../../../types/CategoryListType";
 
 export default function addTaskList(
   taskLists: TaskListsType,
   setTaskLists: (lists: TaskListsType) => void,
   listName: string,
-  listColor: string,
-  listID: number
+  listColor: string
 ) {
   setTaskLists([
     ...taskLists,
     {
       listName: listName,
       listColor: listColor,
-      listID: `${listID + listName}`,
       tasks: [],
+      listActive: true,
     },
   ]);
 }

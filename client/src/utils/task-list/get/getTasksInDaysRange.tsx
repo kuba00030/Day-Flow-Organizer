@@ -1,6 +1,6 @@
-import { TaskListsType } from "../../types/CategoryListType";
-import { TaskType } from "../../types/TaskType";
-import countListTasks from "./countListTasks";
+import { TaskListsType } from "../../../types/CategoryListType";
+import { TaskType } from "../../../types/TaskType";
+import countListTasks from "../countListTasks";
 import getCurrentDate from "./getCurrentDate";
 
 export default function getTasksInDaysRange(

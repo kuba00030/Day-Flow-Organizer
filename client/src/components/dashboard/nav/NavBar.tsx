@@ -19,20 +19,19 @@ import { ModalContext } from "../../../context/modalContext";
 import { TaskListType } from "../../../types/CategoryListType";
 import SettingsModalContent from "../../modal/SettingModalContent";
 import countListTasks from "../../../utils/task-list/countListTasks";
-import getTasksInDaysRange from "../../../utils/task-list/getTasksInDaysRange";
+import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
-import { useNavigate } from "react-router-dom";
 export default function NavBar() {
   const {
     taskLists,
     setTaskList,
     setTaskDetails,
-    setMainTaskChanges,
-    setSubtasksChanges,
+    taskChanges,
+    setTaskChanges,
   } = useContext(TasksContext);
   const { showModal, setModalContent, setShowModal } = useContext(ModalContext);
-  const navigate = useNavigate();
+
   return (
     <Container className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
       <Container className="d-flex flex-column p-0 gap-2">
@@ -64,24 +63,23 @@ export default function NavBar() {
                   listName: "Upcoming",
                   listColor: "",
                   listActive: "",
-                  listID: "",
                   tasks: tasks,
                 });
                 if (tasks.length) {
                   setTaskDetails(tasks[0]);
-                  setMainTaskChanges({
+                  setTaskChanges({
+                    taskID: tasks[0].taskID,
                     date: tasks[0].date,
                     description: tasks[0].description,
                     title: tasks[0].title,
                     list: tasks[0].list,
                     listColor: tasks[0].listColor,
                     taskStatus: tasks[0].taskStatus,
+                    subtasks: tasks[0].subtasks,
                   });
-                  setSubtasksChanges([...tasks[0].subtasks]);
                 } else {
                   setTaskDetails(undefined);
-                  setMainTaskChanges(undefined);
-                  setSubtasksChanges(undefined);
+                  setTaskChanges(undefined);
                 }
               }}
               icon={
@@ -111,25 +109,24 @@ export default function NavBar() {
                 setTaskList({
                   listName: "Today",
                   listColor: "",
-                  listID: "",
                   listActive: "",
                   tasks: tasks,
                 });
                 if (tasks.length) {
                   setTaskDetails(tasks[0]);
-                  setMainTaskChanges({
+                  setTaskChanges({
+                    taskID: tasks[0].taskID,
                     date: tasks[0].date,
                     description: tasks[0].description,
                     title: tasks[0].title,
                     list: tasks[0].list,
                     listColor: tasks[0].listColor,
                     taskStatus: tasks[0].taskStatus,
+                    subtasks: tasks[0].subtasks,
                   });
-                  setSubtasksChanges([...tasks[0].subtasks]);
                 } else {
                   setTaskDetails(undefined);
-                  setMainTaskChanges(undefined);
-                  setSubtasksChanges(undefined);
+                  setTaskChanges(undefined);
                 }
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
@@ -165,25 +162,23 @@ export default function NavBar() {
                       tasks: list.tasks,
                       listColor: list.listColor,
                       listActive: list.listActive,
-                      listID: list.listID,
                     });
                     if (list.tasks.length) {
                       setTaskDetails(list.tasks[0]);
-                      setMainTaskChanges({
+                      setTaskChanges({
+                        taskID: list.tasks[0].taskID,
                         date: list.tasks[0].date,
                         description: list.tasks[0].description,
                         title: list.tasks[0].title,
                         list: list.tasks[0].list,
                         listColor: list.tasks[0].listColor,
                         taskStatus: list.tasks[0].taskStatus,
+                        subtasks: list.tasks[0].subtasks,
                       });
-                      setSubtasksChanges([...list.tasks[0].subtasks]);
                     } else {
                       setTaskDetails(undefined);
-                      setMainTaskChanges(undefined);
-                      setSubtasksChanges(undefined);
+                      setTaskChanges(undefined);
                     }
-                    console.log(list);
                   }}
                   key={`list category: ${list.listName}`}
                   icon={

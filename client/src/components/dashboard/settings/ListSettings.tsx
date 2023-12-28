@@ -1,4 +1,4 @@
-import { editCategoryList } from "../../../utils/task-list/editCategoryList";
+import { editCategoryList } from "../../../utils/task-list/update/editCategoryList";
 import InputLabeled from "../../ui/inputs/InputLabeled";
 import { MdDeleteForever as DeleteListIcon } from "react-icons/md";
 import { MdRestoreFromTrash as RestoreListIcon } from "react-icons/md";

@@ -1,26 +1,21 @@
 import { Container } from "react-bootstrap";
-import { useContext } from "react";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
-import { SubtaskType, SubtasksChangesType } from "../../../../types/TaskType";
-import { ModalContext } from "../../../../context/modalContext";
-import AddSubtaskModal from "../../../modal/AddSubtaskModalContent";
+import { SubtaskType, TaskType } from "../../../../types/TaskType";
 import Subtask from "./Subtask";
 type TTaskDetailsSubtasks = {
-  subtasks: SubtasksChangesType;
-  setSubtasks: (subtasks: SubtasksChangesType) => void;
+  taskChanges: TaskType;
+  setTaskChanges: (task: TaskType) => void;
 };
 export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
-  const { showModal, setShowModal, setModalContent } = useContext(ModalContext);
   const renderSubtasks = (): React.ReactNode => {
-    return props.subtasks.map((subtask: SubtaskType, index) => {
+    return props.taskChanges.subtasks.map((subtask: SubtaskType, index) => {
       return (
         <Subtask
           subtask={subtask}
-          title={subtask.title}
           index={index}
-          subtasks={props.subtasks}
-          setSubtasks={props.setSubtasks}
+          taskChanges={props.taskChanges}
+          setTaskChanges={props.setTaskChanges}
         />
       );
     });
@@ -34,10 +29,21 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
         icon={<AddIcon className="regular-icon" />}
         txt="Add subtask"
         size="sm"
-        buttonClass="d-flex flex-row align-items-center txt-small bg-transparent text-secondary fw-semibold border-0 rounded"
+        buttonClass="d-flex flex-row align-items-center txt-small bg-transparent text-secondary fw-semibold border-0 rounded me-auto"
         function={() => {
-          setModalContent(<AddSubtaskModal />);
-          setShowModal(!showModal);
+          const newSubtaskID = new Date().getTime();
+          props.setTaskChanges({
+            ...props.taskChanges,
+            subtasks: [
+              ...props.taskChanges.subtasks,
+              {
+                subtaskID: `${newSubtaskID}`,
+                title: "",
+                description: "",
+                subtaskStatus: false,
+              },
+            ],
+          });
         }}
       />
 

@@ -5,7 +5,7 @@ import {
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import InputLabeled from "../ui/inputs/InputLabeled";
 import { TasksContext } from "../../context/tasksContext";
 import IconButton from "../ui/buttons/IconButton";
@@ -13,24 +13,36 @@ import { MdAdd as AddIcon } from "react-icons/md";
 import { ModalContext } from "../../context/modalContext";
 import ListSelect from "../ui/inputs/ListSelect";
 import { AuthContext } from "../../context/authContext";
-import addNewSubtaskDB from "../../utils/api/post-data/post/addNewSubtaskDB";
 import addNewTaskDB from "../../utils/api/post-data/post/addNewTaskDB";
 import InputDate from "../ui/inputs/InputDate";
 import Subtask from "../dashboard/tasks-list-area/task-details/Subtask";
-import { SubtaskType } from "../../types/TaskType";
-import { TaskListType } from "../../types/CategoryListType";
-import addTask from "../../utils/task-list/addTask";
+import { TaskType } from "../../types/TaskType";
+import addTask from "../../utils/task-list/add/addTask";
+
 export default function AddTaskModalContent() {
   const { taskLists, setTaskLists, setTaskList, taskList } =
     useContext(TasksContext);
   const { userID } = useContext(AuthContext);
   const { showModal, setShowModal } = useContext(ModalContext);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [list, setList] = useState<TaskListType>(taskLists[0]);
-  const [date, setDate] = useState<string>("");
-  const [subtasks, setSubtasks] = useState<SubtaskType[]>([]);
+  const [newTask, setNewTask] = useState<TaskType>({
+    date: "",
+    description: "",
+    taskStatus: false,
+    title: "",
+    list: taskLists[0].listName,
+    taskID: `${new Date().getTime()}`,
+    listColor: taskLists[0].listColor,
+    subtasks: [],
+  });
 
+  const newTaskIsVlid = () => {
+    return newTask.title !== "" &&
+      newTask.description !== "" &&
+      newTask.date !== "" &&
+      newTask.list !== ""
+      ? true
+      : false;
+  };
   return (
     <>
       <ModalHeader closeButton>
@@ -42,9 +54,9 @@ export default function AddTaskModalContent() {
           labelStyle="text-secondary fw-semibold txt-small"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={title}
+          inputValue={newTask.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            setNewTask({ ...newTask, title: e.target.value });
           }}
         />
         <InputLabeled
@@ -52,9 +64,9 @@ export default function AddTaskModalContent() {
           labelStyle="text-secondary fw-semibold txt-small"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={description}
+          inputValue={newTask.description}
           onChange={(e) => {
-            setDescription(e.target.value);
+            setNewTask({ ...newTask, description: e.target.value });
           }}
         />
         <div className="d-flex flex-column p-0 gap-2 me-auto">
@@ -65,12 +77,16 @@ export default function AddTaskModalContent() {
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
-            selectedList={list.listName}
+            selectedList={newTask.list}
             onChange={(e) => {
               let listIndex = taskLists
                 .map((list) => list.listName)
                 .indexOf(e.target.value);
-              setList(taskLists[listIndex]);
+              setNewTask({
+                ...newTask,
+                list: taskLists[listIndex].listName,
+                listColor: taskLists[listIndex].listColor,
+              });
             }}
           />
           <InputDate
@@ -78,9 +94,9 @@ export default function AddTaskModalContent() {
             labelValue="Due date"
             inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle focus-ring rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
-            inputValue={date}
+            inputValue={newTask.date}
             onChange={(e) => {
-              setDate(e.target.value);
+              setNewTask({ ...newTask, date: e.target.value });
             }}
           />
         </div>
@@ -90,25 +106,29 @@ export default function AddTaskModalContent() {
           size="sm"
           buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent btn me-auto"
           function={() => {
-            setSubtasks([
-              ...subtasks,
-              {
-                title: "",
-                description: "",
-                subtaskStatus: false,
-              },
-            ]);
+            const newSubtaskID = new Date().getTime();
+            setNewTask({
+              ...newTask,
+              subtasks: [
+                ...newTask.subtasks,
+                {
+                  subtaskID: `${newSubtaskID}`,
+                  title: "",
+                  description: "",
+                  subtaskStatus: false,
+                },
+              ],
+            });
           }}
         />
-        {subtasks.map((subtask, index) => {
+        {newTask.subtasks.map((subtask, index) => {
           return (
             <Subtask
               key={`subtask ${index + 1}`}
               index={index}
               subtask={subtask}
-              subtasks={subtasks}
-              title={subtask.title}
-              setSubtasks={setSubtasks}
+              taskChanges={newTask}
+              setTaskChanges={setNewTask}
             />
           );
         })}
@@ -118,52 +138,16 @@ export default function AddTaskModalContent() {
           size="sm"
           className="txt-small"
           onClick={async () => {
-            if (title !== "" && description !== "" && date !== "") {
-              await addNewTaskDB(
-                userID,
-                list.listID,
-                title,
-                description,
-                date,
-                false
-              );
-              if (subtasks.length > 0) {
-                subtasks.forEach(async (subtask) => {
-                  await addNewSubtaskDB(
-                    userID,
-                    list.listID,
-                    title,
-                    subtask.title,
-                    false,
-                    subtask.description
-                  );
-                });
-              }
+            if (newTaskIsVlid()) {
+              await addNewTaskDB(userID, newTask);
+              addTask(taskLists, setTaskLists, taskList, setTaskList, newTask);
               setShowModal(!showModal);
-              addTask(
-                taskLists,
-                taskList,
-                setTaskList,
-                setTaskLists,
-                list.listID,
-                date,
-                description,
-                title,
-                list.listName,
-                list.listColor,
-                subtasks
-              );
             } else {
               setShowModal(!showModal);
             }
           }}
         >
-          {title !== "" &&
-          description !== "" &&
-          list !== undefined &&
-          date !== ""
-            ? "Add task"
-            : "Close"}
+          {newTaskIsVlid() ? "Add task" : "Close"}
         </Button>
       </ModalFooter>
     </>

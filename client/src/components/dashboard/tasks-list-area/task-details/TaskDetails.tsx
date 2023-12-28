@@ -3,26 +3,24 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { TasksContext } from "../../../../context/tasksContext";
 import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
 import InputLabeled from "../../../ui/inputs/InputLabeled";
-import {
-  compareSubtaskChanges,
-  compareTaskChanges,
-} from "../../../../utils/task-details/compareTaskChanges";
-
+import { compareTaskChanges } from "../../../../utils/task-details/compareTaskChanges";
 import ListSelect from "../../../ui/inputs/ListSelect";
 import InputDate from "../../../ui/inputs/InputDate";
 import { editTask } from "../../../../utils/task-details/editTask";
 import updateTaskDB from "../../../../utils/api/post-data/update/updateTaskDB";
 import { AuthContext } from "../../../../context/authContext";
+import updateTask from "../../../../utils/task-list/update/updateTask";
+import deleteTaskDB from "../../../../utils/api/delete-data/deleteTaskDB";
+import deleteTask from "../../../../utils/task-list/delete/deleteTask";
 export default function TaskDetails() {
   const {
     taskDetails,
     setTaskDetails,
     isTaskOpened,
-    mainTaskChanges,
-    setMainTaskChanges,
-    setSubtasksChanges,
-    subTasksChanges,
+    taskChanges,
+    setTaskChanges,
     taskLists,
+    setTaskLists,
     taskList,
   } = useContext(TasksContext);
   const { userID } = useContext(AuthContext);
@@ -31,34 +29,26 @@ export default function TaskDetails() {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
+
   useEffect(() => {
-    setMainTaskChanges(taskList.tasks[0]);
-  }, [taskList]);
-  useEffect(() => {
-    compareTaskChanges(mainTaskChanges, taskDetails, setHasTaskChanged);
-  }, [mainTaskChanges]);
-  useEffect(() => {
-    compareSubtaskChanges(
-      subTasksChanges,
-      taskDetails.subtasks,
-      setHasTaskChanged
-    );
-  }, [subTasksChanges]);
+    compareTaskChanges(taskChanges, taskDetails, setHasTaskChanged);
+  }, [taskChanges]);
   useEffect(() => {
     setSliderHeight(taskDetailsRef.current.offsetHeight);
   }, []);
   useEffect(() => {
     sliderRef.current.style.marginTop = `${sliderHeight}px`;
     setTimeout(() => {
-      setMainTaskChanges({
+      setTaskChanges({
+        taskID: taskDetails.taskID,
         date: taskDetails.date,
         description: taskDetails.description,
         title: taskDetails.title,
         list: taskDetails.list,
         listColor: taskDetails.listColor,
         taskStatus: taskDetails.taskStatus,
+        subtasks: taskDetails.subtasks,
       });
-      setSubtasksChanges(taskDetails.subtasks);
     }, reloadDataTime + 5);
     setTimeout(() => {
       sliderRef.current.style.marginTop = `${0}px`;
@@ -81,9 +71,9 @@ export default function TaskDetails() {
           labelValue="Task:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={mainTaskChanges.title}
+          inputValue={taskChanges.title}
           onChange={(e) => {
-            editTask(mainTaskChanges, setMainTaskChanges, "title", e);
+            editTask(taskChanges, setTaskChanges, "title", e);
           }}
         />
         <InputLabeled
@@ -91,9 +81,9 @@ export default function TaskDetails() {
           labelValue="Description:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={mainTaskChanges.description}
+          inputValue={taskChanges.description}
           onChange={(e) => {
-            editTask(mainTaskChanges, setMainTaskChanges, "description", e);
+            editTask(taskChanges, setTaskChanges, "description", e);
           }}
         />
         <div className="d-flex flex-column p-0 gap-2">
@@ -104,9 +94,9 @@ export default function TaskDetails() {
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
             options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
-            selectedList={mainTaskChanges.list}
+            selectedList={taskChanges.list}
             onChange={(e) => {
-              editTask(mainTaskChanges, setMainTaskChanges, "list", e);
+              editTask(taskChanges, setTaskChanges, "list", e);
             }}
           />
           <InputDate
@@ -114,40 +104,38 @@ export default function TaskDetails() {
             labelValue="Due date"
             inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
-            inputValue={mainTaskChanges.date}
+            inputValue={taskChanges.date}
             onChange={(e) => {
-              editTask(mainTaskChanges, setMainTaskChanges, "date", e);
+              editTask(taskChanges, setTaskChanges, "date", e);
             }}
           />
         </div>
         <TaskDetailsSubtasks
-          subtasks={subTasksChanges}
-          setSubtasks={setSubtasksChanges}
+          taskChanges={taskChanges}
+          setTaskChanges={setTaskChanges}
         />
       </Container>
       <div className="position-absolute bg-body-secondary bottom-0 w-100 p-4 ">
         <Button
           size="sm"
           className={`w-100 ${
-            hasTaskChanged === false
-              ? "bg-primary"
-              : "bg-warning text-secondary"
+            !hasTaskChanged ? "bg-primary" : "bg-warning text-secondary"
           } border-0 fw-semibold`}
-          onClick={() => {
-            if (hasTaskChanged === false) {
-              console.log("task deleted");
+          onClick={async () => {
+            if (!hasTaskChanged) {
+              deleteTaskDB(userID, taskChanges);
+              deleteTask(taskLists, setTaskLists, taskChanges);
+              setTaskDetails(taskList.tasks[0]);
+              setTaskChanges(taskList.tasks[0]);
             } else {
-              // updateTaskDB(
-              //   userID,
-              //   taskList.listName,
-              //   { ...mainTaskChanges, subtasks: subTasksChanges },
-              //   mainTaskChanges.title
-              // );
-              console.log("changes saved");
+              await updateTaskDB(userID, taskDetails, taskChanges);
+              updateTask(taskDetails, taskChanges, setTaskLists, taskLists);
+              setTaskDetails(taskList.tasks[0]);
+              setTaskChanges(taskList.tasks[0]);
             }
           }}
         >
-          {hasTaskChanged === false ? "Delete task" : "Save changes"}
+          {!hasTaskChanged ? "Delete task" : "Save changes"}
         </Button>
       </div>
     </div>

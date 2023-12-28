@@ -4,20 +4,22 @@ import { MdAdd as AddIcon } from "react-icons/md";
 import { MdDeleteForever as DeleteDescriptionIcon } from "react-icons/md";
 import { RiDeleteBack2Fill as DeleteSubtaskIcon } from "react-icons/ri";
 import { PiArrowElbowDownRightThin as SubtaskIcon } from "react-icons/pi";
-import { SubtaskType } from "../../../../types/TaskType";
+import { SubtaskType, TaskType } from "../../../../types/TaskType";
 import { editSubtask } from "../../../../utils/task-details/editSubtask";
 type TSubtask = {
   subtask: SubtaskType;
-  title: string;
   index: number;
-  subtasks: SubtaskType[];
-  setSubtasks: React.Dispatch<React.SetStateAction<SubtaskType[]>>;
+  taskChanges: TaskType;
+  setTaskChanges: React.Dispatch<React.SetStateAction<TaskType>>;
 };
 export default function Subtask(props: TSubtask) {
   return (
-    <div className="d-flex flex-row gap-2 align-items-start">
+    <div
+      className="d-flex flex-row gap-2 align-items-start"
+      style={{ padding: "5px" }}
+    >
       <div className="d-flex flex-column">
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row align-items-center">
           <InputLabeled
             inputStyle={`${
               props.subtask.title !== ""
@@ -28,11 +30,11 @@ export default function Subtask(props: TSubtask) {
             inputValue={props.subtask.title}
             onChange={(e) => {
               editSubtask(
-                props.subtasks,
-                props.setSubtasks,
+                props.taskChanges,
+                props.setTaskChanges,
                 "title",
                 e.target.value,
-                props.title
+                props.subtask.title
               );
             }}
           />
@@ -41,13 +43,28 @@ export default function Subtask(props: TSubtask) {
             <IconButton
               icon={<AddIcon className="regular-icon" />}
               size="sm"
-              buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent"
+              buttonClass="d-flex flex-row align-items-center  text-secondary fw-semibold border-0 rounded bg-transparent"
               function={() => {
-                props.subtasks[props.index].description = "";
-                props.setSubtasks([...props.subtasks]);
+                props.taskChanges.subtasks[props.index].description = "";
+                props.setTaskChanges({
+                  ...props.taskChanges,
+                  subtasks: [...props.taskChanges.subtasks],
+                });
               }}
             />
           ) : null}
+          <DeleteSubtaskIcon
+            type="button"
+            className="ms-auto regular-icon text-secondary"
+            onClick={() => {
+              props.setTaskChanges({
+                ...props.taskChanges,
+                subtasks: props.taskChanges.subtasks.filter(
+                  (deleteSub) => deleteSub.subtaskID !== props.subtask.subtaskID
+                ),
+              });
+            }}
+          ></DeleteSubtaskIcon>
         </div>
         {props.subtask.description !== undefined ? (
           <div className="d-flex flex-row mt-1">
@@ -62,39 +79,29 @@ export default function Subtask(props: TSubtask) {
               inputValue={props.subtask.description}
               onChange={(e) => {
                 editSubtask(
-                  props.subtasks,
-                  props.setSubtasks,
+                  props.taskChanges,
+                  props.setTaskChanges,
                   "description",
                   e.target.value,
-                  props.title
+                  props.subtask.title
                 );
               }}
             />
             <IconButton
               icon={<DeleteDescriptionIcon className="regular-icon" />}
               size="sm"
-              buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent"
+              buttonClass="d-flex flex-row align-items-center  text-secondary fw-semibold border-0 rounded bg-transparent"
               function={() => {
-                props.subtasks[props.index].description = undefined;
-                props.setSubtasks([...props.subtasks]);
+                props.taskChanges.subtasks[props.index].description = undefined;
+                props.setTaskChanges({
+                  ...props.taskChanges,
+                  subtasks: [...props.taskChanges.subtasks],
+                });
               }}
             />
           </div>
         ) : null}
       </div>
-      <DeleteSubtaskIcon
-        type="button"
-        className="ms-auto mt-1 regular-icon text-secondary"
-        onClick={() => {
-          props.setSubtasks(
-            props.subtasks.filter(
-              (deleteSub) => deleteSub.title !== props.subtask.title
-            )
-          );
-        }}
-      >
-        Delete
-      </DeleteSubtaskIcon>
     </div>
   );
 }

@@ -1,8 +1,8 @@
-import { TaskType } from "../../types/TaskType";
+import { Task } from "../../context/tasksContext";
 
 export const editTask = (
-  task: TaskType,
-  setEditedTask: (task: TaskType) => void,
+  task: Task,
+  setEditedTask: (task: Task) => void,
   property: string,
   e: any
 ) => {

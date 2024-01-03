@@ -16,9 +16,8 @@ export default function TaskDetails() {
   const {
     currentTask,
     setCurrentTask,
+    prevTask,
     isTaskOpened,
-    editedTask,
-    setEditedTask,
     taskLists,
     setTaskLists,
     currentList,
@@ -29,17 +28,16 @@ export default function TaskDetails() {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
-
   useEffect(() => {
-    compareTaskChanges(editedTask, setEditedTask, setHasTaskChanged);
-  }, [editTask]);
+    compareTaskChanges(currentTask, prevTask.current, setHasTaskChanged);
+  }, [currentTask]);
   useEffect(() => {
     setSliderHeight(taskDetailsRef.current.offsetHeight);
   }, []);
   useEffect(() => {
     sliderRef.current.style.marginTop = `${sliderHeight}px`;
     setTimeout(() => {
-      setEditedTask(currentTask);
+      setCurrentTask(currentTask);
     }, reloadDataTime + 5);
     setTimeout(() => {
       sliderRef.current.style.marginTop = `${0}px`;
@@ -62,9 +60,9 @@ export default function TaskDetails() {
           labelValue="Task:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={editedTask.title}
+          inputValue={currentTask.title}
           onChange={(e) => {
-            editTask(editedTask, setEditedTask, "title", e);
+            editTask(currentTask, setCurrentTask, "title", e);
           }}
         />
         <InputLabeled
@@ -72,9 +70,9 @@ export default function TaskDetails() {
           labelValue="Description:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={editedTask.description}
+          inputValue={currentTask.description}
           onChange={(e) => {
-            editTask(editedTask, setEditedTask, "description", e);
+            editTask(currentTask, setCurrentTask, "description", e);
           }}
         />
         <div className="d-flex flex-column p-0 gap-2">
@@ -85,9 +83,9 @@ export default function TaskDetails() {
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
             options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
-            selectedList={editedTask.list}
+            selectedList={currentTask.list}
             onChange={(e) => {
-              editTask(editedTask, setEditedTask, "list", e);
+              editTask(currentTask, setCurrentTask, "list", e);
             }}
           />
           <InputDate
@@ -95,15 +93,15 @@ export default function TaskDetails() {
             labelValue="Due date"
             inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
-            inputValue={editedTask.date}
+            inputValue={currentTask.date}
             onChange={(e) => {
-              editTask(editedTask, setEditedTask, "date", e);
+              editTask(currentTask, setCurrentTask, "date", e);
             }}
           />
         </div>
         <TaskDetailsSubtasks
-          taskChanges={editedTask}
-          setTaskChanges={setEditedTask}
+          taskChanges={currentTask}
+          setTaskChanges={setCurrentTask}
         />
       </Container>
       <div className="position-absolute bg-body-secondary bottom-0 w-100 p-4 ">
@@ -114,15 +112,23 @@ export default function TaskDetails() {
           } border-0 fw-semibold`}
           onClick={async () => {
             if (!hasTaskChanged) {
-              deleteTaskDB(authContext.userID, editedTask);
-              deleteTask(taskLists, setTaskLists, editedTask);
+              deleteTaskDB(authContext.userID, currentTask);
+              deleteTask(taskLists, setTaskLists, currentTask);
               setCurrentTask(currentList.tasks[0]);
-              setEditedTask(currentList.tasks[0]);
             } else {
-              await updateTaskDB(authContext.userID, currentTask, editedTask);
-              updateTask(currentTask, editedTask, setTaskLists, taskLists);
+              await updateTaskDB(
+                authContext.userID,
+                prevTask.current,
+                currentTask
+              );
+              updateTask(
+                prevTask.current,
+                currentTask,
+                setTaskLists,
+                taskLists
+              );
               setCurrentTask(currentList.tasks[0]);
-              setEditedTask(currentList.tasks[0]);
+              prevTask.current = currentList.tasks[0];
             }
           }}
         >

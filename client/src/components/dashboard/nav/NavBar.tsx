@@ -20,8 +20,9 @@ import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
+
 export default function NavBar() {
-  const { taskLists, setCurrentList, setCurrentTask, setEditedTask } =
+  const { taskLists, setCurrentList, setCurrentTask, prevTask } =
     useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
 
@@ -60,19 +61,10 @@ export default function NavBar() {
                 });
                 if (tasks.length) {
                   setCurrentTask(tasks[0]);
-                  setEditedTask({
-                    taskID: tasks[0].taskID,
-                    date: tasks[0].date,
-                    description: tasks[0].description,
-                    title: tasks[0].title,
-                    list: tasks[0].list,
-                    listColor: tasks[0].listColor,
-                    taskStatus: tasks[0].taskStatus,
-                    subtasks: tasks[0].subtasks,
-                  });
+                  prevTask.current = tasks[0];
                 } else {
                   setCurrentTask(undefined);
-                  setEditedTask(undefined);
+                  prevTask.current = undefined;
                 }
               }}
               icon={
@@ -107,19 +99,10 @@ export default function NavBar() {
                 });
                 if (tasks.length) {
                   setCurrentTask(tasks[0]);
-                  setEditedTask({
-                    taskID: tasks[0].taskID,
-                    date: tasks[0].date,
-                    description: tasks[0].description,
-                    title: tasks[0].title,
-                    list: tasks[0].list,
-                    listColor: tasks[0].listColor,
-                    taskStatus: tasks[0].taskStatus,
-                    subtasks: tasks[0].subtasks,
-                  });
+                  prevTask.current = tasks[0];
                 } else {
                   setCurrentTask(undefined);
-                  setEditedTask(undefined);
+                  prevTask.current = undefined;
                 }
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
@@ -158,19 +141,10 @@ export default function NavBar() {
                     });
                     if (list.tasks.length) {
                       setCurrentTask(list.tasks[0]);
-                      setEditedTask({
-                        taskID: list.tasks[0].taskID,
-                        date: list.tasks[0].date,
-                        description: list.tasks[0].description,
-                        title: list.tasks[0].title,
-                        list: list.tasks[0].list,
-                        listColor: list.tasks[0].listColor,
-                        taskStatus: list.tasks[0].taskStatus,
-                        subtasks: list.tasks[0].subtasks,
-                      });
+                      prevTask.current = list.tasks[0];
                     } else {
                       setCurrentTask(undefined);
-                      setEditedTask(undefined);
+                      prevTask.current = undefined;
                     }
                   }}
                   key={`list category: ${list.listName}`}

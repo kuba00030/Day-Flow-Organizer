@@ -7,7 +7,8 @@ type TTaskListItem = {
   task: Task;
 };
 export default function TaskListItem(props: TTaskListItem) {
-  const { isTaskOpened, setIsTaskOpened, setCurrentTask } = useTasksContext();
+  const { isTaskOpened, setIsTaskOpened, setCurrentTask, prevTask } =
+    useTasksContext();
 
   return (
     <Container className="d-flex flex-column p-0">
@@ -20,6 +21,7 @@ export default function TaskListItem(props: TTaskListItem) {
           onClick={() => {
             setIsTaskOpened(!isTaskOpened);
             setCurrentTask(props.task);
+            prevTask.current = props.task;
           }}
         >
           <div>

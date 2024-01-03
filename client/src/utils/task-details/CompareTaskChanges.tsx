@@ -1,8 +1,8 @@
-import { TaskType } from "../../types/TaskType";
+import { Task } from "../../context/tasksContext";
 
 export const compareTaskChanges = (
-  editedTask: TaskType,
-  originTask: TaskType,
+  editedTask: Task,
+  originTask: Task,
   setHasTaskChanged: (val: boolean) => void
 ) => {
   for (const property in editedTask) {

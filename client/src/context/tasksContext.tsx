@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MutableRefObject,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useAuthContext } from "./authContext";
 import getTaskLists from "../utils/api/get-data/getTaskLists";
 import getTasksInDaysRange from "../utils/task-list/get/getTasksInDaysRange";
@@ -32,8 +39,7 @@ export type TaskLists = TaskList[];
 type TasksContext = {
   currentTask: Task;
   setCurrentTask: React.Dispatch<React.SetStateAction<Task>>;
-  editedTask: Task;
-  setEditedTask: React.Dispatch<React.SetStateAction<Task>>;
+  prevTask: MutableRefObject<Task | undefined>;
   currentList: TaskList;
   setCurrentList: React.Dispatch<React.SetStateAction<TaskList>>;
   taskLists: TaskLists;
@@ -52,7 +58,6 @@ export default function TasksContextProvider({
   children,
 }: ContextProviderProps) {
   const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
-  const [editedTask, setEditedTask] = useState<Task | undefined>(undefined);
   const [currentList, setCurrentList] = useState<TaskList>({
     listName: "Today",
     listColor: "",
@@ -61,8 +66,9 @@ export default function TasksContextProvider({
   });
   const [taskLists, setTaskLists] = useState<TaskLists>([]);
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
-  const { authContext } = useAuthContext();
+  const prevTask = useRef(currentTask);
 
+  const { authContext } = useAuthContext();
   const fetchedTaskLists = async () => {
     const taskListsData = await getTaskLists(authContext.userID, false);
     return taskListsData;
@@ -73,7 +79,6 @@ export default function TasksContextProvider({
       fetchedTaskLists().then((taskListsData) => {
         setTaskLists(taskListsData);
         setCurrentTask(getTasksInDaysRange(taskListsData, 0).tasks[0]);
-        setEditedTask(getTasksInDaysRange(taskListsData, 0).tasks[0]);
         setCurrentList({
           listName: "Today",
           listColor: "",
@@ -89,8 +94,7 @@ export default function TasksContextProvider({
       value={{
         currentTask,
         setCurrentTask,
-        editedTask,
-        setEditedTask,
+        prevTask,
         currentList,
         setCurrentList,
         taskLists,

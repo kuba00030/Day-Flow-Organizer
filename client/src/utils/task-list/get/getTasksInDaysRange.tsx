@@ -1,13 +1,12 @@
-import { TaskListsType } from "../../../types/CategoryListType";
-import { TaskType } from "../../../types/TaskType";
+import { Task, TaskLists } from "../../../context/tasksContext";
 import countListTasks from "../countListTasks";
 import getCurrentDate from "./getCurrentDate";
 
 export default function getTasksInDaysRange(
-  taskLists: TaskListsType,
+  taskLists: TaskLists,
   endDateOffset: number
 ) {
-  let tasks: TaskType[] = [];
+  let tasks: Task[] = [];
   let tasksAmount: number;
 
   taskLists.forEach((list) => {

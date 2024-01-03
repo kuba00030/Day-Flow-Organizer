@@ -6,23 +6,23 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import InputLabeled from "../components/ui/inputs/InputLabeled";
 import {
   facebookProvider,
   googleProvider,
   twitterProvider,
 } from "../firebase-config/firebaseConfig";
-import { AuthContext } from "../context/authContext";
+import { useAuthContext } from "../context/authContext";
 import handleSignInWithPasswordDB from "../utils/api/sign-in/signInWithPasswordDB";
 import handleSignInWithProviderDB from "../utils/api/sign-in/signInWithProviderDB";
 import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
-  const { isLogged } = useContext(AuthContext);
+  const { authContext } = useAuthContext();
   const navigate = useNavigate();
-  onLoggedRedirectHook(isLogged, navigate);
+  onLoggedRedirectHook(authContext.isLogged, navigate);
   return (
     <div className="login-register-container">
       <div className="login-register-welcome-text mb-3">

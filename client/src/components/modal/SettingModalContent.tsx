@@ -1,18 +1,17 @@
 import { Button, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
 import { useState, useEffect, useContext } from "react";
-import { TasksContext } from "../../context/tasksContext";
+import { TaskLists, TasksContext } from "../../context/tasksContext";
 import updateTaskListDB from "../../utils/api/post-data/update/updateTaskListDB";
-import { AuthContext } from "../../context/authContext";
-import { ModalContext } from "../../context/modalContext";
-import { TaskListsType } from "../../types/CategoryListType";
+import { useAuthContext } from "../../context/authContext";
+import { useModalContext } from "../../context/modalContext";
 import ListSettings from "../dashboard/settings/ListSettings";
 import hasListChangedHook from "./hooks/settings/hasListChangedHook";
 
 export default function SettingsModalContent() {
   const { taskLists, setTaskLists } = useContext(TasksContext);
-  const { userID } = useContext(AuthContext);
-  const { setShowModal, showModal } = useContext(ModalContext);
-  const [editedLists, setEditedLists] = useState<TaskListsType>([]);
+  const { authContext } = useAuthContext();
+  const { modalContext, setModalContext } = useModalContext();
+  const [editedLists, setEditedLists] = useState<TaskLists>([]);
   const [listHasChanged, setListHasChanged] = useState(false);
 
   useEffect(() => {
@@ -35,6 +34,7 @@ export default function SettingsModalContent() {
             {editedLists.map((list, index: number) => {
               return (
                 <ListSettings
+                  key={`list ${index}`}
                   list={list}
                   index={index}
                   listActive={list.listActive}
@@ -53,11 +53,21 @@ export default function SettingsModalContent() {
               } border-0 fw-semibold`}
               onClick={async () => {
                 if (listHasChanged === true) {
-                  await updateTaskListDB(userID, taskLists, editedLists);
-                  setShowModal(!showModal);
+                  await updateTaskListDB(
+                    authContext.userID,
+                    taskLists,
+                    editedLists
+                  );
+                  setModalContext({
+                    ...modalContext,
+                    showModal: !modalContext.showModal,
+                  });
                   setTaskLists(editedLists);
                 } else {
-                  setShowModal(!showModal);
+                  setModalContext({
+                    ...modalContext,
+                    showModal: !modalContext.showModal,
+                  });
                 }
               }}
             >

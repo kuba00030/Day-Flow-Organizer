@@ -1,13 +1,12 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../firebase-config/firebaseConfig";
-import { TaskType } from "../../../types/TaskType";
-import { TaskListsType } from "../../../types/CategoryListType";
+import { Task, TaskLists } from "../../../context/tasksContext";
 
 export default async function getTaskLists(
   userID: string,
   taskStatus: boolean
 ) {
-  const taskLists: TaskListsType = [];
+  const taskLists: TaskLists = [];
   const taskListsRef = query(collection(db, "users", userID, "task-lists"));
   const taskListsSnapshot = await getDocs(taskListsRef);
 
@@ -34,7 +33,7 @@ export default async function getTaskLists(
         tasks: [],
       });
     } else {
-      const tasks: TaskType[] = [];
+      const tasks: Task[] = [];
       // single task from a list
       for (const taskDoc of taskListSnapshot.docs) {
         tasks.push({
@@ -66,5 +65,5 @@ export default async function getTaskLists(
       });
     }
   }
-  return taskLists.reverse();
+  return taskLists;
 }

@@ -1,11 +1,10 @@
-import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
-import { TaskType } from "../../../types/TaskType";
+import { Task, TaskLists } from "../../../context/tasksContext";
 
 export default function updateTask(
-  originTask: TaskType,
-  editedTask: TaskType,
-  setTaskLists: (lists: TaskListsType) => void,
-  taskLists: TaskListsType
+  originTask: Task,
+  editedTask: Task,
+  setTaskLists: (lists: TaskLists) => void,
+  taskLists: TaskLists
 ) {
   const originListIndex = taskLists.findIndex(
     (list) => list.listName === originTask.list

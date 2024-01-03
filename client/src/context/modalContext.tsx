@@ -1,10 +1,44 @@
-import { createContext } from "react";
+import { createContext, useContext, useState } from "react";
+import { ContextProviderProps } from "./authContext";
 
-type TModalContext = {
+type Modal = {
+  modalContent: React.ReactNode | null;
   showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  modalContent: React.ReactNode;
-  setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
 };
 
-export const ModalContext = createContext<TModalContext | null>(null);
+type ModalContext = {
+  modalContext: Modal;
+  setModalContext: React.Dispatch<React.SetStateAction<Modal>>;
+};
+
+export const ModalContext = createContext<ModalContext | null>(null);
+
+export default function ModalContextProvider({
+  children,
+}: ContextProviderProps) {
+  const [modalContext, setModalContext] = useState<Modal>({
+    modalContent: null,
+    showModal: false,
+  });
+
+  return (
+    <ModalContext.Provider
+      value={{
+        modalContext,
+        setModalContext,
+      }}
+    >
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+export function useModalContext() {
+  const context = useContext(ModalContext);
+  if (!context) {
+    throw new Error(
+      "useModalContext should be used within a  ModalContextProvider"
+    );
+  }
+  return context;
+}

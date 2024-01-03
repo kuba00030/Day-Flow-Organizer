@@ -13,24 +13,17 @@ import {
 } from "react-icons/lu";
 import { CiSettings as SettingsIcon } from "react-icons/ci";
 import { PiSignOutBold as SignOutIcon } from "react-icons/pi";
-import { useContext } from "react";
-import { TasksContext } from "../../../context/tasksContext";
-import { ModalContext } from "../../../context/modalContext";
-import { TaskListType } from "../../../types/CategoryListType";
+import { TaskList, useTasksContext } from "../../../context/tasksContext";
+import { useModalContext } from "../../../context/modalContext";
 import SettingsModalContent from "../../modal/SettingModalContent";
 import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
 export default function NavBar() {
-  const {
-    taskLists,
-    setTaskList,
-    setTaskDetails,
-    taskChanges,
-    setTaskChanges,
-  } = useContext(TasksContext);
-  const { showModal, setModalContent, setShowModal } = useContext(ModalContext);
+  const { taskLists, setCurrentList, setCurrentTask, setEditedTask } =
+    useTasksContext();
+  const { modalContext, setModalContext } = useModalContext();
 
   return (
     <Container className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
@@ -47,7 +40,7 @@ export default function NavBar() {
               itemValue={`${
                 getTasksInDaysRange(
                   taskLists.filter(
-                    (list: TaskListType) => list.listActive === true
+                    (list: TaskList) => list.listActive === true
                   ),
                   7
                 ).tasksAmount
@@ -55,19 +48,19 @@ export default function NavBar() {
               onClick={() => {
                 const { tasks } = getTasksInDaysRange(
                   taskLists.filter(
-                    (list: TaskListType) => list.listActive === true
+                    (list: TaskList) => list.listActive === true
                   ),
                   7
                 );
-                setTaskList({
+                setCurrentList({
                   listName: "Upcoming",
                   listColor: "",
                   listActive: "",
                   tasks: tasks,
                 });
                 if (tasks.length) {
-                  setTaskDetails(tasks[0]);
-                  setTaskChanges({
+                  setCurrentTask(tasks[0]);
+                  setEditedTask({
                     taskID: tasks[0].taskID,
                     date: tasks[0].date,
                     description: tasks[0].description,
@@ -78,8 +71,8 @@ export default function NavBar() {
                     subtasks: tasks[0].subtasks,
                   });
                 } else {
-                  setTaskDetails(undefined);
-                  setTaskChanges(undefined);
+                  setCurrentTask(undefined);
+                  setEditedTask(undefined);
                 }
               }}
               icon={
@@ -94,7 +87,7 @@ export default function NavBar() {
               itemValue={`${
                 getTasksInDaysRange(
                   taskLists.filter(
-                    (list: TaskListType) => list.listActive === true
+                    (list: TaskList) => list.listActive === true
                   ),
                   0
                 ).tasksAmount
@@ -102,19 +95,19 @@ export default function NavBar() {
               onClick={() => {
                 const { tasks } = getTasksInDaysRange(
                   taskLists.filter(
-                    (list: TaskListType) => list.listActive === true
+                    (list: TaskList) => list.listActive === true
                   ),
                   0
                 );
-                setTaskList({
+                setCurrentList({
                   listName: "Today",
                   listColor: "",
                   listActive: "",
                   tasks: tasks,
                 });
                 if (tasks.length) {
-                  setTaskDetails(tasks[0]);
-                  setTaskChanges({
+                  setCurrentTask(tasks[0]);
+                  setEditedTask({
                     taskID: tasks[0].taskID,
                     date: tasks[0].date,
                     description: tasks[0].description,
@@ -125,8 +118,8 @@ export default function NavBar() {
                     subtasks: tasks[0].subtasks,
                   });
                 } else {
-                  setTaskDetails(undefined);
-                  setTaskChanges(undefined);
+                  setCurrentTask(undefined);
+                  setEditedTask(undefined);
                 }
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
@@ -148,7 +141,7 @@ export default function NavBar() {
           header="LISTS"
           items={taskLists
             .filter((list) => list.listActive === true)
-            .map((list: TaskListType) => {
+            .map((list: TaskList) => {
               return (
                 <NavAccordionItem
                   itemStyle="accordion-item-txt text-secondary ms-auto"
@@ -157,15 +150,15 @@ export default function NavBar() {
                   header={`${list.listName}`}
                   itemValue={`${countListTasks(list.tasks)}`}
                   onClick={() => {
-                    setTaskList({
+                    setCurrentList({
                       listName: list.listName,
                       tasks: list.tasks,
                       listColor: list.listColor,
                       listActive: list.listActive,
                     });
                     if (list.tasks.length) {
-                      setTaskDetails(list.tasks[0]);
-                      setTaskChanges({
+                      setCurrentTask(list.tasks[0]);
+                      setEditedTask({
                         taskID: list.tasks[0].taskID,
                         date: list.tasks[0].date,
                         description: list.tasks[0].description,
@@ -176,8 +169,8 @@ export default function NavBar() {
                         subtasks: list.tasks[0].subtasks,
                       });
                     } else {
-                      setTaskDetails(undefined);
-                      setTaskChanges(undefined);
+                      setCurrentTask(undefined);
+                      setEditedTask(undefined);
                     }
                   }}
                   key={`list category: ${list.listName}`}
@@ -198,8 +191,10 @@ export default function NavBar() {
             size="sm"
             buttonClass="d-flex flex-row gap-2 ms-1 align-items-center txt-small text-secondary fw-semibold bg-transparent  border-0"
             function={() => {
-              setShowModal(!showModal);
-              setModalContent(<AddNewList />);
+              setModalContext({
+                showModal: !modalContext.showModal,
+                modalContent: <AddNewList />,
+              });
             }}
           />
           <IconButton
@@ -208,8 +203,10 @@ export default function NavBar() {
             size="sm"
             buttonClass="d-flex flex-row gap-2 ms-1 align-items-center txt-small text-secondary fw-semibold bg-transparent  border-0"
             function={() => {
-              setShowModal(!showModal);
-              setModalContent(<SettingsModalContent />);
+              setModalContext({
+                showModal: !modalContext.showModal,
+                modalContent: <SettingsModalContent />,
+              });
             }}
           />
         </div>

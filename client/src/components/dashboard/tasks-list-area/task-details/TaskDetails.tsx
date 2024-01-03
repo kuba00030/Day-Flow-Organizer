@@ -1,6 +1,6 @@
 import { Button, Container } from "react-bootstrap";
-import { useContext, useEffect, useState, useRef } from "react";
-import { TasksContext } from "../../../../context/tasksContext";
+import { useEffect, useState, useRef } from "react";
+import { useTasksContext } from "../../../../context/tasksContext";
 import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
 import InputLabeled from "../../../ui/inputs/InputLabeled";
 import { compareTaskChanges } from "../../../../utils/task-details/compareTaskChanges";
@@ -8,22 +8,22 @@ import ListSelect from "../../../ui/inputs/ListSelect";
 import InputDate from "../../../ui/inputs/InputDate";
 import { editTask } from "../../../../utils/task-details/editTask";
 import updateTaskDB from "../../../../utils/api/post-data/update/updateTaskDB";
-import { AuthContext } from "../../../../context/authContext";
+import { useAuthContext } from "../../../../context/authContext";
 import updateTask from "../../../../utils/task-list/update/updateTask";
 import deleteTaskDB from "../../../../utils/api/delete-data/deleteTaskDB";
 import deleteTask from "../../../../utils/task-list/delete/deleteTask";
 export default function TaskDetails() {
   const {
-    taskDetails,
-    setTaskDetails,
+    currentTask,
+    setCurrentTask,
     isTaskOpened,
-    taskChanges,
-    setTaskChanges,
+    editedTask,
+    setEditedTask,
     taskLists,
     setTaskLists,
-    taskList,
-  } = useContext(TasksContext);
-  const { userID } = useContext(AuthContext);
+    currentList,
+  } = useTasksContext();
+  const { authContext } = useAuthContext();
   const [hasTaskChanged, setHasTaskChanged] = useState<boolean>(false);
   const [sliderHeight, setSliderHeight] = useState<number>();
   const sliderRef = useRef<HTMLDivElement | null>(null);
@@ -31,24 +31,15 @@ export default function TaskDetails() {
   const reloadDataTime = 510;
 
   useEffect(() => {
-    compareTaskChanges(taskChanges, taskDetails, setHasTaskChanged);
-  }, [taskChanges]);
+    compareTaskChanges(editedTask, setEditedTask, setHasTaskChanged);
+  }, [editTask]);
   useEffect(() => {
     setSliderHeight(taskDetailsRef.current.offsetHeight);
   }, []);
   useEffect(() => {
     sliderRef.current.style.marginTop = `${sliderHeight}px`;
     setTimeout(() => {
-      setTaskChanges({
-        taskID: taskDetails.taskID,
-        date: taskDetails.date,
-        description: taskDetails.description,
-        title: taskDetails.title,
-        list: taskDetails.list,
-        listColor: taskDetails.listColor,
-        taskStatus: taskDetails.taskStatus,
-        subtasks: taskDetails.subtasks,
-      });
+      setEditedTask(currentTask);
     }, reloadDataTime + 5);
     setTimeout(() => {
       sliderRef.current.style.marginTop = `${0}px`;
@@ -71,9 +62,9 @@ export default function TaskDetails() {
           labelValue="Task:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={taskChanges.title}
+          inputValue={editedTask.title}
           onChange={(e) => {
-            editTask(taskChanges, setTaskChanges, "title", e);
+            editTask(editedTask, setEditedTask, "title", e);
           }}
         />
         <InputLabeled
@@ -81,9 +72,9 @@ export default function TaskDetails() {
           labelValue="Description:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
-          inputValue={taskChanges.description}
+          inputValue={editedTask.description}
           onChange={(e) => {
-            editTask(taskChanges, setTaskChanges, "description", e);
+            editTask(editedTask, setEditedTask, "description", e);
           }}
         />
         <div className="d-flex flex-column p-0 gap-2">
@@ -94,9 +85,9 @@ export default function TaskDetails() {
             selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
             options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
-            selectedList={taskChanges.list}
+            selectedList={editedTask.list}
             onChange={(e) => {
-              editTask(taskChanges, setTaskChanges, "list", e);
+              editTask(editedTask, setEditedTask, "list", e);
             }}
           />
           <InputDate
@@ -104,15 +95,15 @@ export default function TaskDetails() {
             labelValue="Due date"
             inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
-            inputValue={taskChanges.date}
+            inputValue={editedTask.date}
             onChange={(e) => {
-              editTask(taskChanges, setTaskChanges, "date", e);
+              editTask(editedTask, setEditedTask, "date", e);
             }}
           />
         </div>
         <TaskDetailsSubtasks
-          taskChanges={taskChanges}
-          setTaskChanges={setTaskChanges}
+          taskChanges={editedTask}
+          setTaskChanges={setEditedTask}
         />
       </Container>
       <div className="position-absolute bg-body-secondary bottom-0 w-100 p-4 ">
@@ -123,15 +114,15 @@ export default function TaskDetails() {
           } border-0 fw-semibold`}
           onClick={async () => {
             if (!hasTaskChanged) {
-              deleteTaskDB(userID, taskChanges);
-              deleteTask(taskLists, setTaskLists, taskChanges);
-              setTaskDetails(taskList.tasks[0]);
-              setTaskChanges(taskList.tasks[0]);
+              deleteTaskDB(authContext.userID, editedTask);
+              deleteTask(taskLists, setTaskLists, editedTask);
+              setCurrentTask(currentList.tasks[0]);
+              setEditedTask(currentList.tasks[0]);
             } else {
-              await updateTaskDB(userID, taskDetails, taskChanges);
-              updateTask(taskDetails, taskChanges, setTaskLists, taskLists);
-              setTaskDetails(taskList.tasks[0]);
-              setTaskChanges(taskList.tasks[0]);
+              await updateTaskDB(authContext.userID, currentTask, editedTask);
+              updateTask(currentTask, editedTask, setTaskLists, taskLists);
+              setCurrentTask(currentList.tasks[0]);
+              setEditedTask(currentList.tasks[0]);
             }
           }}
         >

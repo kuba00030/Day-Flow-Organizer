@@ -1,8 +1,8 @@
-import { TaskType } from "../../types/TaskType";
+import { Task } from "../../context/tasksContext";
 
 export const editSubtask = (
-  taskChanges: TaskType,
-  setTaskChanges: (task: TaskType) => void,
+  taskChanges: Task,
+  setTaskChanges: (task: Task) => void,
   propertyToChange: string,
   newValue: string | boolean,
   subtaskTitle: string

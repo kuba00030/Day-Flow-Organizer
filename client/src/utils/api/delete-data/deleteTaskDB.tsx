@@ -1,8 +1,8 @@
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
-import { TaskType } from "../../../types/TaskType";
 import { db } from "../../../firebase-config/firebaseConfig";
+import { Task } from "../../../context/tasksContext";
 
-export default async function deleteTaskDB(userID: string, task: TaskType) {
+export default async function deleteTaskDB(userID: string, task: Task) {
   const taskRef = doc(
     db,
     "users",

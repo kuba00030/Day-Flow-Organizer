@@ -20,7 +20,7 @@ export default function Dashboard() {
   return (
     <div className="d-flex flex-row dashboard-container overflow-hidden">
       <NavBar />
-      <div className="d-flex flex-row p-0 container-fluid">
+      <div className="d-flex flex-row" style={{flex:1}}>
         <TasksList />
         {currentList.tasks.length ? <TaskDetails /> : null}
       </div>

@@ -1,10 +1,9 @@
-import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
-import { TaskType } from "../../../types/TaskType";
+import { Task, TaskLists } from "../../../context/tasksContext";
 
 export default function deleteTask(
-  taskLists: TaskListsType,
-  setTaskLists: (lists: TaskListsType) => void,
-  taskToDel: TaskType
+  taskLists: TaskLists,
+  setTaskLists: (lists: TaskLists) => void,
+  taskToDel: Task
 ) {
   const updatedLists = [...taskLists];
 

@@ -1,7 +1,8 @@
-import { TaskListType } from "../../../types/CategoryListType";
+
+import { TaskList } from "../../../context/tasksContext";
 import renderTask from "./renderTask";
 
-export default function renderTaskList(taskList: TaskListType) {
+export default function renderTaskList(taskList: TaskList) {
   if (taskList.listName === "Upcoming") {
     if (taskList.tasks.length) {
       return renderTask(taskList.tasks);

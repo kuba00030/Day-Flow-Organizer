@@ -1,8 +1,8 @@
 import TaskListItem from "../../../components/dashboard/tasks-list-area/tasks-list/TasksListItem";
-import { TaskType } from "../../../types/TaskType";
+import { Task } from "../../../context/tasksContext";
 
-export default function renderTask(taskList: TaskType[]) {
-  return taskList.map((task: TaskType, index: number) => (
+export default function renderTask(taskList: Task[]) {
+  return taskList.map((task: Task, index: number) => (
     <TaskListItem task={task} key={`task ${index}`} />
   ));
 }

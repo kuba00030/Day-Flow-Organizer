@@ -1,13 +1,13 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config/firebaseConfig";
-import { TaskType } from "../../../../types/TaskType";
 import deleteTaskDB from "../../delete-data/deleteTaskDB";
 import addNewTaskDB from "../post/addNewTaskDB";
+import { Task } from "../../../../context/tasksContext";
 
 export default async function updateTaskDB(
   userID: string,
-  originTask: TaskType,
-  editedTask: TaskType
+  originTask: Task,
+  editedTask: Task
 ) {
   const taskRef = doc(
     db,

@@ -4,6 +4,7 @@ type TNavIconButton = {
   txt?: string;
   size?: "sm" | "lg";
   buttonClass: string;
+  buttonValClass?: string;
   function: () => void;
 };
 export default function IconButton(props: TNavIconButton) {
@@ -15,7 +16,7 @@ export default function IconButton(props: TNavIconButton) {
     >
       {props.icon}
       {props.txt ? (
-        <span className="accordion-item-txt">{props.txt}</span>
+        <span className={props.buttonValClass}>{props.txt}</span>
       ) : null}
     </Button>
   );

@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
-import { SubtaskType, TaskType } from "../../../../types/TaskType";
 import Subtask from "./Subtask";
+import { SubtaskType, Task } from "../../../../context/tasksContext";
 type TTaskDetailsSubtasks = {
-  taskChanges: TaskType;
-  setTaskChanges: (task: TaskType) => void;
+  taskChanges: Task;
+  setTaskChanges: (task: Task) => void;
 };
 export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
   const renderSubtasks = (): React.ReactNode => {
@@ -47,7 +47,7 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
         }}
       />
 
-      <div className="d-flex flex-column scrollbar pb-1">
+      <div className="d-flex flex-column scrollbar px-2 py-1 gap-4">
         {renderSubtasks()}
       </div>
     </Container>

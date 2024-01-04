@@ -1,8 +1,8 @@
-import { TaskListsType } from "../../../types/CategoryListType";
+import { TaskLists } from "../../../context/tasksContext";
 
 export default function addTaskList(
-  taskLists: TaskListsType,
-  setTaskLists: (lists: TaskListsType) => void,
+  taskLists: TaskLists,
+  setTaskLists: (lists: TaskLists) => void,
   listName: string,
   listColor: string
 ) {

@@ -1,8 +1,8 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config/firebaseConfig";
-import { TaskType } from "../../../../types/TaskType";
+import { Task } from "../../../../context/tasksContext";
 
-export default async function addNewTaskDB(userID: string, newTask: TaskType) {
+export default async function addNewTaskDB(userID: string, newTask: Task) {
   await setDoc(
     doc(
       db,

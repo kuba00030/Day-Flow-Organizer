@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { useTasksContext } from "../../../../context/tasksContext";
 import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
 import InputLabeled from "../../../ui/inputs/InputLabeled";
-import { compareTaskChanges } from "../../../../utils/task-details/compareTaskChanges";
 import ListSelect from "../../../ui/inputs/ListSelect";
 import InputDate from "../../../ui/inputs/InputDate";
 import { editTask } from "../../../../utils/task-details/editTask";
@@ -12,6 +11,7 @@ import { useAuthContext } from "../../../../context/authContext";
 import updateTask from "../../../../utils/task-list/update/updateTask";
 import deleteTaskDB from "../../../../utils/api/delete-data/deleteTaskDB";
 import deleteTask from "../../../../utils/task-list/delete/deleteTask";
+import { compareTaskChanges } from "../../../../utils/task-details/CompareTaskChanges";
 export default function TaskDetails() {
   const {
     currentTask,
@@ -45,7 +45,7 @@ export default function TaskDetails() {
   }, [isTaskOpened]);
   return (
     <div
-      className="w-25 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative overflow-hidden"
+      className="w-50 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative overflow-hidden"
       ref={taskDetailsRef}
     >
       <Container
@@ -56,7 +56,7 @@ export default function TaskDetails() {
         ref={sliderRef}
       >
         <InputLabeled
-          labelStyle="text-secondary fw-semibold txt-large"
+          labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Task:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
@@ -66,7 +66,7 @@ export default function TaskDetails() {
           }}
         />
         <InputLabeled
-          labelStyle="text-secondary fw-semibold txt-large"
+          labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Description:"
           inputType="text"
           inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
@@ -91,7 +91,7 @@ export default function TaskDetails() {
           <InputDate
             containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
             labelValue="Due date"
-            inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputStyle=" focus-ring dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
             inputValue={currentTask.date}
             onChange={(e) => {
@@ -99,12 +99,15 @@ export default function TaskDetails() {
             }}
           />
         </div>
+      </Container>
+      <div
+        className="d-flex flex-column bg-body-secondary justify-content-between overflow-hidden bottom-0 w-100 p-4"
+        style={{ flex: 1 }}
+      >
         <TaskDetailsSubtasks
           taskChanges={currentTask}
           setTaskChanges={setCurrentTask}
         />
-      </Container>
-      <div className="position-absolute bg-body-secondary bottom-0 w-100 p-4 ">
         <Button
           size="sm"
           className={`w-100 ${

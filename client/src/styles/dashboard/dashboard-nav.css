@@ -13,7 +13,7 @@
 .dashboard-tasks-details-txt {
   font-size: 14px;
 }
-/* dashboard elements  */
+/* dashboard icons  */
 .small-icon {
   width: 15px;
   height: 15px;
@@ -29,6 +29,7 @@
 .radius-small {
   border-radius: 5px;
 }
+/* fonts */
 .txt-small {
   font-size: 14px;
 }
@@ -46,5 +47,48 @@
 }
 .scrollbar {
   overflow-y: auto;
-  scrollbar-width: thin;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: rgb(200, 200, 200);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(163, 163, 163);
+  border-radius: 20px;
+}
+/* task list: task */
+.checkbox {
+  height: 15px;
+  width: 15px;
+}
+.currentList-tasks-container:not(:last-child) {
+  border-bottom: solid rgb(228, 228, 228) 1px;
+}
+.currentList-task-container {
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+.currentList-task-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: clamp(50px, 5vw, 100px);
+}
+@media screen and (width > 1000px) {
+  .currentList-task-truncate {
+    width: clamp(100px, 10vw, 400px);
+  }
+}
+.currentList-task-icon-radius {
+  border-radius: 5px;
+}
+.currentList-task-subtasksIcon {
+  height: 15px;
+  width: 25px;
+  background-color: rgb(227, 227, 227);
 }

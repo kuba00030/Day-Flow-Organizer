@@ -1,14 +1,15 @@
-import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
+import { TaskList, TaskLists } from "../../../context/tasksContext";
+
 
 export const editCategoryList = (
   listName: string,
   propertyToChange: string,
   newValue: string | boolean,
-  taskLists: TaskListsType,
-  setTaskLists: (lists: TaskListsType) => void
+  taskLists: TaskLists,
+  setTaskLists: (lists: TaskLists) => void
 ) => {
   setTaskLists(
-    taskLists.map((list: TaskListType) => {
+    taskLists.map((list: TaskList) => {
       if (list.listName === listName) {
         return {
           ...list,

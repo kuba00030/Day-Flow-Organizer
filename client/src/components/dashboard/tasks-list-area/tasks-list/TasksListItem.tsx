@@ -2,21 +2,26 @@ import { Button, Container } from "react-bootstrap";
 import { IoIosArrowUp as ArrowIcon } from "react-icons/io";
 import { BsFillCalendar2XFill as DateIcon } from "react-icons/bs";
 import { Task, useTasksContext } from "../../../../context/tasksContext";
-import getCurrentDate from "../../../../utils/task-list/get/getCurrentDate";
+import countListTasks from "../../../../utils/task-list/countListTasks";
 type TTaskListItem = {
   task: Task;
 };
 export default function TaskListItem(props: TTaskListItem) {
-  const { isTaskOpened, setIsTaskOpened, setCurrentTask, prevTask } =
-    useTasksContext();
+  const {
+    isTaskOpened,
+    setIsTaskOpened,
+    currentList,
+    setCurrentTask,
+    prevTask,
+  } = useTasksContext();
 
   return (
-    <Container className="d-flex flex-column p-0">
-      <Container className="d-flex flex-row align-items-center border-bottom ">
-        <input type="checkbox" onClick={() => {}} className="checkbox" />
+    <Container className="d-flex flex-column p-0 ms-0 currentList-tasks-container">
+      <Container className="d-flex flex-row align-items-start gap-2 pb-2">
+        <input type="checkbox" onClick={() => {}} className="checkbox mt-1" />
         <Button
           size="sm"
-          className="d-flex flex-row justify-content-between align-items-center bg-transparent border-0"
+          className="d-flex flex-column align-items-start bg-transparent border-0 text-dark-emphasis fw-semibold p-0 gap-2"
           style={{ flex: 1 }}
           onClick={() => {
             setIsTaskOpened(!isTaskOpened);
@@ -24,49 +29,38 @@ export default function TaskListItem(props: TTaskListItem) {
             prevTask.current = props.task;
           }}
         >
-          <div>
-            <span className="text-secondary fw-semibold txt-small">
+          <div className="d-flex" style={{ width: "100%" }}>
+            <span className="currentList-task-truncate text-start txt-medium">
               {props.task.title}
             </span>
-            {props.task.date !== getCurrentDate() ? (
-              <span>
-                {props.task.subtasks.length > 0
-                  ? props.task.subtasks.length
-                  : 1}
-              </span>
-            ) : null}
+            <ArrowIcon
+              className="text-secondary regular-icon ms-auto"
+              style={{
+                transform: `rotate(90deg)`,
+              }}
+            />
           </div>
-          <ArrowIcon
-            className="text-secondary regular-icon"
-            style={{
-              transform: `rotate(90deg)`,
-            }}
-          />
+          <div className="d-flex flex-row align-items-center text-dark-emphasis fw-semibold gap-4 txt-small p-0 m-0">
+            <div className="d-flex flex-row align-items-center gap-2">
+              <DateIcon />
+              <span>{props.task.date}</span>
+            </div>
+            <div className="d-flex flex-row align-items-center text-center gap-2">
+              <div className="d-flex justify-content-center align-items-center  currentList-task-subtasksIcon currentList-task-icon-radius">
+                {props.task.subtasks.length ? props.task.subtasks.length : 1}
+              </div>
+              <span>Subtasks</span>
+            </div>
+            <div className="d-flex flex-row align-items-center gap-2">
+              <div
+                className="small-icon currentList-task-icon-radius"
+                style={{ backgroundColor: `${props.task.listColor}` }}
+              ></div>
+              <span>{props.task.list}</span>
+            </div>
+          </div>
         </Button>
       </Container>
-      {props.task.date !== getCurrentDate() ? (
-        <Container className="d-flex align-items-center flex-row  gap-4 mt-2">
-          <div className="d-flex flex-row align-items-center text-secondary txt-small fw-semibold gap-2">
-            <DateIcon className="small-icon " />
-            <span>{props.task.date}</span>
-          </div>
-          <div className="d-flex flex-row align-items-center text-secondary txt-small fw-semibold gap-2">
-            <span>Tasks</span>
-            <span>
-              {props.task.subtasks.length > 0
-                ? props.task.subtasks.length + 1
-                : 1}
-            </span>
-          </div>
-          <div className="d-flex flex-row align-items-center text-secondary fw-semibold txt-small gap-2">
-            <span>{props.task.list}</span>
-            <div
-              className="small-icon radius-small"
-              style={{ backgroundColor: `${props.task.listColor}` }}
-            ></div>
-          </div>
-        </Container>
-      ) : null}
     </Container>
   );
 }

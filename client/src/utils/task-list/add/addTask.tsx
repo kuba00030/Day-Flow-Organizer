@@ -1,12 +1,12 @@
-import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
-import { TaskType } from "../../../types/TaskType";
+import { Task, TaskList, TaskLists } from "../../../context/tasksContext";
+
 
 export default function addTask(
-  taskLists: TaskListsType,
-  setTaskLists: (lists: TaskListsType) => void,
-  taskList: TaskListType,
-  setTaskList: (list: TaskListType) => void,
-  newTask: TaskType
+  taskLists: TaskLists,
+  setTaskLists: (lists: TaskLists) => void,
+  taskList: TaskList,
+  setTaskList: (list: TaskList) => void,
+  newTask: Task
 ) {
   const updatedTaskLists = [...taskLists];
   const listIndex = updatedTaskLists.findIndex(

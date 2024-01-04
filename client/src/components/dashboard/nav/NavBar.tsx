@@ -27,7 +27,7 @@ export default function NavBar() {
   const { modalContext, setModalContext } = useModalContext();
 
   return (
-    <Container className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
+    <div className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
       <Container className="d-flex flex-column p-0 gap-2">
         <NavSearchBar />
         <NavAccordion
@@ -163,7 +163,8 @@ export default function NavBar() {
             icon={<AddIcon className="regular-icon" />}
             txt="Add new list"
             size="sm"
-            buttonClass="d-flex flex-row gap-2 ms-1 align-items-center txt-small text-secondary fw-semibold bg-transparent  border-0"
+            buttonClass="d-flex flex-row gap-2 ms-1 align-items-center text-secondary fw-semibold bg-transparent  border-0"
+            buttonValClass="txt-small"
             function={() => {
               setModalContext({
                 showModal: !modalContext.showModal,
@@ -196,6 +197,6 @@ export default function NavBar() {
           }}
         />
       </Container>
-    </Container>
+    </div>
   );
 }

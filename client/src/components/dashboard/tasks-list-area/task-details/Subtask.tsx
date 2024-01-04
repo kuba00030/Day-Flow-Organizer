@@ -32,7 +32,7 @@ export default function Subtask(props: TSubtask) {
               props.setTaskChanges,
               "title",
               e.target.value,
-              props.subtask.title
+              props.subtask.subtaskID
             );
           }}
         />

@@ -5,12 +5,12 @@ export const editSubtask = (
   setTaskChanges: (task: Task) => void,
   propertyToChange: string,
   newValue: string | boolean,
-  subtaskTitle: string
+  subtaskID: string
 ) => {
   setTaskChanges({
     ...taskChanges,
     subtasks: taskChanges.subtasks.map((subtask) => {
-      if (subtask.title === subtaskTitle) {
+      if (subtask.subtaskID === subtaskID) {
         return {
           ...subtask,
           [propertyToChange]: newValue,

@@ -22,6 +22,7 @@ export default function InputLabeled(props: TInputLabeled) {
         placeholder={props.inputPlaceholder}
         value={props.inputValue}
         onChange={props.onChange}
+        style={{ outline: "none" }}
       />
     </Form.Group>
   );

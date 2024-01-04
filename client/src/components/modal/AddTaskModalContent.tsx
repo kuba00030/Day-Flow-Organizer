@@ -7,24 +7,23 @@ import {
 } from "react-bootstrap";
 import { useState, useContext } from "react";
 import InputLabeled from "../ui/inputs/InputLabeled";
-import { TasksContext } from "../../context/tasksContext";
+import { Task, TasksContext } from "../../context/tasksContext";
 import IconButton from "../ui/buttons/IconButton";
 import { MdAdd as AddIcon } from "react-icons/md";
-import { ModalContext } from "../../context/modalContext";
+import { ModalContext, useModalContext } from "../../context/modalContext";
 import ListSelect from "../ui/inputs/ListSelect";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext, useAuthContext } from "../../context/authContext";
 import addNewTaskDB from "../../utils/api/post-data/post/addNewTaskDB";
 import InputDate from "../ui/inputs/InputDate";
 import Subtask from "../dashboard/tasks-list-area/task-details/Subtask";
-import { TaskType } from "../../types/TaskType";
 import addTask from "../../utils/task-list/add/addTask";
 
 export default function AddTaskModalContent() {
-  const { taskLists, setTaskLists, setTaskList, taskList } =
+  const { taskLists, setTaskLists, setCurrentList, currentList } =
     useContext(TasksContext);
-  const { userID } = useContext(AuthContext);
-  const { showModal, setShowModal } = useContext(ModalContext);
-  const [newTask, setNewTask] = useState<TaskType>({
+  const { authContext } = useAuthContext();
+  const { modalContext, setModalContext } = useModalContext();
+  const [newTask, setNewTask] = useState<Task>({
     date: "",
     description: "",
     taskStatus: false,
@@ -53,7 +52,7 @@ export default function AddTaskModalContent() {
           labelValue="Title"
           labelStyle="text-secondary fw-semibold txt-small"
           inputType="text"
-          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-secondary-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={newTask.title}
           onChange={(e) => {
             setNewTask({ ...newTask, title: e.target.value });
@@ -63,7 +62,7 @@ export default function AddTaskModalContent() {
           labelValue="Description"
           labelStyle="text-secondary fw-semibold txt-small"
           inputType="text"
-          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-secondary-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={newTask.description}
           onChange={(e) => {
             setNewTask({ ...newTask, description: e.target.value });
@@ -76,7 +75,7 @@ export default function AddTaskModalContent() {
             optionStyle="text-secondary fw-semibold txt-small"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
-            selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
+            selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 boxShadow shadowHover"
             selectedList={newTask.list}
             onChange={(e) => {
               let listIndex = taskLists
@@ -92,7 +91,7 @@ export default function AddTaskModalContent() {
           <InputDate
             containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
             labelValue="Due date"
-            inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle focus-ring rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputStyle="break-words dashboard-tasks-details-date-input border border-dark-subtle boxShadow shadowHover rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
             inputValue={newTask.date}
             onChange={(e) => {
@@ -104,7 +103,7 @@ export default function AddTaskModalContent() {
           icon={<AddIcon className="regular-icon" />}
           txt="Add subtask"
           size="sm"
-          buttonClass="d-flex flex-row align-items-center accordion-item-txt text-secondary fw-semibold border-0 rounded bg-transparent btn me-auto"
+          buttonClass="d-flex flex-row align-items-center txt-small text-secondary fw-semibold border-0 rounded bg-transparent btn me-auto"
           function={() => {
             const newSubtaskID = new Date().getTime();
             setNewTask({
@@ -121,7 +120,7 @@ export default function AddTaskModalContent() {
             });
           }}
         />
-        {newTask.subtasks.map((subtask, index) => {
+        {/* {newTask.subtasks.map((subtask, index) => {
           return (
             <Subtask
               key={`subtask ${index + 1}`}
@@ -131,7 +130,7 @@ export default function AddTaskModalContent() {
               setTaskChanges={setNewTask}
             />
           );
-        })}
+        })} */}
       </ModalBody>
       <ModalFooter>
         <Button
@@ -139,11 +138,23 @@ export default function AddTaskModalContent() {
           className="txt-small"
           onClick={async () => {
             if (newTaskIsVlid()) {
-              await addNewTaskDB(userID, newTask);
-              addTask(taskLists, setTaskLists, taskList, setTaskList, newTask);
-              setShowModal(!showModal);
+              await addNewTaskDB(authContext.userID, newTask);
+              addTask(
+                taskLists,
+                setTaskLists,
+                currentList,
+                setCurrentList,
+                newTask
+              );
+              setModalContext({
+                ...modalContext,
+                showModal: modalContext.showModal,
+              });
             } else {
-              setShowModal(!showModal);
+              setModalContext({
+                ...modalContext,
+                showModal: modalContext.showModal,
+              });
             }
           }}
         >

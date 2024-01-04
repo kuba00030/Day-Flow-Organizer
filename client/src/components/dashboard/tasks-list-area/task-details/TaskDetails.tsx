@@ -29,6 +29,7 @@ export default function TaskDetails() {
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
   useEffect(() => {
+    console.log(currentTask);
     compareTaskChanges(currentTask, prevTask.current, setHasTaskChanged);
   }, [currentTask]);
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function TaskDetails() {
   }, [isTaskOpened]);
   return (
     <div
-      className="w-50 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative overflow-hidden"
+      className="w-25 p-0 d-flex flex-column bg-body-secondary rounded dashboard-tasks-details position-relative overflow-hidden"
       ref={taskDetailsRef}
     >
       <Container
@@ -59,7 +60,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Task:"
           inputType="text"
-          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-dark-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={currentTask.title}
           onChange={(e) => {
             editTask(currentTask, setCurrentTask, "title", e);
@@ -69,7 +70,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Description:"
           inputType="text"
-          inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-dark-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={currentTask.description}
           onChange={(e) => {
             editTask(currentTask, setCurrentTask, "description", e);
@@ -80,7 +81,7 @@ export default function TaskDetails() {
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
-            selectStyle="border border-dark-subtle rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 focus-ring"
+            selectStyle="border border-dark-subtle boxShadow shadowHover rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1"
             options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
             selectedList={currentTask.list}
@@ -91,7 +92,7 @@ export default function TaskDetails() {
           <InputDate
             containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
             labelValue="Due date"
-            inputStyle=" focus-ring dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputStyle="boxShadow shadowHover dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
             inputValue={currentTask.date}
             onChange={(e) => {
@@ -105,13 +106,13 @@ export default function TaskDetails() {
         style={{ flex: 1 }}
       >
         <TaskDetailsSubtasks
-          taskChanges={currentTask}
-          setTaskChanges={setCurrentTask}
+          currentTask={currentTask}
+          setCurrentTask={setCurrentTask}
         />
         <Button
           size="sm"
-          className={`w-100 ${
-            !hasTaskChanged ? "bg-primary" : "bg-warning text-secondary"
+          className={`w-100  ${
+            !hasTaskChanged ? "btn" : "bg-warning text-secondary"
           } border-0 fw-semibold`}
           onClick={async () => {
             if (!hasTaskChanged) {

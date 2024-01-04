@@ -92,3 +92,15 @@
   width: 25px;
   background-color: rgb(227, 227, 227);
 }
+/* task details */
+.shadowHover {
+  transition: 0.3s;
+}
+.shadowHover:hover {
+  box-shadow: 0px 0px 0px 4px rgba(196, 215, 243, 1);
+}
+.boxShadow {
+}
+.boxShadow:focus {
+  box-shadow: 0px 0px 0px 4px rgba(196, 215, 243, 1);
+}

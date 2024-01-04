@@ -18,9 +18,9 @@ export default function Dashboard() {
   onLoggedRedirectHook(authContext.isLogged, navigate);
 
   return (
-    <div className="d-flex flex-row dashboard-container overflow-hidden">
+    <div className="d-flex flex-row dashboard-container ">
       <NavBar />
-      <div className="d-flex flex-row" style={{flex:1}}>
+      <div className="d-flex flex-row" style={{ flex: 1 }}>
         <TasksList />
         {currentList.tasks.length ? <TaskDetails /> : null}
       </div>

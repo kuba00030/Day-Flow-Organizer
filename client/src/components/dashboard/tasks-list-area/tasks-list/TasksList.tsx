@@ -1,4 +1,3 @@
-import { Container } from "react-bootstrap";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
 import Header from "../../../Header";
@@ -12,7 +11,7 @@ export default function TasksList() {
   const { modalContext, setModalContext } = useModalContext();
   const { taskLists, currentList } = useTasksContext();
   return (
-    <div className="d-flex flex-column container-fluid">
+    <div className="d-flex flex-column p-2" style={{ flex: 1 }}>
       <Header
         txt={`${currentList.listName}`}
         className="txt-larger fw-semibold ms-2 mb-2 text-dark-emphasis"
@@ -22,7 +21,7 @@ export default function TasksList() {
           icon={<AddIcon className="regular-icon" />}
           txt="Add task"
           size="sm"
-          buttonClass="d-flex flex-row align-items-center bg-transparent fw-semibold text-secondary border border-secondary-subtle btn-outline-secondary rounded mb-2 gap-2"
+          buttonClass="d-flex flex-row align-items-center bg-transparent fw-semibold text-secondary border border-secondary-subtle btn-outline-secondary rounded mb-2 gap-2 shadowHover"
           buttonValClass="txt-small"
           function={() => {
             if (taskLists.length > 0) {

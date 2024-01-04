@@ -3,21 +3,17 @@ import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
 import Subtask from "./Subtask";
 import { SubtaskType, Task } from "../../../../context/tasksContext";
+import { useModalContext } from "../../../../context/modalContext";
+import AddSubtaskModalContent from "../../../modal/AddSubtaskModalContent";
 type TTaskDetailsSubtasks = {
-  taskChanges: Task;
-  setTaskChanges: (task: Task) => void;
+  currentTask: Task;
+  setCurrentTask: (task: Task) => void;
 };
 export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
+  const { modalContext, setModalContext } = useModalContext();
   const renderSubtasks = (): React.ReactNode => {
-    return props.taskChanges.subtasks.map((subtask: SubtaskType, index) => {
-      return (
-        <Subtask
-          subtask={subtask}
-          index={index}
-          taskChanges={props.taskChanges}
-          setTaskChanges={props.setTaskChanges}
-        />
-      );
+    return props.currentTask.subtasks.map((subtask: SubtaskType, index) => {
+      return <Subtask subtask={subtask} index={index} />;
     });
   };
   return (
@@ -31,22 +27,12 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
         size="sm"
         buttonClass="d-flex flex-row align-items-center txt-small bg-transparent text-secondary fw-semibold border-0 rounded me-auto"
         function={() => {
-          const newSubtaskID = new Date().getTime();
-          props.setTaskChanges({
-            ...props.taskChanges,
-            subtasks: [
-              ...props.taskChanges.subtasks,
-              {
-                subtaskID: `${newSubtaskID}`,
-                title: "",
-                description: "",
-                subtaskStatus: false,
-              },
-            ],
+          setModalContext({
+            modalContent: <AddSubtaskModalContent />,
+            showModal: !modalContext.showModal,
           });
         }}
       />
-
       <div className="d-flex flex-column scrollbar px-2 py-1 gap-4">
         {renderSubtasks()}
       </div>

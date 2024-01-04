@@ -23,6 +23,7 @@ export default function InputDate(props: TInputDate) {
         placeholder={props.inputPlaceholder}
         value={props.inputValue}
         onChange={props.onChange}
+        style={{ outline: "none" }}
       />
     </Form.Group>
   );

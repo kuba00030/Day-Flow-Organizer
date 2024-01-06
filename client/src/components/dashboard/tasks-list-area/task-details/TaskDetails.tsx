@@ -60,7 +60,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Task:"
           inputType="text"
-          inputStyle="border border-dark-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={currentTask.title}
           onChange={(e) => {
             editTask(currentTask, setCurrentTask, "title", e);
@@ -70,7 +70,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Description:"
           inputType="text"
-          inputStyle="border border-dark-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           inputValue={currentTask.description}
           onChange={(e) => {
             editTask(currentTask, setCurrentTask, "description", e);
@@ -81,7 +81,7 @@ export default function TaskDetails() {
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
-            selectStyle="border border-dark-subtle boxShadow shadowHover rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1"
+            selectStyle="border border-dark-subtle shadowFocus shadowHover rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1"
             options={taskLists}
             optionStyle="text-secondary fw-semibold txt-small"
             selectedList={currentTask.list}
@@ -92,7 +92,7 @@ export default function TaskDetails() {
           <InputDate
             containerSyle="d-flex flex-row gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
             labelValue="Due date"
-            inputStyle="boxShadow shadowHover dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
+            inputStyle="shadowFocus shadowHover dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 ms-auto"
             inputType="date"
             inputValue={currentTask.date}
             onChange={(e) => {

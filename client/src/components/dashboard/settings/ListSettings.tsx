@@ -1,16 +1,16 @@
+import { TaskList, TaskLists } from "../../../context/tasksContext";
 import { editCategoryList } from "../../../utils/task-list/update/editCategoryList";
 import InputLabeled from "../../ui/inputs/InputLabeled";
 import { MdDeleteForever as DeleteListIcon } from "react-icons/md";
 import { MdRestoreFromTrash as RestoreListIcon } from "react-icons/md";
-import { TaskListType, TaskListsType } from "../../../types/CategoryListType";
 
 type TListSettings = {
-  list: TaskListType;
+  list: TaskList;
   index: number;
   listActive: boolean | string;
   setListHasChanged: (hasChanged: boolean) => void;
-  editedLists: TaskListsType;
-  setEditedLists: (editedLists: TaskListsType) => void;
+  editedLists: TaskLists;
+  setEditedLists: (editedLists: TaskLists) => void;
 };
 
 export default function ListSettings(props: TListSettings) {

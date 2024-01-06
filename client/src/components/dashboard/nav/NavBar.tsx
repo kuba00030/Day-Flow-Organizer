@@ -20,6 +20,7 @@ import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
+import styleSelectedElement from "../../../utils/task-list/select/selectElement";
 
 export default function NavBar() {
   const { taskLists, setCurrentList, setCurrentTask, prevTask } =
@@ -36,7 +37,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
               header="Upcoming"
               itemValue={`${
                 getTasksInDaysRange(
@@ -46,7 +47,7 @@ export default function NavBar() {
                   7
                 ).tasksAmount
               }`}
-              onClick={() => {
+              onClick={(e) => {
                 const { tasks } = getTasksInDaysRange(
                   taskLists.filter(
                     (list: TaskList) => list.listActive === true
@@ -66,6 +67,13 @@ export default function NavBar() {
                   setCurrentTask(undefined);
                   prevTask.current = undefined;
                 }
+                styleSelectedElement(
+                  '[data-element*="navbar-list"]',
+                  "data-element",
+                  e,
+                  "bgHoverFocus",
+                  "marginHoverFocus"
+                );
               }}
               icon={
                 <UpcomingIcon className="regular-icon me-2 text-secondary" />
@@ -74,7 +82,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
               header="Today"
               itemValue={`${
                 getTasksInDaysRange(
@@ -84,7 +92,7 @@ export default function NavBar() {
                   0
                 ).tasksAmount
               }`}
-              onClick={() => {
+              onClick={(e) => {
                 const { tasks } = getTasksInDaysRange(
                   taskLists.filter(
                     (list: TaskList) => list.listActive === true
@@ -104,16 +112,31 @@ export default function NavBar() {
                   setCurrentTask(undefined);
                   prevTask.current = undefined;
                 }
+                styleSelectedElement(
+                  '[data-element*="navbar-list"]',
+                  "data-element",
+                  e,
+                  "bgHoverFocus",
+                  "marginHoverFocus"
+                );
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
             />,
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
               header="Calendar"
               itemValue={`${0}`}
-              onClick={() => {}}
+              onClick={(e) => {
+                styleSelectedElement(
+                  '[data-element*="navbar-list"]',
+                  "data-element",
+                  e,
+                  "bgHoverFocus",
+                  "marginHoverFocus"
+                );
+              }}
               icon={
                 <CalendarIcon className="regular-icon me-2 text-secondary" />
               }
@@ -129,10 +152,10 @@ export default function NavBar() {
                 <NavAccordionItem
                   itemStyle="accordion-item-txt text-secondary ms-auto"
                   headerStyle="txt-small text-secondary"
-                  containerStyle="d-flex flex-row align-items-center rounded border-0 bg-transparent fw-semibold"
+                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
                   header={`${list.listName}`}
                   itemValue={`${countListTasks(list.tasks)}`}
-                  onClick={() => {
+                  onClick={(e) => {
                     setCurrentList({
                       listName: list.listName,
                       tasks: list.tasks,
@@ -146,6 +169,13 @@ export default function NavBar() {
                       setCurrentTask(undefined);
                       prevTask.current = undefined;
                     }
+                    styleSelectedElement(
+                      '[data-element*="navbar-list"]',
+                      "data-element",
+                      e,
+                      "bgHoverFocus",
+                      "marginHoverFocus"
+                    );
                   }}
                   key={`list category: ${list.listName}`}
                   icon={

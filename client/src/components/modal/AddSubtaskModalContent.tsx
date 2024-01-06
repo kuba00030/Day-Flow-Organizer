@@ -38,7 +38,7 @@ export default function AddSubtaskModalContent() {
           labelValue="Title"
           inputType="text"
           inputValue={newSubtask.title}
-          inputStyle="border border-secondary-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-secondary-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           onChange={(e) => {
             setNewSubtask({ ...newSubtask, title: e.target.value });
           }}
@@ -48,7 +48,7 @@ export default function AddSubtaskModalContent() {
           labelValue="Description"
           inputType="text"
           inputValue={newSubtask.description}
-          inputStyle="border border-secondary-subtle boxShadow shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+          inputStyle="border border-secondary-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
           onChange={(e) => {
             setNewSubtask({ ...newSubtask, description: e.target.value });
           }}

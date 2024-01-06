@@ -24,7 +24,6 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
       <IconButton
         icon={<AddIcon className="regular-icon" />}
         txt="Add subtask"
-        size="sm"
         buttonClass="d-flex flex-row align-items-center txt-small bg-transparent text-secondary fw-semibold border-0 rounded me-auto"
         function={() => {
           setModalContext({

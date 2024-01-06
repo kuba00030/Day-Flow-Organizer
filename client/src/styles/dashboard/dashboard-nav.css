@@ -92,15 +92,39 @@
   width: 25px;
   background-color: rgb(227, 227, 227);
 }
-/* task details */
+/* animations */
 .shadowHover {
-  transition: 0.3s;
+  transition: 0.3s ease-in-out;
 }
 .shadowHover:hover {
   box-shadow: 0px 0px 0px 4px rgba(196, 215, 243, 1);
 }
-.boxShadow {
+.shadowFocus {
 }
-.boxShadow:focus {
+.shadowFocus:focus {
   box-shadow: 0px 0px 0px 4px rgba(196, 215, 243, 1);
+}
+.scaleHover {
+  transition: 0.3s !important;
+}
+.scaleHover:hover {
+  transform: scale(1.05);
+}
+.marginHover {
+  transition: 0.2s ease-in-out !important;
+}
+.marginHover:hover {
+  margin-left: 3%;
+}
+.marginHoverFocus {
+  margin-left: 3%;
+}
+.bgHover {
+  background-color: rgba(128, 128, 128, 0) !important;
+}
+.bgHover:hover {
+  background-color: rgb(228, 228, 228) !important;
+}
+.bgHoverFocus {
+  background-color: rgb(228, 228, 228) !important;
 }

@@ -71,7 +71,7 @@ export default function SettingsModalContent() {
                 }
               }}
             >
-              {listHasChanged === false ? "Close" : "Confirm changes"}
+              {listHasChanged === false ? "Close" : "Save changes"}
             </Button>
           </>
         ) : (

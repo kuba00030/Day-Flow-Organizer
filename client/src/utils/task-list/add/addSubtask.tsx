@@ -1,21 +1,13 @@
-import {
-  SubtaskType,
-  Task,
-  TaskList,
-  TaskLists,
-} from "../../../context/tasksContext";
+import { SubtaskType, Task, TaskLists } from "../../../context/tasksContext";
 
 export default function addSubtask(
   taskLists: TaskLists,
-  setTaskLists: (lists: TaskLists) => void,
-  currentList: TaskList,
-  setCurrentList: (list: TaskList) => void,
   currentTask: Task,
   setCurrentTask: (task: Task) => void,
   newSubtask: SubtaskType
 ) {
   const listIndex = taskLists.findIndex(
-    (list) => list.listName === currentList.listName
+    (list) => list.listName === currentTask.list
   );
 
   const updatedTaskLists = [...taskLists];
@@ -28,11 +20,5 @@ export default function addSubtask(
 
   updatedTask.subtasks = [...updatedTask.subtasks, newSubtask];
 
-  updatedTaskLists[listIndex].tasks[taskIndex] = updatedTask;
-
-  setTaskLists(updatedTaskLists);
-  if (currentTask.list === currentList.listName) {
-    setCurrentList(updatedTaskLists[listIndex]);
-  }
   setCurrentTask(updatedTask);
 }

@@ -49,10 +49,7 @@ export default async function getTaskLists(
               subtaskID: subtask.subtask_id,
               title: subtask.subtask_title,
               subtaskStatus: subtask.subtask_status,
-              description:
-                subtask.subtask_description === ""
-                  ? undefined
-                  : subtask.subtask_description,
+              description: subtask.subtask_description,
             };
           }),
         });

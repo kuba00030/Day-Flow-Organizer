@@ -29,7 +29,6 @@ export default function TaskDetails() {
   const taskDetailsRef = useRef<HTMLDivElement | null>(null);
   const reloadDataTime = 510;
   useEffect(() => {
-    console.log(currentTask);
     compareTaskChanges(currentTask, prevTask.current, setHasTaskChanged);
   }, [currentTask]);
   useEffect(() => {
@@ -133,6 +132,7 @@ export default function TaskDetails() {
               );
               setCurrentTask(currentList.tasks[0]);
               prevTask.current = currentList.tasks[0];
+              setHasTaskChanged(false);
             }
           }}
         >

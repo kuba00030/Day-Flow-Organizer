@@ -2,7 +2,6 @@ import { Button, Container } from "react-bootstrap";
 import { IoIosArrowUp as ArrowIcon } from "react-icons/io";
 import { BsFillCalendar2XFill as DateIcon } from "react-icons/bs";
 import { Task, useTasksContext } from "../../../../context/tasksContext";
-import countListTasks from "../../../../utils/task-list/countListTasks";
 type TTaskListItem = {
   task: Task;
 };
@@ -10,7 +9,7 @@ export default function TaskListItem(props: TTaskListItem) {
   const {
     isTaskOpened,
     setIsTaskOpened,
-    currentList,
+    currentTask,
     setCurrentTask,
     prevTask,
   } = useTasksContext();
@@ -24,9 +23,11 @@ export default function TaskListItem(props: TTaskListItem) {
           className="d-flex flex-column align-items-start bg-transparent border-0 text-dark-emphasis fw-semibold p-0 gap-2"
           style={{ flex: 1 }}
           onClick={() => {
-            setIsTaskOpened(!isTaskOpened);
-            setCurrentTask(props.task);
-            prevTask.current = props.task;
+            if (currentTask.taskID !== props.task.taskID) {
+              setIsTaskOpened(!isTaskOpened);
+              setCurrentTask(props.task);
+              prevTask.current = props.task;
+            }
           }}
         >
           <div className="d-flex" style={{ width: "100%" }}>

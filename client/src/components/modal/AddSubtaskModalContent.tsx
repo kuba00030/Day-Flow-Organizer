@@ -13,14 +13,7 @@ import { SubtaskType, useTasksContext } from "../../context/tasksContext";
 
 export default function AddSubtaskModalContent() {
   const { modalContext, setModalContext } = useModalContext();
-  const {
-    taskLists,
-    setTaskLists,
-    currentList,
-    setCurrentList,
-    currentTask,
-    setCurrentTask,
-  } = useTasksContext();
+  const { taskLists, currentTask, setCurrentTask } = useTasksContext();
   const [newSubtask, setNewSubtask] = useState<SubtaskType>({
     subtaskID: `${new Date().getTime()}`,
     title: "",
@@ -29,7 +22,7 @@ export default function AddSubtaskModalContent() {
   });
   return (
     <>
-      <ModalHeader closeButton>
+      <ModalHeader>
         <ModalTitle id="contained-modal-title-vcenter">Add subtask</ModalTitle>
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 ">
@@ -57,18 +50,17 @@ export default function AddSubtaskModalContent() {
       <ModalFooter>
         <Button
           size="sm"
-          className="txt-small"
+          className={`txt-small btn ${
+            newSubtask.title !== "" ? "bg-warning text-secondary" : ""
+          } border-0 fw-semibold`}
           onClick={() => {
             if (newSubtask.title !== "") {
-              addSubtask(
-                taskLists,
-                setTaskLists,
-                currentList,
-                setCurrentList,
-                currentTask,
-                setCurrentTask,
-                newSubtask
-              );
+              addSubtask(taskLists, currentTask, setCurrentTask, newSubtask);
+              setModalContext({
+                ...modalContext,
+                showModal: !modalContext.showModal,
+              });
+            } else {
               setModalContext({
                 ...modalContext,
                 showModal: !modalContext.showModal,
@@ -76,7 +68,7 @@ export default function AddSubtaskModalContent() {
             }
           }}
         >
-          Add subtask
+          {newSubtask.title !== "" ? "Add" : "Close"}
         </Button>
       </ModalFooter>
     </>

@@ -1,14 +1,30 @@
 import { PiArrowElbowDownRightThin as SubtaskIcon } from "react-icons/pi";
 import { SubtaskType } from "../../../../context/tasksContext";
+import { useModalContext } from "../../../../context/modalContext";
+import EditSubtsakModalContent from "../../../modal/EditSubtaskModalContent";
 type TSubtask = {
   subtask: SubtaskType;
   index: number;
 };
 export default function Subtask(props: TSubtask) {
+  const { modalContext, setModalContext } = useModalContext();
   return (
     <div
+      data-subtask={`subtask-${props.subtask.subtaskID}`}
       className="d-flex flex-column gap-1 border border-secondary-subtle rounded shadowHover"
       style={{ flex: 1 }}
+      onClick={() => {
+        setModalContext({
+          ...modalContext,
+          modalContent: (
+            <EditSubtsakModalContent
+              subtask={props.subtask}
+              index={props.index}
+            />
+          ),
+          showModal: !modalContext.showModal,
+        });
+      }}
     >
       <div className="d-flex flex-row align-items-center">
         <div
@@ -19,7 +35,7 @@ export default function Subtask(props: TSubtask) {
           } bg-transparent text-secondary fw-semibold txt-small d-flex`}
           style={{ flex: 1 }}
         >
-          <span className="text-secondary">{props.subtask.title}title</span>
+          <span className="text-secondary">{props.subtask.title}</span>
         </div>
       </div>
       {props.subtask.description !== "" &&

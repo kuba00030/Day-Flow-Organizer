@@ -44,7 +44,7 @@ export default function AddTaskModalContent() {
   };
   return (
     <>
-      <ModalHeader closeButton>
+      <ModalHeader>
         <ModalTitle id="contained-modal-title-vcenter">Add subtask</ModalTitle>
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 modal-body-small-container overflow-auto scrollbar">
@@ -135,7 +135,9 @@ export default function AddTaskModalContent() {
       <ModalFooter>
         <Button
           size="sm"
-          className="txt-small"
+          className={`${
+            !newTaskIsVlid() ? "btn" : "bg-warning text-secondary"
+          } border-0 fw-semibold`}
           onClick={async () => {
             if (newTaskIsVlid()) {
               await addNewTaskDB(authContext.userID, newTask);
@@ -153,7 +155,7 @@ export default function AddTaskModalContent() {
             } else {
               setModalContext({
                 ...modalContext,
-                showModal: modalContext.showModal,
+                showModal: !modalContext.showModal,
               });
             }
           }}

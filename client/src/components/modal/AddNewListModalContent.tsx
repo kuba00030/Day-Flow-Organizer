@@ -68,6 +68,9 @@ export default function AddNewListModalContent() {
       <ModalFooter>
         <Button
           size="sm"
+          className={`${
+            newListName !== "" ? "btn" : "bg-warning text-secondary"
+          } border-0 fw-semibold`}
           onClick={async () => {
             if (
               newListName !== "" &&

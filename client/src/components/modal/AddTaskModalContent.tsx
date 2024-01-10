@@ -150,7 +150,7 @@ export default function AddTaskModalContent() {
               );
               setModalContext({
                 ...modalContext,
-                showModal: modalContext.showModal,
+                showModal: !modalContext.showModal,
               });
             } else {
               setModalContext({

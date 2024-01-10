@@ -12,7 +12,7 @@ import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
 
 export default function Dashboard() {
   const { authContext } = useAuthContext();
-  const { currentList } = useTasksContext();
+  const { editedTask, currentTask } = useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
   const navigate = useNavigate();
   onLoggedRedirectHook(authContext.isLogged, navigate);
@@ -22,7 +22,9 @@ export default function Dashboard() {
       <NavBar />
       <div className="d-flex flex-row" style={{ flex: 1 }}>
         <TasksList />
-        {currentList.tasks.length ? <TaskDetails /> : null}
+        {editedTask !== undefined && currentTask !== undefined ? (
+          <TaskDetails />
+        ) : null}
       </div>
       <DefaultModal
         show={modalContext.showModal}

@@ -45,8 +45,9 @@
 .txt-larger {
   font-size: 36px;
 }
-.scrollbar {
+.my-scrollbar {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 *::-webkit-scrollbar {
   width: 10px;
@@ -110,14 +111,14 @@
 .scaleHover:hover {
   transform: scale(1.05);
 }
-.marginHover {
-  transition: 0.2s ease-in-out !important;
+.paddingHover {
+  transition: 0.3s ease-in-out !important;
 }
-.marginHover:hover {
-  margin-left: 3%;
+.paddingHover:hover {
+  padding-left: 5% !important;
 }
-.marginHoverFocus {
-  margin-left: 3%;
+.paddingHoverFocus {
+  padding-left: 5% !important;
 }
 .bgHover {
   background-color: rgba(128, 128, 128, 0) !important;
@@ -127,4 +128,20 @@
 }
 .bgHoverFocus {
   background-color: rgb(228, 228, 228) !important;
+}
+.slideInRight {
+  animation: slide-in-right ease-in-out;
+}
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(+100%);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(+0%);
+  }
+}
+.opacity_0 {
+  opacity: 0;
 }

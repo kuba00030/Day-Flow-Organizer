@@ -1,24 +1,17 @@
 import { Container } from "react-bootstrap";
 import { MdAdd as AddIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
-import Subtask from "./Subtask";
-import { SubtaskType, Task } from "../../../../context/tasksContext";
 import { useModalContext } from "../../../../context/modalContext";
 import AddSubtaskModalContent from "../../../modal/AddSubtaskModalContent";
-type TTaskDetailsSubtasks = {
-  currentTask: Task;
-  setCurrentTask: (task: Task) => void;
-};
-export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
+import renderSubtasks from "../../../../utils/task-list/render/renderSubtasks";
+import { useTasksContext } from "../../../../context/tasksContext";
+
+export default function TaskDetailsSubtasks() {
   const { modalContext, setModalContext } = useModalContext();
-  const renderSubtasks = (): React.ReactNode => {
-    return props.currentTask.subtasks.map((subtask: SubtaskType, index) => {
-      return <Subtask subtask={subtask} index={index} />;
-    });
-  };
+  const { editedTask } = useTasksContext();
   return (
-    <Container className=" p-0 d-flex flex-column overflow-hidden">
-      <div className="text-dark-emphasis fw-bold txt-medium">
+    <Container className=" p-0 d-flex  flex-column overflow-hidden">
+      <div className="bg-transparent text-dark-emphasis fw-bold txt-medium">
         <span>Subtasks:</span>
       </div>
       <IconButton
@@ -32,8 +25,9 @@ export default function TaskDetailsSubtasks(props: TTaskDetailsSubtasks) {
           });
         }}
       />
-      <div className="d-flex flex-column scrollbar px-2 py-1 gap-4">
-        {renderSubtasks()}
+
+      <div className="d-flex flex-column my-scrollbar px-3 py-2 gap-4">
+        {renderSubtasks(editedTask.subtasks)}
       </div>
     </Container>
   );

@@ -9,6 +9,7 @@ import {
 import { useAuthContext } from "./authContext";
 import getTaskLists from "../utils/api/get-data/getTaskLists";
 import getTasksInDaysRange from "../utils/task-list/get/getTasksInDaysRange";
+import selectTask from "../utils/task-list/select/selectTask";
 
 export type SubtaskType = {
   subtaskID: string;
@@ -39,7 +40,8 @@ export type TaskLists = TaskList[];
 type TasksContext = {
   currentTask: Task;
   setCurrentTask: React.Dispatch<React.SetStateAction<Task>>;
-  prevTask: MutableRefObject<Task | undefined>;
+  editedTask: Task;
+  setEditedTask: React.Dispatch<React.SetStateAction<Task>>;
   currentList: TaskList;
   setCurrentList: React.Dispatch<React.SetStateAction<TaskList>>;
   taskLists: TaskLists;
@@ -58,6 +60,7 @@ export default function TasksContextProvider({
   children,
 }: ContextProviderProps) {
   const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
+  const [editedTask, setEditedTask] = useState<Task | undefined>(undefined);
   const [currentList, setCurrentList] = useState<TaskList>({
     listName: "Today",
     listColor: "",
@@ -94,7 +97,8 @@ export default function TasksContextProvider({
       value={{
         currentTask,
         setCurrentTask,
-        prevTask,
+        editedTask,
+        setEditedTask,
         currentList,
         setCurrentList,
         taskLists,

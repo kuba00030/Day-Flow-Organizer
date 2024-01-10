@@ -10,9 +10,7 @@ export default function Subtask(props: TSubtask) {
   const { modalContext, setModalContext } = useModalContext();
   return (
     <div
-      data-subtask={`subtask-${props.subtask.subtaskID}`}
-      className="d-flex flex-column gap-1 border border-secondary-subtle rounded shadowHover"
-      style={{ flex: 1 }}
+      className="d-flex flex-column gap-1 border border-secondary-subtle rounded shadowHover slideInRight opacity_0"
       onClick={() => {
         setModalContext({
           ...modalContext,
@@ -26,23 +24,20 @@ export default function Subtask(props: TSubtask) {
         });
       }}
     >
-      <div className="d-flex flex-row align-items-center">
-        <div
-          className={`p-1 ${
-            props.subtask.title
-              ? "border-0"
-              : "border border-secondary-subtle rounded"
-          } bg-transparent text-secondary fw-semibold txt-small d-flex`}
-          style={{ flex: 1 }}
-        >
-          <span className="text-secondary">{props.subtask.title}</span>
-        </div>
+      <div
+        className={`p-1 ${
+          props.subtask.title
+            ? "border-0"
+            : "border border-secondary-subtle rounded"
+        } bg-transparent text-secondary fw-semibold txt-small d-flex`}
+        style={{ flex: 1 }}
+      >
+        <span className="text-secondary">{props.subtask.title}</span>
       </div>
+
       {props.subtask.description !== "" &&
       props.subtask.description !== undefined ? (
-        <div
-          className={`d-flex flex-row mt-1 gap-1 w-100  bg-transparent text-secondary fw-semibold txt-small d-flex`}
-        >
+        <div className="d-flex flex-row mt-1 gap-1 w-100  bg-transparent text-secondary fw-semibold txt-small d-flex ">
           <SubtaskIcon className="small-icon ms-1 flex-shrink-0" />
           <div className="d-flex" style={{ flex: 1, overflowX: "hidden" }}>
             <span

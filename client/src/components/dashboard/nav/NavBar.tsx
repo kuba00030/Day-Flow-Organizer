@@ -21,10 +21,16 @@ import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRang
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
 import styleSelectedElement from "../../../utils/task-list/select/selectElement";
+import selectTask from "../../../utils/task-list/select/selectTask";
 
 export default function NavBar() {
-  const { taskLists, setCurrentList, setCurrentTask, prevTask } =
-    useTasksContext();
+  const {
+    taskLists,
+    setCurrentList,
+    setCurrentTask,
+    setEditedTask,
+    currentTask,
+  } = useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
 
   return (
@@ -37,7 +43,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold bgHover paddingHover pt-2 pb-2 pe-2"
               header="Upcoming"
               itemValue={`${
                 getTasksInDaysRange(
@@ -60,19 +66,25 @@ export default function NavBar() {
                   listActive: "",
                   tasks: tasks,
                 });
-                if (tasks.length) {
-                  setCurrentTask(tasks[0]);
-                  prevTask.current = tasks[0];
-                } else {
+                if (!tasks.length) {
                   setCurrentTask(undefined);
-                  prevTask.current = undefined;
+                  setEditedTask(undefined);
+                } else {
+                  // selectTask(
+                  //   500,
+                  //   200,
+                  //   ".slideInRight",
+                  //   setCurrentTask,
+                  //   tasks[0],
+                  //   prevTask
+                  // );
                 }
                 styleSelectedElement(
                   '[data-element*="navbar-list"]',
                   "data-element",
                   e,
                   "bgHoverFocus",
-                  "marginHoverFocus"
+                  "paddingHoverFocus"
                 );
               }}
               icon={
@@ -82,7 +94,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
               header="Today"
               itemValue={`${
                 getTasksInDaysRange(
@@ -99,25 +111,31 @@ export default function NavBar() {
                   ),
                   0
                 );
-                setCurrentList({
-                  listName: "Today",
-                  listColor: "",
-                  listActive: "",
-                  tasks: tasks,
-                });
-                if (tasks.length) {
-                  setCurrentTask(tasks[0]);
-                  prevTask.current = tasks[0];
-                } else {
+                if (!tasks.length) {
                   setCurrentTask(undefined);
-                  prevTask.current = undefined;
+                  setEditedTask(undefined);
+                } else {
+                  // selectTask(
+                  //   500,
+                  //   200,
+                  //   ".slideInRight",
+                  //   setCurrentTask,
+                  //   tasks[0],
+                  //   prevTask
+                  // );
+                  setCurrentList({
+                    listName: "Today",
+                    listColor: "",
+                    listActive: "",
+                    tasks: tasks,
+                  });
                 }
                 styleSelectedElement(
                   '[data-element*="navbar-list"]',
                   "data-element",
                   e,
                   "bgHoverFocus",
-                  "marginHoverFocus"
+                  "paddingHoverFocus"
                 );
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
@@ -125,7 +143,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
               header="Calendar"
               itemValue={`${0}`}
               onClick={(e) => {
@@ -134,7 +152,7 @@ export default function NavBar() {
                   "data-element",
                   e,
                   "bgHoverFocus",
-                  "marginHoverFocus"
+                  "paddingHoverFocus"
                 );
               }}
               icon={
@@ -152,29 +170,35 @@ export default function NavBar() {
                 <NavAccordionItem
                   itemStyle="accordion-item-txt text-secondary ms-auto"
                   headerStyle="txt-small text-secondary"
-                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold marginHover bgHover p-2"
+                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
                   header={`${list.listName}`}
                   itemValue={`${countListTasks(list.tasks)}`}
                   onClick={(e) => {
-                    setCurrentList({
-                      listName: list.listName,
-                      tasks: list.tasks,
-                      listColor: list.listColor,
-                      listActive: list.listActive,
-                    });
-                    if (list.tasks.length) {
-                      setCurrentTask(list.tasks[0]);
-                      prevTask.current = list.tasks[0];
-                    } else {
+                    if (!list.tasks.length) {
                       setCurrentTask(undefined);
-                      prevTask.current = undefined;
+                      setEditedTask(undefined);
+                    } else {
+                      setCurrentList({
+                        listName: list.listName,
+                        tasks: list.tasks,
+                        listColor: list.listColor,
+                        listActive: list.listActive,
+                      });
+                      selectTask(
+                        500,
+                        100,
+                        ".slideInRight",
+                        setCurrentTask,
+                        list.tasks[0],
+                        setEditedTask
+                      );
                     }
                     styleSelectedElement(
                       '[data-element*="navbar-list"]',
                       "data-element",
                       e,
                       "bgHoverFocus",
-                      "marginHoverFocus"
+                      "paddingHoverFocus"
                     );
                   }}
                   key={`list category: ${list.listName}`}
@@ -216,7 +240,7 @@ export default function NavBar() {
           />
         </div>
       </Container>
-      <Container className="d-flex flex-column gap-2 p-1 ">
+      <Container className="d-flex flex-column p-1 ">
         <IconButton
           icon={<SignOutIcon className="accordion-item-icon" />}
           txt="Sign out"

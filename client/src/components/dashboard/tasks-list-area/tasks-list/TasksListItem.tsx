@@ -2,18 +2,12 @@ import { Button, Container } from "react-bootstrap";
 import { IoIosArrowUp as ArrowIcon } from "react-icons/io";
 import { BsFillCalendar2XFill as DateIcon } from "react-icons/bs";
 import { Task, useTasksContext } from "../../../../context/tasksContext";
+import selectTask from "../../../../utils/task-list/select/selectTask";
 type TTaskListItem = {
   task: Task;
 };
 export default function TaskListItem(props: TTaskListItem) {
-  const {
-    isTaskOpened,
-    setIsTaskOpened,
-    currentTask,
-    setCurrentTask,
-    prevTask,
-  } = useTasksContext();
-
+  const { currentTask, setCurrentTask, setEditedTask } = useTasksContext();
   return (
     <Container className="d-flex flex-column p-0 ms-0 currentList-tasks-container">
       <Container className="d-flex flex-row align-items-start gap-2 pb-2">
@@ -24,9 +18,15 @@ export default function TaskListItem(props: TTaskListItem) {
           style={{ flex: 1 }}
           onClick={() => {
             if (currentTask.taskID !== props.task.taskID) {
-              setIsTaskOpened(!isTaskOpened);
+              selectTask(
+                500,
+                100,
+                ".slideInRight",
+                setCurrentTask,
+                props.task,
+                setEditedTask
+              );
               setCurrentTask(props.task);
-              prevTask.current = props.task;
             }
           }}
         >

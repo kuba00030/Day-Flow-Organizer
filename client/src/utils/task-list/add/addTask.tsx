@@ -1,6 +1,5 @@
 import { Task, TaskList, TaskLists } from "../../../context/tasksContext";
 
-
 export default function addTask(
   taskLists: TaskLists,
   setTaskLists: (lists: TaskLists) => void,

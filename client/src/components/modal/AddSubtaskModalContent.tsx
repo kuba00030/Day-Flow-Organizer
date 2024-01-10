@@ -13,7 +13,7 @@ import { SubtaskType, useTasksContext } from "../../context/tasksContext";
 
 export default function AddSubtaskModalContent() {
   const { modalContext, setModalContext } = useModalContext();
-  const { taskLists, currentTask, setCurrentTask } = useTasksContext();
+  const { editedTask, setEditedTask } = useTasksContext();
   const [newSubtask, setNewSubtask] = useState<SubtaskType>({
     subtaskID: `${new Date().getTime()}`,
     title: "",
@@ -55,7 +55,7 @@ export default function AddSubtaskModalContent() {
           } border-0 fw-semibold`}
           onClick={() => {
             if (newSubtask.title !== "") {
-              addSubtask(taskLists, currentTask, setCurrentTask, newSubtask);
+              addSubtask(editedTask, setEditedTask, newSubtask);
               setModalContext({
                 ...modalContext,
                 showModal: !modalContext.showModal,

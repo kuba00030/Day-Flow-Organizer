@@ -1,12 +1,11 @@
 import { Container } from "react-bootstrap";
-import { TaskLists } from "../../../context/tasksContext";
 
 type ListSelect = {
   containerStyle: string;
-  options: TaskLists;
+  options: string[];
   optionStyle: string;
-  label: string;
-  labelStyle: string;
+  label?: string;
+  labelStyle?: string;
   onChange: (e?: any) => void;
   selectStyle: string;
   selectedList: string;
@@ -28,9 +27,9 @@ export default function ListSelect(props: ListSelect) {
           return (
             <option
               className={props.optionStyle}
-              key={`category task details: ${option.listName}`}
+              key={`option selected: ${option}`}
             >
-              {option.listName}
+              {option}
             </option>
           );
         })}

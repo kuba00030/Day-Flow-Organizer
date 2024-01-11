@@ -20,7 +20,7 @@ import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
 import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
-import styleSelectedElement from "../../../utils/task-list/select/selectElement";
+import styleSelectedElement from "../../../utils/task-list/select/styleSelectedElement";
 import selectTask from "../../../utils/task-list/select/selectTask";
 
 export default function NavBar() {
@@ -193,8 +193,8 @@ export default function NavBar() {
                       );
                     }
                     styleSelectedElement(
-                      '[data-element*="navbar-list"]',
-                      "data-element",
+                      '[data-style*="navbar-list"]',
+                      "data-style",
                       e,
                       "bgHoverFocus",
                       "paddingHoverFocus"
@@ -204,7 +204,10 @@ export default function NavBar() {
                   icon={
                     <div
                       className="regular-icon me-2 rounded border-0 p-0"
-                      style={{ backgroundColor: `${list.listColor}` }}
+                      style={{
+                        backgroundColor: `${list.listColor}`,
+                        pointerEvents: "none",
+                      }}
                     ></div>
                   }
                 />

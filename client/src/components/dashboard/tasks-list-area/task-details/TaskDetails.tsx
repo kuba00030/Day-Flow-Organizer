@@ -61,7 +61,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Task:"
           inputType="text"
-          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight"
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight opacity_0"
           inputValue={editedTask.title}
           onChange={(e) => {
             editTask(editedTask, setEditedTask, "title", e);
@@ -72,7 +72,7 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Description:"
           inputType="text"
-          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight "
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight opacity_0"
           inputValue={editedTask.description}
           onChange={(e) => {
             editTask(editedTask, setEditedTask, "description", e);
@@ -81,11 +81,11 @@ export default function TaskDetails() {
         />
         <div className="d-flex flex-column p-0 gap-2">
           <ListSelect
-            containerStyle="p-0 d-flex flex-row w-100 justify-content-between "
+            containerStyle="p-0 d-flex flex-row w-100 justify-content-between"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"
             selectStyle="border border-dark-subtle shadowFocus shadowHover rounded bg-transparent fw-semibold txt-small text-secondary text-center p-1 slideInRight opacity_0"
-            options={taskLists}
+            options={taskLists.map((list) => list.listName)}
             optionStyle="text-secondary fw-semibold txt-small"
             selectedList={editedTask.list}
             onChange={(e) => {
@@ -94,7 +94,7 @@ export default function TaskDetails() {
             animationData="slide-animation"
           />
           <InputDate
-            containerSyle="d-flex flex-row justify-content-between gap-4 text-secondary fw-semibold txt-small align-items-center p-0 "
+            containerSyle="d-flex flex-row justify-content-between gap-4 text-secondary fw-semibold txt-small align-items-center p-0"
             labelValue="Due date"
             inputStyle="shadowFocus shadowHover dashboard-tasks-details-date-input border border-dark-subtle rounded bg-transparent fw-semibold text-secondary text-center p-1 slideInRight opacity_0"
             inputType="date"

@@ -1,13 +1,16 @@
 export default function styleSelectedElement(
   selectByAtribute: string,
-  attributeName: string,
+  currentAttributeName: string,
   e: any,
   ...className: string[]
 ) {
   const elements = document.querySelectorAll(selectByAtribute);
+
   const selectedElement = document.querySelector(
-    `[${attributeName}="${e.target.getAttribute(attributeName)}"]`
+    `[${currentAttributeName}="${e.target.getAttribute(currentAttributeName)}"]`
   );
+
   elements.forEach((element) => element.classList.remove(...className));
+
   selectedElement.classList.add(...className);
 }

@@ -72,7 +72,7 @@ export default function EditSubtsakModalContent(
         />
       </ModalBody>
       <ModalFooter>
-        <Container className="d-flex -flex-row gap-4">
+        <Container className="d-flex flex-row gap-4">
           <Button
             size="sm"
             className={"btn text-secondaryborder-0 fw-semibold"}

@@ -11,7 +11,7 @@ type TNavAccordionItem = {
 export default function NavAccordionItem(props: TNavAccordionItem) {
   return (
     <Button
-      data-element={`navbar-list-${props.header}`}
+      data-style={`navbar-list-${props.header}`}
       size="sm"
       className={props.containerStyle}
       onClick={props.onClick}

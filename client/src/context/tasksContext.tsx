@@ -1,15 +1,7 @@
-import {
-  MutableRefObject,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./authContext";
 import getTaskLists from "../utils/api/get-data/getTaskLists";
 import getTasksInDaysRange from "../utils/task-list/get/getTasksInDaysRange";
-import selectTask from "../utils/task-list/select/selectTask";
 
 export type SubtaskType = {
   subtaskID: string;
@@ -69,7 +61,6 @@ export default function TasksContextProvider({
   });
   const [taskLists, setTaskLists] = useState<TaskLists>([]);
   const [isTaskOpened, setIsTaskOpened] = useState<boolean>(false);
-  const prevTask = useRef(currentTask);
 
   const { authContext } = useAuthContext();
   const fetchedTaskLists = async () => {

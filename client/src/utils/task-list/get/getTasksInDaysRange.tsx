@@ -14,8 +14,10 @@ export default function getTasksInDaysRange(
       tasks.push(...list.tasks);
     }
   });
+
   tasks = tasks.filter((task) => {
     const taskDate = new Date(task.date);
+
     return (
       taskDate >= new Date(getCurrentDate()) &&
       taskDate <=

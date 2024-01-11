@@ -71,7 +71,7 @@ export default function AddTaskModalContent() {
         <div className="d-flex flex-column p-0 gap-2 me-auto">
           <ListSelect
             containerStyle="p-0 d-flex flex-row w-100 justify-content-between "
-            options={taskLists}
+            options={taskLists.map((list) => list.listName)}
             optionStyle="text-secondary fw-semibold txt-small"
             label="List"
             labelStyle="text-secondary fw-semibold dashboard-tasks-details-txt"

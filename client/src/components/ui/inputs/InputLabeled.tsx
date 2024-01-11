@@ -7,6 +7,8 @@ type TInputLabeled = {
   onChange: (e?: any) => void;
   labelValue?: string;
   labelStyle?: string;
+  animationData?: string;
+  inputKey?: string;
 };
 export default function InputLabeled(props: TInputLabeled) {
   return (
@@ -17,12 +19,14 @@ export default function InputLabeled(props: TInputLabeled) {
         </Form.Label>
       ) : null}
       <input
+        key={props.inputKey}
         className={props.inputStyle}
         type={props.inputType}
         placeholder={props.inputPlaceholder}
         value={props.inputValue}
         onChange={props.onChange}
         style={{ outline: "none" }}
+        data-animation={props.animationData}
       />
     </Form.Group>
   );

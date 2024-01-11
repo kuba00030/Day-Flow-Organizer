@@ -1,6 +1,6 @@
 import { Button, Container } from "react-bootstrap";
-import { useEffect, useState, useRef } from "react";
-import { Task, useTasksContext } from "../../../../context/tasksContext";
+import { useEffect, useState } from "react";
+import { useTasksContext } from "../../../../context/tasksContext";
 import TaskDetailsSubtasks from "./TaskDetailsSubtasks";
 import InputLabeled from "../../../ui/inputs/InputLabeled";
 import ListSelect from "../../../ui/inputs/ListSelect";
@@ -12,6 +12,7 @@ import updateTask from "../../../../utils/task-list/update/updateTask";
 import deleteTaskDB from "../../../../utils/api/delete-data/deleteTaskDB";
 import deleteTask from "../../../../utils/task-list/delete/deleteTask";
 import { compareTaskChanges } from "../../../../utils/task-details/CompareTaskChanges";
+import getElementsBySelector from "../../../../utils/task-list/get/getElementsBySelector";
 
 export default function TaskDetails() {
   const {
@@ -34,23 +35,23 @@ export default function TaskDetails() {
   useEffect(() => {
     let animationDuration = 500;
 
-    const taskElements = document.querySelectorAll(".slideInRight");
+    getElementsBySelector('[data-animation="slide-animation"]').forEach(
+      (element: HTMLDivElement) => {
+        element.classList.remove("slideInRight");
+        element.style.animationDuration = `${animationDuration}ms`;
 
-    taskElements.forEach((element: HTMLDivElement) => {
-      element.classList.remove("slideInRight");
-      element.style.animationDuration = `${animationDuration}ms`;
+        setTimeout(() => {
+          element.classList.add("slideInRight");
+          element.classList.remove("opacity_0");
+        }, 1);
 
-      setTimeout(() => {
-        element.classList.add("slideInRight");
-        element.classList.remove("opacity_0");
-      }, 1);
-
-      animationDuration += 100;
-    });
+        animationDuration += 100;
+      }
+    );
   }, []);
 
   return (
-    <div className="w-25 p-0 d-flex flex-column bg-body-secondary rounded overflow-hidden position-relative">
+    <div className="w-25 p-0 d-flex flex-column bg-body-secondary rounded overflow-hidden position-relative ">
       <Container
         data-task-details="task-details-slider"
         className="p-4 d-flex flex-column overflow-hidden gap-4"
@@ -60,21 +61,23 @@ export default function TaskDetails() {
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Task:"
           inputType="text"
-          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight opacity_0"
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight"
           inputValue={editedTask.title}
           onChange={(e) => {
             editTask(editedTask, setEditedTask, "title", e);
           }}
+          animationData="slide-animation"
         />
         <InputLabeled
           labelStyle="text-dark-emphasis fw-semibold txt-large"
           labelValue="Description:"
           inputType="text"
-          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight opacity_0"
+          inputStyle="border border-dark-subtle shadowFocus shadowHover p-2 bg-transparent rounded text-secondary fw-semibold txt-small slideInRight "
           inputValue={editedTask.description}
           onChange={(e) => {
             editTask(editedTask, setEditedTask, "description", e);
           }}
+          animationData="slide-animation"
         />
         <div className="d-flex flex-column p-0 gap-2">
           <ListSelect
@@ -88,6 +91,7 @@ export default function TaskDetails() {
             onChange={(e) => {
               editTask(editedTask, setEditedTask, "list", e);
             }}
+            animationData="slide-animation"
           />
           <InputDate
             containerSyle="d-flex flex-row justify-content-between gap-4 text-secondary fw-semibold txt-small align-items-center p-0 "
@@ -98,9 +102,13 @@ export default function TaskDetails() {
             onChange={(e) => {
               editTask(editedTask, setEditedTask, "date", e);
             }}
+            animationData="slide-animation"
           />
         </div>
-        <TaskDetailsSubtasks />
+        <TaskDetailsSubtasks
+          task={editedTask}
+          animationData="slide-animation"
+        />
       </Container>
       <Container className="d-flex flex-column px-4 pb-4">
         <Button

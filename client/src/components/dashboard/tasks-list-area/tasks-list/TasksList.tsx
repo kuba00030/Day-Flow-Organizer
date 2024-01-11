@@ -14,7 +14,8 @@ export default function TasksList() {
     <div className="d-flex flex-column p-2" style={{ flex: 1 }}>
       <Header
         txt={`${currentList.listName}`}
-        className="txt-larger fw-semibold ms-2 mb-2 text-dark-emphasis"
+        key={currentList.listName}
+        className="txt-larger fw-semibold ms-2 mb-2 text-dark-emphasis fadeIn"
       />
       <div className="d-flex flex-column" style={{ flex: 1, gap: "10px" }}>
         <IconButton

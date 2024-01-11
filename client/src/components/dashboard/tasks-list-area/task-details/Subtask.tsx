@@ -1,17 +1,26 @@
 import { PiArrowElbowDownRightThin as SubtaskIcon } from "react-icons/pi";
-import { SubtaskType } from "../../../../context/tasksContext";
+import { SubtaskType, useTasksContext } from "../../../../context/tasksContext";
 import { useModalContext } from "../../../../context/modalContext";
 import EditSubtsakModalContent from "../../../modal/EditSubtaskModalContent";
 type TSubtask = {
   subtask: SubtaskType;
+  reorderedSubtasks: SubtaskType[];
   index: number;
+  animationData?: string;
 };
 export default function Subtask(props: TSubtask) {
   const { modalContext, setModalContext } = useModalContext();
+  const { setEditedTask, editedTask } = useTasksContext();
+
   return (
     <div
-      className="d-flex flex-column gap-1 border border-secondary-subtle rounded shadowHover slideInRight opacity_0"
-      onClick={() => {
+      className="d-flex flex-column gap-1 border border-secondary-subtle rounded shadowHover"
+      data-animation={props.animationData}
+      style={{ cursor: "pointer", position: "relative" }}
+      onMouseUp={() => {
+        setEditedTask({ ...editedTask, subtasks: props.reorderedSubtasks });
+      }}
+      onDoubleClick={() => {
         setModalContext({
           ...modalContext,
           modalContent: (

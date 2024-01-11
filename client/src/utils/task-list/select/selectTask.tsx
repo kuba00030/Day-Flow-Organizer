@@ -1,9 +1,9 @@
 import { Task } from "../../../context/tasksContext";
+import getElementsBySelector from "../get/getElementsBySelector";
 
 export default async function selectTask(
   durationMS: number,
   durationIncr: number,
-  className: string,
   setCurrentTask: (task: Task) => void,
   currentTask: Task,
   setEditedTask: (task: Task) => void
@@ -11,7 +11,9 @@ export default async function selectTask(
   let animationDuration = durationMS;
 
   // all element from TaskDetails component having certain class
-  const taskElements = document.querySelectorAll(className);
+  const taskElements = getElementsBySelector(
+    '[data-animation="slide-animation"]'
+  );
 
   if (taskElements.length) {
     // before task update set taskElements opacity = 0 (so its not possible to see task being updated)
@@ -21,13 +23,16 @@ export default async function selectTask(
     });
 
     // wait for task update
-    await new Promise<void>((resolve) => {
+    await new Promise<void>(async (resolve) => {
       setCurrentTask(currentTask);
       setEditedTask(currentTask);
-      setTimeout(resolve, 1);
+      setTimeout(resolve, 10);
     });
 
-    const newTaskElements = document.querySelectorAll(className);
+    // subtasks rendered after setting editedTask
+    const newTaskElements = getElementsBySelector(
+      '[data-animation="slide-animation"]'
+    );
 
     newTaskElements.forEach((element: HTMLDivElement) => {
       element.classList.remove("slideInRight");
@@ -42,7 +47,7 @@ export default async function selectTask(
     });
 
     newTaskElements.forEach((element: HTMLDivElement) => {
-      element.style.transition = `${300}ms`;
+      element.style.transition = "300ms";
     });
   } else {
     setCurrentTask(currentTask);

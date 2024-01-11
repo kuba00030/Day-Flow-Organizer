@@ -130,7 +130,21 @@
   background-color: rgb(228, 228, 228) !important;
 }
 .slideInRight {
-  animation: slide-in-right ease-in-out;
+  animation: slide-in-right 0.3s ease-in-out;
+}
+.opacity_0 {
+  opacity: 0;
+}
+.fadeIn {
+  animation: fade-in 0.3s ease-in-out;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @keyframes slide-in-right {
   0% {
@@ -141,7 +155,4 @@
     opacity: 1;
     transform: translateX(+0%);
   }
-}
-.opacity_0 {
-  opacity: 0;
 }

@@ -8,6 +8,7 @@ type TInputDate = {
   inputPlaceholder?: string;
   inputValue: string;
   onChange: (e?: any) => void;
+  animationData?: string;
 };
 export default function InputDate(props: TInputDate) {
   return (
@@ -24,6 +25,7 @@ export default function InputDate(props: TInputDate) {
         value={props.inputValue}
         onChange={props.onChange}
         style={{ outline: "none" }}
+        data-animation={props.animationData}
       />
     </Form.Group>
   );

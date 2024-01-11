@@ -187,7 +187,6 @@ export default function NavBar() {
                       selectTask(
                         500,
                         100,
-                        ".slideInRight",
                         setCurrentTask,
                         list.tasks[0],
                         setEditedTask

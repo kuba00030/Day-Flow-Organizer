@@ -3,30 +3,26 @@ import { Container } from "react-bootstrap";
 import { AiOutlineSearch as SearchIcon } from "react-icons/ai";
 import { Task, TaskList, useTasksContext } from "../../../context/tasksContext";
 export default function NavSearchBar() {
-  const { taskLists, currentList, setCurrentList } = useTasksContext();
+  const { taskLists, setCurrentList } = useTasksContext();
 
   const handleSearch = (searchValue: string) => {
     const searchedTasks: Task[] = [];
 
-    // Przeszukaj wszystkie taski w poszczególnych listach
     taskLists.forEach((list) => {
       list.tasks.forEach((task) => {
-        // Sprawdź, czy tytuł taska zawiera wprowadzoną wartość
         if (task.title.toLowerCase().includes(searchValue.toLowerCase())) {
           searchedTasks.push(task);
         }
       });
     });
 
-    // Utwórz nową listę zawierającą znalezione taski
     const searchedList: TaskList = {
       listName: "Searched tasks",
-      listColor: "", //
+      listColor: "",
       listActive: true,
       tasks: searchedTasks,
     };
 
-    // Ustaw nową listę jako bieżącą listę
     setCurrentList(searchedList);
   };
   return (

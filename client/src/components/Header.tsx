@@ -6,7 +6,7 @@ type THeader = {
 export default function Header(props: THeader) {
   return (
     <span className={props.className} key={props.key}>
-      {props.txt}
+      {props.txt[0].toUpperCase() + props.txt.slice(1)}
     </span>
   );
 }

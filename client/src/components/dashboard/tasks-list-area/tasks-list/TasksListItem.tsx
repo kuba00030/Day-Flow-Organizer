@@ -18,7 +18,7 @@ export default function TaskListItem(props: TTaskListItem) {
     >
       <input type="checkbox" onClick={() => {}} className="checkbox mt-4" />
       <Button
-        className="d-flex flex-column align-items-start bg-transparent text-dark-emphasis border-0 fw-semibold p-3 gap-2 bgHover scaleHover"
+        className="d-flex flex-column align-items-start  text-dark-emphasis border-0 fw-semibold p-3 gap-2 bgHover scaleHover"
         style={{ flex: 1 }}
         data-style={`current-list-item-${props.task.taskID}`}
         onClick={(e) => {
@@ -28,7 +28,8 @@ export default function TaskListItem(props: TTaskListItem) {
               '[data-style*="current-list-item"]',
               "data-style",
               e,
-              "bgHoverFocus"
+              "bgHoverFocus",
+              "scaleHoverFocus"
             );
           }
         }}

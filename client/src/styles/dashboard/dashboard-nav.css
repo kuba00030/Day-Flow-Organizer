@@ -113,6 +113,9 @@
 .scaleHover:hover {
   transform: scaleX(0.98);
 }
+.scaleHoverFocus {
+  transform: scaleX(0.98);
+}
 .paddingHover {
   transition: 0.3s ease-in-out !important;
 }

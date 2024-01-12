@@ -15,9 +15,17 @@ export default function NavAccordionItem(props: TNavAccordionItem) {
       className={props.containerStyle}
       onClick={props.onClick}
     >
-      {props.icon}
-      <span className={props.headerStyle}>{props.header}</span>
-      <span className={props.itemStyle}>{props.itemValue}</span>
+      <div
+        style={{ pointerEvents: "none", display: "flex", alignItems: "center" }}
+      >
+        {props.icon}
+      </div>
+      <span className={props.headerStyle} style={{ pointerEvents: "none" }}>
+        {props.header}
+      </span>
+      <span className={props.itemStyle} style={{ pointerEvents: "none" }}>
+        {props.itemValue}
+      </span>
     </Button>
   );
 }

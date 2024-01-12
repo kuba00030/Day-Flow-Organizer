@@ -14,6 +14,7 @@ import {
 import { CiSettings as SettingsIcon } from "react-icons/ci";
 import { PiSignOutBold as SignOutIcon } from "react-icons/pi";
 import { TaskList, useTasksContext } from "../../../context/tasksContext";
+import { FaNoteSticky as NotesIcon } from "react-icons/fa6";
 import { useModalContext } from "../../../context/modalContext";
 import SettingsModalContent from "../../modal/SettingModalContent";
 import countListTasks from "../../../utils/task-list/countListTasks";
@@ -144,6 +145,24 @@ export default function NavBar() {
               icon={
                 <CalendarIcon className="regular-icon me-2 text-secondary" />
               }
+            />,
+            <NavAccordionItem
+              itemStyle="accordion-item-txt text-secondary ms-auto"
+              headerStyle="txt-small text-secondary"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
+              header="Sticky Notes"
+              itemValue={`${0}`}
+              onClick={(e) => {
+                styleSelectedElement(
+                  '[data-style*="navbar-list"]',
+                  "data-style",
+                  e,
+                  "bgHoverFocus",
+                  "paddingHoverFocus"
+                );
+                navigate("sticky_notes");
+              }}
+              icon={<NotesIcon className="regular-icon me-2 text-secondary" />}
             />,
           ]}
         />

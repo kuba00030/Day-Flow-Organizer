@@ -22,16 +22,13 @@ import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
 import styleSelectedElement from "../../../utils/task-list/select/styleSelectedElement";
 import selectTask from "../../../utils/task-list/select/selectTask";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-  const {
-    taskLists,
-    setCurrentList,
-    setCurrentTask,
-    setEditedTask,
-    currentTask,
-  } = useTasksContext();
+  const { taskLists, setCurrentList, setCurrentTask, setEditedTask } =
+    useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
+  const navigate = useNavigate();
 
   return (
     <div className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
@@ -43,7 +40,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold bgHover paddingHover pt-2 pb-2 pe-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
               header="Upcoming"
               itemValue={`${
                 getTasksInDaysRange(
@@ -70,22 +67,16 @@ export default function NavBar() {
                   setCurrentTask(undefined);
                   setEditedTask(undefined);
                 } else {
-                  // selectTask(
-                  //   500,
-                  //   200,
-                  //   ".slideInRight",
-                  //   setCurrentTask,
-                  //   tasks[0],
-                  //   prevTask
-                  // );
+                  selectTask(500, 200, setCurrentTask, tasks[0], setEditedTask);
                 }
                 styleSelectedElement(
-                  '[data-element*="navbar-list"]',
-                  "data-element",
+                  '[data-style*="navbar-list"]',
+                  "data-style",
                   e,
                   "bgHoverFocus",
                   "paddingHoverFocus"
                 );
+                navigate("/dashboard");
               }}
               icon={
                 <UpcomingIcon className="regular-icon me-2 text-secondary" />
@@ -94,7 +85,7 @@ export default function NavBar() {
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
               header="Today"
               itemValue={`${
                 getTasksInDaysRange(
@@ -111,49 +102,44 @@ export default function NavBar() {
                   ),
                   0
                 );
+                setCurrentList({
+                  listName: "Today",
+                  listColor: "",
+                  listActive: "",
+                  tasks: tasks,
+                });
                 if (!tasks.length) {
                   setCurrentTask(undefined);
                   setEditedTask(undefined);
                 } else {
-                  // selectTask(
-                  //   500,
-                  //   200,
-                  //   ".slideInRight",
-                  //   setCurrentTask,
-                  //   tasks[0],
-                  //   prevTask
-                  // );
-                  setCurrentList({
-                    listName: "Today",
-                    listColor: "",
-                    listActive: "",
-                    tasks: tasks,
-                  });
+                  selectTask(500, 200, setCurrentTask, tasks[0], setEditedTask);
                 }
                 styleSelectedElement(
-                  '[data-element*="navbar-list"]',
-                  "data-element",
+                  '[data-style*="navbar-list"]',
+                  "data-style",
                   e,
                   "bgHoverFocus",
                   "paddingHoverFocus"
                 );
+                navigate("/dashboard");
               }}
               icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
             />,
             <NavAccordionItem
               itemStyle="accordion-item-txt text-secondary ms-auto"
               headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
+              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
               header="Calendar"
               itemValue={`${0}`}
               onClick={(e) => {
                 styleSelectedElement(
-                  '[data-element*="navbar-list"]',
-                  "data-element",
+                  '[data-style*="navbar-list"]',
+                  "data-style",
                   e,
                   "bgHoverFocus",
                   "paddingHoverFocus"
                 );
+                navigate("calendar");
               }}
               icon={
                 <CalendarIcon className="regular-icon me-2 text-secondary" />
@@ -170,7 +156,7 @@ export default function NavBar() {
                 <NavAccordionItem
                   itemStyle="accordion-item-txt text-secondary ms-auto"
                   headerStyle="txt-small text-secondary"
-                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pb-2 pe-2"
+                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
                   header={`${list.listName}`}
                   itemValue={`${countListTasks(list.tasks)}`}
                   onClick={(e) => {
@@ -199,6 +185,7 @@ export default function NavBar() {
                       "bgHoverFocus",
                       "paddingHoverFocus"
                     );
+                    navigate("/dashboard");
                   }}
                   key={`list category: ${list.listName}`}
                   icon={

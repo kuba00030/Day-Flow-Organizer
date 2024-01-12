@@ -13,16 +13,12 @@ import {
   googleProvider,
   twitterProvider,
 } from "../firebase-config/firebaseConfig";
-import { useAuthContext } from "../context/authContext";
 import handleSignInWithPasswordDB from "../utils/api/sign-in/signInWithPasswordDB";
 import handleSignInWithProviderDB from "../utils/api/sign-in/signInWithProviderDB";
-import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
+
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
-  const { authContext } = useAuthContext();
-  const navigate = useNavigate();
-  onLoggedRedirectHook(authContext.isLogged, navigate);
   return (
     <div className="login-register-container">
       <div className="login-register-welcome-text mb-3">

@@ -6,7 +6,7 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import InputLabeled from "../ui/inputs/InputLabeled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/authContext";
 import { useModalContext } from "../../context/modalContext";
 import { TaskLists, useTasksContext } from "../../context/tasksContext";
@@ -18,6 +18,10 @@ export default function AddNewListModalContent() {
   const { setModalContext, modalContext } = useModalContext();
   const [newListName, setNewListName] = useState<string>("");
   const [newColorList, setNewColorList] = useState<string>("#563d7c");
+
+  useEffect(() => {
+    console.log(newListName);
+  }, [newListName]);
 
   const listAlreadyExists = (
     taskLists: TaskLists,
@@ -69,7 +73,7 @@ export default function AddNewListModalContent() {
         <Button
           size="sm"
           className={`${
-            newListName !== "" ? "btn" : "bg-warning text-secondary"
+            newListName !== "" ? "bg-warning text-secondary" : "btn"
           } border-0 fw-semibold`}
           onClick={async () => {
             if (

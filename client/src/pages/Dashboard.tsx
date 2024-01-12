@@ -1,30 +1,17 @@
 import NavBar from "../components/dashboard/nav/NavBar";
-import TaskDetails from "../components/dashboard/tasks-list-area/task-details/TaskDetails";
-import TasksList from "../components/dashboard/tasks-list-area/tasks-list/TasksList";
 import DefaultModal from "../components/modal/ModalDefault";
 import { useModalContext } from "../context/modalContext";
-import { useTasksContext } from "../context/tasksContext";
 import "../styles/custom-container.css";
 import "../styles/dashboard/dashboard-nav.css";
-import { useAuthContext } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
-import onLoggedRedirectHook from "../utils/hooks/onLoggedRedirectHook";
-
+import { Outlet } from "react-router-dom";
 export default function Dashboard() {
-  const { authContext } = useAuthContext();
-  const { editedTask, currentTask } = useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
-  const navigate = useNavigate();
-  onLoggedRedirectHook(authContext.isLogged, navigate);
 
   return (
     <div className="d-flex flex-row dashboard-container ">
       <NavBar />
       <div className="d-flex flex-row" style={{ flex: 1 }}>
-        <TasksList />
-        {editedTask !== undefined && currentTask !== undefined ? (
-          <TaskDetails />
-        ) : null}
+        <Outlet />
       </div>
       <DefaultModal
         show={modalContext.showModal}

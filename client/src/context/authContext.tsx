@@ -20,8 +20,11 @@ export default function AuthContextProvider({
   children,
 }: ContextProviderProps) {
   const [authContext, setAuthContext] = useState<Auth>({
-    userID: "",
-    isLogged: false,
+    userID:
+      window.localStorage.getItem("userID") !== ""
+        ? window.localStorage.getItem("userID")
+        : "",
+    isLogged: window.localStorage.getItem("isLogged") === "true" ? true : false,
   });
 
   // set auth context
@@ -29,9 +32,8 @@ export default function AuthContextProvider({
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         window.localStorage.setItem("isLogged", "true");
-        setAuthContext({ userID: user.uid, isLogged: true });
+        window.localStorage.setItem("userID", user.uid);
       } else {
-        setAuthContext({ ...authContext, isLogged: false });
         window.localStorage.clear();
       }
     });

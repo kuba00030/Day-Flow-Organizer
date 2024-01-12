@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { TaskListsType } from "../../../../types/CategoryListType";
+import { TaskLists } from "../../../../context/tasksContext";
 
 export default function hasListChangedHook(
-  originLists: TaskListsType,
-  editedLists: TaskListsType,
+  originLists: TaskLists,
+  editedLists: TaskLists,
   setListHasChanged: (changed: boolean) => void
 ) {
   useEffect(() => {

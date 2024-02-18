@@ -1,11 +1,8 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../../firebase-config/firebaseConfig";
 import { Task, TaskLists } from "../../../context/tasksContext";
 
-export default async function getTaskLists(
-  userID: string,
-  taskStatus: boolean
-) {
+export default async function getTaskLists(userID: string) {
   const taskLists: TaskLists = [];
   const taskListsRef = query(collection(db, "users", userID, "task-lists"));
   const taskListsSnapshot = await getDocs(taskListsRef);
@@ -20,8 +17,7 @@ export default async function getTaskLists(
           "task-lists",
           list.data().list_name,
           "tasks"
-        ),
-        where("task_status", "==", taskStatus)
+        )
       )
     );
 
@@ -29,7 +25,7 @@ export default async function getTaskLists(
       taskLists.push({
         listName: list.data().list_name,
         listColor: list.data().list_color,
-        listActive: list.data().list_active,
+        listActive: true,
         tasks: [],
       });
     } else {
@@ -38,7 +34,8 @@ export default async function getTaskLists(
       for (const taskDoc of taskListSnapshot.docs) {
         tasks.push({
           taskID: taskDoc.data().task_id,
-          date: taskDoc.data().task_date,
+          start: taskDoc.data().task_starting_date,
+          end: taskDoc.data().task_end_date,
           description: taskDoc.data().task_description,
           title: taskDoc.data().task_title,
           taskStatus: taskDoc.data().task_status,
@@ -57,7 +54,7 @@ export default async function getTaskLists(
       taskLists.push({
         listName: list.data().list_name,
         listColor: list.data().list_color,
-        listActive: list.data().list_active,
+        listActive: true,
         tasks: tasks,
       });
     }

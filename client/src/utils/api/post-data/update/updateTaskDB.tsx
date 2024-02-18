@@ -1,7 +1,5 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../../firebase-config/firebaseConfig";
 import deleteTaskDB from "../../delete-data/deleteTaskDB";
-import addNewTaskDB from "../post/addNewTaskDB";
+import setTaskDB from "../post/setTaskDB";
 import { Task } from "../../../../context/tasksContext";
 
 export default async function updateTaskDB(
@@ -9,37 +7,12 @@ export default async function updateTaskDB(
   originTask: Task,
   editedTask: Task
 ) {
-  const taskRef = doc(
-    db,
-    "users",
-    userID,
-    "task-lists",
-    editedTask.list,
-    "tasks",
-    editedTask.taskID
-  );
-
   if (originTask.list === editedTask.list) {
-    await updateDoc(taskRef, {
-      task_date: editedTask.date,
-      task_description: editedTask.description,
-      task_id: editedTask.taskID,
-      task_status: editedTask.taskStatus,
-      task_title: editedTask.title,
-      subtasks: editedTask.subtasks.map((subtask) => {
-        return {
-          subtask_id: subtask.subtaskID,
-          subtask_title: subtask.title,
-          subtask_status: subtask.subtaskStatus,
-          subtask_description:
-            subtask.description !== undefined ? subtask.description : "",
-        };
-      }),
-    });
+    await setTaskDB(userID, editedTask);
   } else {
     // delete origin task from origin task list
     await deleteTaskDB(userID, originTask);
     // push edited task to new selected list
-    await addNewTaskDB(userID, editedTask);
+    await setTaskDB(userID, editedTask);
   }
 }

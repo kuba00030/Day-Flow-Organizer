@@ -1,7 +1,6 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../../firebase-config/firebaseConfig";
 import { TaskLists } from "../../../../context/tasksContext";
-
+import deleteTaskListDB from "../../delete-data/deleteTaskListDB";
+import setTaskListDB from "../post/setTaskListDB";
 
 export default async function updateTaskListDB(
   userID: string,
@@ -9,16 +8,17 @@ export default async function updateTaskListDB(
   editedLists: TaskLists
 ) {
   originLists.forEach(async (list, index) => {
-    if (
+    if (list.listActive !== editedLists[index].listActive) {
+      await deleteTaskListDB(userID, originLists[index].listName).catch(
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else if (
       list.listName !== editedLists[index].listName ||
-      list.listColor !== editedLists[index].listColor ||
-      list.listActive !== editedLists[index].listActive
+      list.listColor !== editedLists[index].listColor
     ) {
-      await updateDoc(doc(db, "users", userID, "task-lists", list.listName), {
-        list_name: editedLists[index].listName,
-        list_color: editedLists[index].listColor,
-        list_active: editedLists[index].listActive,
-      });
+      await setTaskListDB(userID, editedLists[index]);
     }
   });
 }

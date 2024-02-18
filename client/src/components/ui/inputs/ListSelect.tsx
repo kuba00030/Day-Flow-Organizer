@@ -1,5 +1,3 @@
-import { Container } from "react-bootstrap";
-
 type ListSelect = {
   containerStyle: string;
   options: string[];
@@ -13,7 +11,7 @@ type ListSelect = {
 };
 export default function ListSelect(props: ListSelect) {
   return (
-    <Container className={props.containerStyle}>
+    <div className={`d-flex select-purple-container${props.containerStyle}`}>
       <div>
         <span className={props.labelStyle}>{props.label}</span>
       </div>
@@ -34,6 +32,6 @@ export default function ListSelect(props: ListSelect) {
           );
         })}
       </select>
-    </Container>
+    </div>
   );
 }

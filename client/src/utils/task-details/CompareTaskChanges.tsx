@@ -1,8 +1,9 @@
+import { Note } from "../../context/noteContext";
 import { Task } from "../../context/tasksContext";
 
 export const compareTaskChanges = (
-  editedTask: Task,
-  originTask: Task,
+  editedTask: Task | Note,
+  originTask: Task | Note,
   setHasTaskChanged: (val: boolean) => void
 ) => {
   for (const property in editedTask) {

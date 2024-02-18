@@ -2,17 +2,120 @@
   height: auto;
   max-width: 300px;
 }
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 25%;
+  transition: 0.3s;
+}
 .dashboard-container {
   width: 100vw;
   height: 100vh;
   padding: 25px;
+  display: flex;
+}
+.sticky-note-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  place-self: center;
+}
+.navbar-button-container {
+  display: flex;
+  flex-direction: row;
+}
+.task-details-container {
+  position: relative;
+  width: 25%;
+  transition: 0.3s;
+}
+.task-details-date-container {
+  display: flex;
+  flex-direction: row;
+}
+.task-details-date-input {
+}
+.task-list-item-details-subtasks {
+  display: flex;
+  flex-direction: row;
+}
+.modal-body {
+  max-height: 500px;
+}
+/* mobile */
+@media screen and (480px > width) {
+  .sticky-note-container {
+    grid-template-columns: 1fr;
+  }
+}
+@media screen and (0px < width <= 500px) {
+  .task-list-item-details-subtasks {
+    display: none;
+  }
+  .dashboard-container {
+    overflow: scroll;
+  }
+  .modal-body {
+    height: 350px;
+  }
+}
+@media screen and (width < 1025px) {
+  .task-details-container {
+    position: absolute;
+    width: 280px;
+    height: 100%;
+    top: 0px;
+  }
+  .task-details-date-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media screen and (768px <= width <= 1024px) {
+  .navbar-button-container {
+    flex-direction: column;
+    align-items: start;
+    gap: clamp(8px, 5vh, 15px);
+  }
+}
+@media screen and (1025px < width < 1500px) {
+  .task-details-date-input {
+    max-width: clamp(100px, 10vw, 300px);
+  }
+}
+/* laptop / PC */
+@media screen and (width < 1280px) {
+  .navbar-container {
+    position: absolute;
+    flex-direction: row-reverse;
+    height: 100%;
+    width: 280px;
+    z-index: 5;
+    top: 0px;
+  }
+}
+@media screen and (1320px > width) {
+  .sticky-note-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (1640px > width) {
+  .sticky-note-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media screen and (1024px <= width <= 1920px) {
+  .navbar-button-container {
+    flex-direction: row;
+    align-items: start;
+    gap: clamp(8px, 5vh, 15px);
+  }
 }
 @media screen and (min-width: 2560px) {
   .dashboard-container {
     width: 70vw;
     height: 70vh;
     box-shadow: 0px 0px 50px -18px rgba(66, 68, 90, 1);
-    border-radius: 10px;
     padding: 0px;
   }
   .modal-body-small-container {

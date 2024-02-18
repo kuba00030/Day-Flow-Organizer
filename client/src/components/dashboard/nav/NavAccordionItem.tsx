@@ -1,31 +1,33 @@
 import { Button } from "react-bootstrap";
-type TNavAccordionItem = {
+type NavAccordionItem = {
   header: string;
-  headerStyle: string;
-  itemStyle: string;
   icon: React.ReactNode;
-  containerStyle: string;
-  itemValue: number | string;
+  itemValue: number | undefined;
   onClick: (value: any) => void;
 };
-export default function NavAccordionItem(props: TNavAccordionItem) {
+export default function NavAccordionItem(props: NavAccordionItem) {
   return (
     <Button
       data-style={`navbar-list-${props.header}`}
-      className={props.containerStyle}
+      className="d-flex flex-row align-items-center rounded border-0 fw-semibold nav-accordion-item pt-2 pe-2 pb-2 "
       onClick={props.onClick}
     >
       <div
-        style={{ pointerEvents: "none", display: "flex", alignItems: "center" }}
+        className="d-flex align-items-center"
+        style={{ pointerEvents: "none" }}
       >
         {props.icon}
       </div>
-      <span className={props.headerStyle} style={{ pointerEvents: "none" }}>
+      <span className="txt-small" style={{ pointerEvents: "none" }}>
         {props.header}
       </span>
-      <span className={props.itemStyle} style={{ pointerEvents: "none" }}>
-        {props.itemValue}
-      </span>
+      {props.itemValue === undefined ? (
+        <></>
+      ) : (
+        <span className="txt-small ms-auto" style={{ pointerEvents: "none" }}>
+          {props.itemValue}
+        </span>
+      )}
     </Button>
   );
 }

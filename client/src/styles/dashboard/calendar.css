@@ -1,0 +1,156 @@
+.calendar-event {
+  transition: 0.3s;
+}
+.calendar-event:hover {
+  filter: brightness(0.75);
+}
+
+.fc-view-harness {
+  overflow: auto;
+}
+.fc-button {
+  font-size: var(--fs-small) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.eventHover {
+  transition: 0.3s;
+  filter: brightness(1);
+}
+.eventHover:hover {
+  filter: brightness(0.8);
+}
+@media screen and (width < 560px) {
+  .fc-media-screen {
+    width: 500px;
+  }
+}
+@media screen and (width < 400px) {
+  .fc-button {
+    font-size: var(--fs-small) !important;
+  }
+  .fc-col-header-cell-cushion {
+    font-size: var(--fs-small) !important;
+  }
+  .fc-event {
+    font-size: var(--fs-small) !important;
+  }
+}
+@media screen and (width < 400px) {
+  .fc-button {
+    font-size: var(--fs-small) !important;
+  }
+  .fc-col-header-cell-cushion {
+    font-size: var(--fs-small) !important;
+  }
+  .fc-event {
+    font-size: var(--fs-small) !important;
+  }
+}
+.fc-button-primary {
+  transition: 0.3s ease !important;
+  background-color: var(--bg-purple) !important;
+}
+.fc-button-primary:hover {
+  filter: brightness(0.8);
+}
+.fc-button-group {
+  background-color: transparent !important;
+}
+.fc-toolbar-title {
+  font-size: var(--fs-larger) !important;
+  color: var(--color-light);
+}
+.fc-view-harness {
+  background-color: var(--bg-dark) !important;
+  border: none;
+}
+.fc-timegrid-body {
+  border: none 1px !important;
+}
+.fc-event {
+  box-shadow: none !important;
+  color: var(--color-light) !important;
+}
+a {
+  text-decoration: none !important;
+}
+.fc-view-harness,
+.fc-view-harness-active,
+.fc-timegrid,
+.fc-daygrid,
+.fc-view,
+.fc-scrollgrid,
+.fc-scrollgrid-liquid,
+.fc-scrollgrid-section,
+.fc-scrollgrid-section-header th,
+.fc-scrollgrid-section-body {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+td {
+  border: none !important;
+}
+.fc-timeGridWeek-view,
+.fc-timeGridDay-view,
+.fc-dayGridMonth-view {
+  border: solid var(--bg-purple) 2px !important;
+  border-radius: 5px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.fc-col-header-cell-cushion {
+  color: var(--color-light) !important;
+}
+tr {
+  border: solid 1px rgba(119, 59, 231, 0.562) !important;
+}
+.fc-day {
+  transition: 0.3s !important;
+  border: none !important;
+  border-left: solid 1px rgba(119, 59, 231, 0.562) !important;
+  border-right: solid 1px rgba(119, 59, 231, 0.562) !important;
+}
+.fc-day:hover {
+  background-color: var(--bg-darker);
+}
+.fc-daygrid-day-number {
+  color: var(--color-light) !important;
+}
+.fc-scrollgrid {
+  color: var(--color-light) !important;
+  border: none !important;
+}
+.fc-scrollgrid-section-header tr {
+  border: none !important;
+}
+.fc-scroller-harness {
+  border: none !important;
+}
+.fc-scroller {
+  border: none !important;
+}
+.fc-col-header {
+  border: none !important;
+}
+table {
+  border: none !important;
+}
+tbody {
+  border: none !important;
+}
+thead {
+  border: none !important;
+}
+.fc-col-header-cell {
+  border: none !important;
+}
+.fc-timegrid-axis {
+  border: none !important;
+}
+
+.fc-day:last-child {
+  border: none !important;
+}

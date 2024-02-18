@@ -1,5 +1,5 @@
 import { TaskList, TaskLists } from "../../../context/tasksContext";
-import { editCategoryList } from "../../../utils/task-list/update/editCategoryList";
+import { editList } from "../../../utils/task-list/update/editList";
 import InputLabeled from "../../ui/inputs/InputLabeled";
 import { MdDeleteForever as DeleteListIcon } from "react-icons/md";
 import { MdRestoreFromTrash as RestoreListIcon } from "react-icons/md";
@@ -21,10 +21,12 @@ export default function ListSettings(props: TListSettings) {
     >
       <InputLabeled
         inputType="text"
-        inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+        labelStyle="my-color-light fw-semibold mb-1 txt-small"
+        labelValue="List name"
+        inputStyle="shadowHover shadowFocus w-100 border-0 p-2 my-bg-dark my-color-light fw-semibold rounded"
         inputValue={props.list.listName}
         onChange={(e) => {
-          editCategoryList(
+          editList(
             props.list.listName,
             "listName",
             e.target.value,
@@ -34,11 +36,13 @@ export default function ListSettings(props: TListSettings) {
         }}
       />
       <InputLabeled
+        labelValue="List color"
         inputType="color"
-        inputStyle="border border-secondary-subtle focus-ring p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+        labelStyle="my-color-light fw-semibold mb-1 txt-small"
+        inputStyle="shadowHover shadowFocus w-100 border-0 p-2 my-bg-dark my-color-light fw-semibold rounded"
         inputValue={props.list.listColor}
         onChange={(e) => {
-          editCategoryList(
+          editList(
             props.list.listName,
             "listColor",
             e.target.value,
@@ -50,9 +54,11 @@ export default function ListSettings(props: TListSettings) {
       {props.listActive ? (
         <DeleteListIcon
           type="button"
-          className="ms-1 mt-1 large-icon text-secondary"
+          className={`ms-1 mt-1 large-icon icon-light ${
+            props.listActive ? "" : "icon-danger"
+          }`}
           onClick={() => {
-            editCategoryList(
+            editList(
               props.list.listName,
               "listActive",
               !props.listActive,
@@ -64,9 +70,11 @@ export default function ListSettings(props: TListSettings) {
       ) : (
         <RestoreListIcon
           type="button"
-          className="ms-1 mt-1 large-icon text-secondary"
+          className={`ms-1 mt-1 large-icon icon-light ${
+            props.listActive ? "" : "icon-danger"
+          }`}
           onClick={() => {
-            editCategoryList(
+            editList(
               props.list.listName,
               "listActive",
               !props.listActive,

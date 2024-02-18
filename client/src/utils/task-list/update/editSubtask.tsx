@@ -1,17 +1,21 @@
 import { SubtaskType, Task } from "../../../context/tasksContext";
 
 export const editSubtask = (
-  task: Task,
+  currentTask: Task,
   setTask: (task: Task) => void,
   editedSubtask: SubtaskType
 ) => {
-  let editedSubtasks = [...task.subtasks];
+  let editedSubtasks = [...currentTask.subtasks];
 
-  const subtaskIndex = task.subtasks.findIndex(
+  const subtaskIndex = currentTask.subtasks.findIndex(
     (subtask) => subtask.subtaskID === editedSubtask.subtaskID
   );
 
-  editedSubtasks[subtaskIndex] = editedSubtask;
+  if (currentTask.subtasks[subtaskIndex]) {
+    editedSubtasks[subtaskIndex] = editedSubtask;
+  } else {
+    editedSubtasks = [editedSubtask, ...editedSubtasks];
+  }
 
-  setTask({ ...task, subtasks: editedSubtasks });
+  setTask({ ...currentTask, subtasks: editedSubtasks });
 };

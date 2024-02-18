@@ -20,21 +20,24 @@ export default function AuthContextProvider({
   children,
 }: ContextProviderProps) {
   const [authContext, setAuthContext] = useState<Auth>({
-    userID:
-      window.localStorage.getItem("userID") !== ""
-        ? window.localStorage.getItem("userID")
-        : "",
-    isLogged: window.localStorage.getItem("isLogged") === "true" ? true : false,
+    userID: window.localStorage.getItem("userID")
+      ? window.localStorage.getItem("userID")
+      : "",
+    isLogged: false || window.localStorage.getItem("isLogged") === "true",
   });
 
-  // set auth context
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setAuthContext({
+          userID: user.uid,
+          isLogged: true,
+        });
         window.localStorage.setItem("isLogged", "true");
         window.localStorage.setItem("userID", user.uid);
       } else {
         window.localStorage.clear();
+        setAuthContext({ userID: "", isLogged: false });
       }
     });
   }, []);
@@ -54,7 +57,7 @@ export function useAuthContext() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error(
-      "useAuthContext should be used within a  AuthContextProvider"
+      "useAuthContext should be used within a AuthContextProvider"
     );
   }
   return context;

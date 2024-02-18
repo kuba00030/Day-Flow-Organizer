@@ -11,7 +11,8 @@ export type SubtaskType = {
 };
 
 export type Task = {
-  date: string;
+  start: string;
+  end: string;
   description: string;
   taskStatus: boolean;
   title: string;
@@ -27,6 +28,7 @@ export type TaskList = {
   listActive: boolean | string;
   tasks: Task[];
 };
+
 export type TaskLists = TaskList[];
 
 type TasksContext = {
@@ -64,7 +66,7 @@ export default function TasksContextProvider({
 
   const { authContext } = useAuthContext();
   const fetchedTaskLists = async () => {
-    const taskListsData = await getTaskLists(authContext.userID, false);
+    const taskListsData = await getTaskLists(authContext.userID);
     return taskListsData;
   };
 
@@ -72,16 +74,16 @@ export default function TasksContextProvider({
     if (authContext.userID) {
       fetchedTaskLists().then((taskListsData) => {
         setTaskLists(taskListsData);
-        setCurrentTask(getTasksInDaysRange(taskListsData, 0).tasks[0]);
+        setCurrentTask(getTasksInDaysRange(taskListsData, 0)[0]);
         setCurrentList({
           listName: "Today",
           listColor: "",
           listActive: true,
-          tasks: [...getTasksInDaysRange(taskListsData, 0).tasks],
+          tasks: [...getTasksInDaysRange(taskListsData, 0)],
         });
       });
     }
-  }, [authContext.userID]);
+  }, [authContext]);
 
   return (
     <TasksContext.Provider

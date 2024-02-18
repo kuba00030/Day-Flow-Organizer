@@ -3,10 +3,7 @@ import NavAccordion from "./NavAccordion";
 import NavAccordionItem from "./NavAccordionItem";
 import IconButton from "../../ui/buttons/IconButton";
 import NavSearchBar from "./NavSearchBar";
-import {
-  MdOutlineKeyboardDoubleArrowRight as UpcomingIcon,
-  MdAdd as AddIcon,
-} from "react-icons/md";
+import { MdOutlineKeyboardDoubleArrowRight as UpcomingIcon } from "react-icons/md";
 import {
   LuListTodo as TodayIcon,
   LuCalendarDays as CalendarIcon,
@@ -16,195 +13,177 @@ import { PiSignOutBold as SignOutIcon } from "react-icons/pi";
 import { TaskList, useTasksContext } from "../../../context/tasksContext";
 import { FaNoteSticky as NotesIcon } from "react-icons/fa6";
 import { useModalContext } from "../../../context/modalContext";
-import SettingsModalContent from "../../modal/SettingModalContent";
 import countListTasks from "../../../utils/task-list/countListTasks";
 import getTasksInDaysRange from "../../../utils/task-list/get/getTasksInDaysRange";
-import AddNewList from "../../modal/AddNewListModalContent";
 import signOutDB from "../../../utils/api/sign-out/signOut";
 import styleSelectedElement from "../../../utils/task-list/select/styleSelectedElement";
-import selectTask from "../../../utils/task-list/select/selectTask";
-import { useNavigate } from "react-router-dom";
+import AddNewListModalContent from "../../modal/add-list/AddNewListModalContent";
+import SettingsModalContent from "../../modal/modal-settings/SettingModalContent";
+import AddButton from "../../ui/buttons/AddButton";
+import { useRef, useState } from "react";
+import { IoIosArrowForward as ArrowIcon } from "react-icons/io";
+import useSlideInOnClick from "../../../hooks/useSlideInOnClick";
+import useNavigateTo from "../../../hooks/useNavigateTo";
 
 export default function NavBar() {
   const { taskLists, setCurrentList, setCurrentTask, setEditedTask } =
     useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
-  const navigate = useNavigate();
+  const [navbarIsOpened, setNavbarIsOpened] = useState<boolean>(false);
+  const navbarRef = useRef(null);
+  const { navigateTo } = useNavigateTo();
 
+  useSlideInOnClick(
+    navbarRef,
+    navbarIsOpened,
+    setNavbarIsOpened,
+    "left",
+    20,
+    1280
+  );
   return (
-    <div className="d-flex flex-column w-25 rounded justify-content-between bg-body-secondary p-3">
-      <Container className="d-flex flex-column p-0 gap-2">
-        <NavSearchBar />
-        <NavAccordion
-          header="TASKS"
-          items={[
-            <NavAccordionItem
-              itemStyle="accordion-item-txt text-secondary ms-auto"
-              headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
-              header="Upcoming"
-              itemValue={`${
-                getTasksInDaysRange(
-                  taskLists.filter(
-                    (list: TaskList) => list.listActive === true
-                  ),
-                  7
-                ).tasksAmount
-              }`}
-              onClick={(e) => {
-                const { tasks } = getTasksInDaysRange(
-                  taskLists.filter(
-                    (list: TaskList) => list.listActive === true
-                  ),
-                  7
-                );
-                setCurrentList({
-                  listName: "Upcoming",
-                  listColor: "",
-                  listActive: "",
-                  tasks: tasks,
-                });
-                if (!tasks.length) {
-                  setCurrentTask(undefined);
-                  setEditedTask(undefined);
-                } else {
-                  selectTask(500, 200, setCurrentTask, tasks[0], setEditedTask);
+    <div ref={navbarRef} className="navbar-container my-bg-darker p-0">
+      <ArrowIcon
+        className="h-100 my-color-lighter section-opener section-opener-navbar"
+        style={{ width: "20px" }}
+        onClick={() => {
+          setNavbarIsOpened(!navbarIsOpened);
+        }}
+      />
+      <div className="d-flex flex-column flex-1 p-4 my-scrollbar">
+        <Container className="d-flex flex-column p-0 gap-2">
+          <NavSearchBar />
+          <NavAccordion
+            header="TASKS"
+            items={[
+              <NavAccordionItem
+                header="Upcoming"
+                itemValue={
+                  getTasksInDaysRange(taskLists, 7).filter(
+                    (task) => task.taskStatus === false
+                  ).length
                 }
-                styleSelectedElement(
-                  '[data-style*="navbar-list"]',
-                  "data-style",
-                  e,
-                  "bgHoverFocus",
-                  "paddingHoverFocus"
-                );
-                navigate("/dashboard");
-              }}
-              icon={
-                <UpcomingIcon className="regular-icon me-2 text-secondary" />
-              }
-            />,
-            <NavAccordionItem
-              itemStyle="accordion-item-txt text-secondary ms-auto"
-              headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
-              header="Today"
-              itemValue={`${
-                getTasksInDaysRange(
-                  taskLists.filter(
-                    (list: TaskList) => list.listActive === true
-                  ),
-                  0
-                ).tasksAmount
-              }`}
-              onClick={(e) => {
-                const { tasks } = getTasksInDaysRange(
-                  taskLists.filter(
-                    (list: TaskList) => list.listActive === true
-                  ),
-                  0
-                );
-                setCurrentList({
-                  listName: "Today",
-                  listColor: "",
-                  listActive: "",
-                  tasks: tasks,
-                });
-                if (!tasks.length) {
-                  setCurrentTask(undefined);
-                  setEditedTask(undefined);
-                } else {
-                  selectTask(500, 200, setCurrentTask, tasks[0], setEditedTask);
+                onClick={(e) => {
+                  const tasks = getTasksInDaysRange(taskLists, 7);
+
+                  setCurrentList({
+                    listName: "Upcoming",
+                    listColor: "",
+                    listActive: "",
+                    tasks: tasks,
+                  });
+
+                  if (!tasks.length) {
+                    setCurrentTask(undefined);
+                    setEditedTask(undefined);
+                  }
+
+                  styleSelectedElement(
+                    '[data-style*="navbar-list"]',
+                    "data-style",
+                    e,
+                    "nav-accordion-item-focus"
+                  );
+
+                  navigateTo("/dashboard");
+                }}
+                icon={<UpcomingIcon className="regular-icon me-2" />}
+              />,
+              <NavAccordionItem
+                header="Today"
+                itemValue={
+                  getTasksInDaysRange(taskLists, 0).filter(
+                    (task) => task.taskStatus === false
+                  ).length
                 }
-                styleSelectedElement(
-                  '[data-style*="navbar-list"]',
-                  "data-style",
-                  e,
-                  "bgHoverFocus",
-                  "paddingHoverFocus"
-                );
-                navigate("/dashboard");
-              }}
-              icon={<TodayIcon className="regular-icon me-2 text-secondary" />}
-            />,
-            <NavAccordionItem
-              itemStyle="accordion-item-txt text-secondary ms-auto"
-              headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
-              header="Calendar"
-              itemValue={`${0}`}
-              onClick={(e) => {
-                styleSelectedElement(
-                  '[data-style*="navbar-list"]',
-                  "data-style",
-                  e,
-                  "bgHoverFocus",
-                  "paddingHoverFocus"
-                );
-                navigate("calendar");
-              }}
-              icon={
-                <CalendarIcon className="regular-icon me-2 text-secondary" />
-              }
-            />,
-            <NavAccordionItem
-              itemStyle="accordion-item-txt text-secondary ms-auto"
-              headerStyle="txt-small text-secondary"
-              containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
-              header="Sticky Notes"
-              itemValue={`${0}`}
-              onClick={(e) => {
-                styleSelectedElement(
-                  '[data-style*="navbar-list"]',
-                  "data-style",
-                  e,
-                  "bgHoverFocus",
-                  "paddingHoverFocus"
-                );
-                navigate("sticky_notes");
-              }}
-              icon={<NotesIcon className="regular-icon me-2 text-secondary" />}
-            />,
-          ]}
-        />
-        <NavAccordion
-          header="LISTS"
-          items={taskLists
-            .filter((list) => list.listActive === true)
-            .map((list: TaskList) => {
+                onClick={(e) => {
+                  const tasks = getTasksInDaysRange(taskLists, 0);
+
+                  setCurrentList({
+                    listName: "Today",
+                    listColor: "",
+                    listActive: "",
+                    tasks: tasks,
+                  });
+
+                  if (!tasks.length) {
+                    setCurrentTask(undefined);
+                    setEditedTask(undefined);
+                  }
+
+                  styleSelectedElement(
+                    '[data-style*="navbar-list"]',
+                    "data-style",
+                    e,
+                    "nav-accordion-item-focus"
+                  );
+
+                  navigateTo("/dashboard");
+                }}
+                icon={<TodayIcon className="regular-icon me-2 " />}
+              />,
+              <NavAccordionItem
+                header="Calendar"
+                itemValue={undefined}
+                onClick={(e) => {
+                  styleSelectedElement(
+                    '[data-style*="navbar-list"]',
+                    "data-style",
+                    e,
+                    "nav-accordion-item-focus"
+                  );
+
+                  navigateTo("calendar");
+                }}
+                icon={<CalendarIcon className="regular-icon me-2" />}
+              />,
+              <NavAccordionItem
+                header="Sticky Notes"
+                itemValue={undefined}
+                onClick={(e) => {
+                  styleSelectedElement(
+                    '[data-style*="navbar-list"]',
+                    "data-style",
+                    e,
+                    "nav-accordion-item-focus"
+                  );
+
+                  navigateTo("sticky_notes");
+                }}
+                icon={<NotesIcon className="regular-icon me-2 " />}
+              />,
+            ]}
+          />
+          <NavAccordion
+            header="LISTS"
+            items={taskLists.map((list: TaskList) => {
               return (
                 <NavAccordionItem
-                  itemStyle="accordion-item-txt text-secondary ms-auto"
-                  headerStyle="txt-small text-secondary"
-                  containerStyle="d-flex flex-row align-items-center rounded border-0 fw-semibold paddingHover bgHover pt-2 pe-2 pb-2"
                   header={`${list.listName}`}
-                  itemValue={`${countListTasks(list.tasks)}`}
+                  itemValue={countListTasks(
+                    list.tasks.filter((task) => task.taskStatus === false)
+                  )}
                   onClick={(e) => {
+                    setCurrentList({
+                      listName: list.listName,
+                      tasks: list.tasks,
+                      listColor: list.listColor,
+                      listActive: list.listActive,
+                    });
+
                     if (!list.tasks.length) {
                       setCurrentTask(undefined);
                       setEditedTask(undefined);
-                    } else {
-                      setCurrentList({
-                        listName: list.listName,
-                        tasks: list.tasks,
-                        listColor: list.listColor,
-                        listActive: list.listActive,
-                      });
-                      selectTask(
-                        500,
-                        100,
-                        setCurrentTask,
-                        list.tasks[0],
-                        setEditedTask
-                      );
                     }
+
                     styleSelectedElement(
                       '[data-style*="navbar-list"]',
                       "data-style",
                       e,
-                      "bgHoverFocus",
-                      "paddingHoverFocus"
+                      "nav-accordion-item-focus"
                     );
-                    navigate("/dashboard");
+
+                    navigateTo("/dashboard");
                   }}
                   key={`list category: ${list.listName}`}
                   icon={
@@ -219,46 +198,49 @@ export default function NavBar() {
                 />
               );
             })}
-        />
-        <div className="d-flex flex-row justify-content-between">
+          />
+          <div className="navbar-button-container justify-content-between mt-4">
+            <AddButton
+              txt="Add new list"
+              size="sm"
+              buttonClass="flex-row"
+              buttonValClass="my-color-lighter txt-small"
+              onClick={() => {
+                setModalContext({
+                  showModal: !modalContext.showModal,
+                  modalContent: <AddNewListModalContent />,
+                });
+              }}
+            />
+
+            <IconButton
+              icon={<SettingsIcon className="regular-icon" />}
+              txt="Edit lists"
+              size="sm"
+              buttonClass="d-flex flex-row gap-2 ms-1 align-items-center txt-small my-color-light fw-semibold bg-transparent  border-0"
+              buttonValClass="txt-small my-color-light"
+              function={() => {
+                setModalContext({
+                  showModal: !modalContext.showModal,
+                  modalContent: <SettingsModalContent />,
+                });
+              }}
+            />
+          </div>
+        </Container>
+        <Container className="d-flex flex-column p-1 mt-auto">
           <IconButton
-            icon={<AddIcon className="regular-icon" />}
-            txt="Add new list"
-            size="sm"
-            buttonClass="d-flex flex-row gap-2 ms-1 align-items-center text-secondary fw-semibold bg-transparent  border-0"
-            buttonValClass="txt-small"
-            function={() => {
-              setModalContext({
-                showModal: !modalContext.showModal,
-                modalContent: <AddNewList />,
+            icon={<SignOutIcon />}
+            txt="Sign out"
+            buttonClass="d-flex flex-row gap-2 align-items-center txt-small btn-purple-outline my-color-lighter fw-semibold me-auto"
+            function={async () => {
+              await signOutDB().then(() => {
+                navigateTo("/");
               });
             }}
           />
-          <IconButton
-            icon={<SettingsIcon className="regular-icon" />}
-            txt="Edit lists"
-            size="sm"
-            buttonClass="d-flex flex-row gap-2 ms-1 align-items-center txt-small text-secondary fw-semibold bg-transparent  border-0"
-            function={() => {
-              setModalContext({
-                showModal: !modalContext.showModal,
-                modalContent: <SettingsModalContent />,
-              });
-            }}
-          />
-        </div>
-      </Container>
-      <Container className="d-flex flex-column p-1 ">
-        <IconButton
-          icon={<SignOutIcon className="accordion-item-icon" />}
-          txt="Sign out"
-          size="sm"
-          buttonClass="d-flex flex-row gap-2 align-items-center txt-small bg-transparent  border-0 text-secondary fw-semibold"
-          function={async () => {
-            await signOutDB();
-          }}
-        />
-      </Container>
+        </Container>
+      </div>
     </div>
   );
 }

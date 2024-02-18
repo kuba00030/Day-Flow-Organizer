@@ -1,9 +1,12 @@
 import "./App.css";
-
+import "./styles/custom-container.css";
+import "./styles/dashboard/dashboard.css";
+import "./styles/login-register-form.css";
 import AuthContextProvider from "./context/authContext";
 import TasksContextProvider from "./context/tasksContext";
 import ModalContextProvider from "./context/modalContext";
-import Router from "./router/Router";
+import Router from "./routes/Router";
+import NotesContextProvider from "./context/noteContext";
 
 function App() {
   return (
@@ -11,7 +14,9 @@ function App() {
       <AuthContextProvider>
         <TasksContextProvider>
           <ModalContextProvider>
-            <Router />
+            <NotesContextProvider>
+              <Router />
+            </NotesContextProvider>
           </ModalContextProvider>
         </TasksContextProvider>
       </AuthContextProvider>

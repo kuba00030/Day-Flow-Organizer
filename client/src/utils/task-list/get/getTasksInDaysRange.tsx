@@ -1,13 +1,11 @@
 import { Task, TaskLists } from "../../../context/tasksContext";
-import countListTasks from "../countListTasks";
 import getCurrentDate from "./getCurrentDate";
 
 export default function getTasksInDaysRange(
   taskLists: TaskLists,
   endDateOffset: number
-) {
+): Task[] {
   let tasks: Task[] = [];
-  let tasksAmount: number;
 
   taskLists.forEach((list) => {
     if (list.tasks.length) {
@@ -16,7 +14,7 @@ export default function getTasksInDaysRange(
   });
 
   tasks = tasks.filter((task) => {
-    const taskDate = new Date(task.date);
+    const taskDate = new Date(task.start);
 
     return (
       taskDate >= new Date(getCurrentDate()) &&
@@ -27,6 +25,6 @@ export default function getTasksInDaysRange(
         )
     );
   });
-  tasksAmount = countListTasks(tasks);
-  return { tasks, tasksAmount };
+
+  return tasks;
 }

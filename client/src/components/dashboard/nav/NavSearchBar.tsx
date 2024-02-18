@@ -1,7 +1,7 @@
-import "../../../styles/dashboard/dashboard-nav.css";
 import { Container } from "react-bootstrap";
 import { AiOutlineSearch as SearchIcon } from "react-icons/ai";
 import { Task, TaskList, useTasksContext } from "../../../context/tasksContext";
+
 export default function NavSearchBar() {
   const { taskLists, setCurrentList } = useTasksContext();
 
@@ -27,14 +27,14 @@ export default function NavSearchBar() {
   };
   return (
     <Container
-      className="d-flex flex-row bg-light align-items-center bg-transparent rounded p-0 border border-dark-subtle shadowHover"
+      className="d-flex flex-1 flex-row align-items-center my-bg-dark rounded p-0 border-0 shadowHover"
       data-style="search-bar"
     >
-      <SearchIcon className="ms-2 text-secondary regular-icon" />
+      <SearchIcon className="ms-2 my-color-light regular-icon" />
       <input
         type="text"
         placeholder="Search"
-        className="border-0 p-2 bg-transparent rounded text-secondary fw-semibold txt-small"
+        className="border-0 p-2 bg-transparent rounded my-color-light fw-semibold txt-small"
         onFocus={() => {
           document
             .querySelector('[data-style="search-bar"]')
@@ -48,7 +48,7 @@ export default function NavSearchBar() {
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        style={{ flex: 1, outline: "none" }}
+        style={{ outline: "none" }}
       />
     </Container>
   );

@@ -1,8 +1,9 @@
-import { Task, TaskLists } from "../../../context/tasksContext";
+import { Task, TaskList, TaskLists } from "../../../context/tasksContext";
 
 export default function updateTask(
   originTask: Task,
   editedTask: Task,
+  setCurrentList: (list: TaskList) => void,
   setTaskLists: (lists: TaskLists) => void,
   taskLists: TaskLists
 ) {
@@ -23,6 +24,8 @@ export default function updateTask(
 
     updatedTaskLists[originListIndex].tasks[taskIndex] = editedTask;
 
+    setCurrentList({ ...updatedTaskLists[originListIndex] });
+
     setTaskLists(updatedTaskLists);
   } else {
     const taskIndex = taskLists[originListIndex].tasks.findIndex(
@@ -32,6 +35,8 @@ export default function updateTask(
     updatedTaskLists[originListIndex].tasks.splice(taskIndex, 1);
 
     updatedTaskLists[editedListIndex].tasks.push(editedTask);
+
+    setCurrentList({ ...updatedTaskLists[editedListIndex] });
 
     setTaskLists(updatedTaskLists);
   }

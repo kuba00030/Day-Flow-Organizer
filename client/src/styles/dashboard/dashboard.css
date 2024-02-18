@@ -1,0 +1,272 @@
+/* general */
+.icon-light {
+  transition: 0.3s;
+  color: var(--color-light);
+}
+.icon-danger {
+  color: rgb(252, 48, 48);
+}
+.icon-light:hover {
+  color: rgb(252, 48, 48);
+}
+.my-scrollbar {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: rgb(200, 200, 200);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--bg-purple);
+  border-radius: 20px;
+}
+.checkbox {
+  height: 15px;
+  width: 15px;
+}
+.shadowHover {
+  transition: 0.3s ease-in-out !important;
+}
+.shadowHover:hover {
+  box-shadow: 0px 0px 10px 0px rgba(196, 215, 243, 1) !important;
+}
+.shadowFocus {
+  transition: 0.3s ease-in-out !important;
+}
+.shadowFocus:focus {
+  box-shadow: 0px 0px 5px 0px rgba(196, 215, 243, 1) !important;
+}
+.shadowFocused {
+  box-shadow: 0px 0px 5px 0px rgba(196, 215, 243, 1) !important;
+}
+.scaleHover {
+  transition: 0.3s ease-in-out !important;
+}
+.scaleHover:hover {
+  transform: scaleX(0.97);
+}
+.scaleHoverFocus {
+  transform: scaleX(0.97);
+}
+.paddingHover {
+  transition: 0.3s ease-in-out;
+}
+.paddingHover:hover {
+  padding-left: 5% !important;
+}
+.paddingHoverFocus {
+  padding-left: 5% !important;
+}
+.bgHover:hover {
+  background-color: var(--bg-purple) !important;
+}
+.bgHoverFocus {
+  background-color: var(--bg-purple) !important;
+}
+::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+.paddingLeft {
+  padding-left: 0px;
+}
+.paddingLeft:hover {
+  padding-left: 5% !important;
+}
+.opacity_0 {
+  opacity: 0;
+}
+.flex-1 {
+  flex: 1;
+}
+/* animations */
+.slideInRight {
+  animation: slide-in-right 0.3s ease-in-out;
+  -webkit-animation: slide-in-right 0.3s ease-in;
+  -ms-animation: slide-in-right 0.3s ease-in;
+  -o-animation: slide-in-right 0.3s ease-in;
+}
+.fadeIn {
+  animation: fade-in 0.3s ease-in-out;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(+100%);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(+0%);
+  }
+}
+/* buttons */
+.btn-purple {
+  transition: 0.3s !important;
+  background-color: var(--bg-purple) !important;
+  border: solid 1px var(--bg-purple) !important;
+}
+.btn-purple-outline {
+  transition: 0.3s;
+  background-color: transparent !important;
+  border: solid 1px var(--bg-purple) !important;
+}
+.btn-purple-outline:hover {
+  background-color: var(--bg-purple) !important;
+}
+.btn-purple:hover {
+  filter: brightness(0.8);
+}
+.select-purple-container {
+  background-color: transparent;
+}
+.select-purple {
+  transition: 0.3s;
+  background-color: var(--bg-purple);
+}
+.select-purple:hover {
+  filter: brightness(0.8);
+}
+/* sticky notes */
+.sticky-note {
+  width: 300px;
+  height: 250px;
+  margin: auto;
+  transition: 0.3s;
+  overflow: hidden;
+}
+.sticky-note:hover {
+  overflow-y: auto;
+}
+.sticky-note-description {
+  border: none;
+  flex: 1;
+  background-color: var(--bg-dark);
+}
+.sticky-note-border-color {
+  border: solid 2px var(--bg-purple);
+}
+.modal-description {
+  height: clamp(100px, 20vh, 250px);
+}
+.sticky-notes-container {
+  border: solid 1px var(--bg-purple);
+}
+@media screen and (width < 700px) {
+  .sticky-note {
+    width: auto;
+    height: clamp(100px, 30vw, 250px);
+  }
+}
+@media screen and (width < 480px) {
+  .sticky-note {
+    width: auto;
+  }
+}
+/* navbar */
+.nav-accordion-item {
+  transition: 0.3s ease-in-out !important;
+  background-color: transparent !important;
+  color: var(--color-light) !important;
+}
+.nav-accordion-item:hover {
+  padding-left: 5% !important;
+  background-color: var(--bg-purple) !important;
+  color: var(--color-lighter) !important;
+}
+.nav-accordion-item-focus {
+  padding-left: 5% !important;
+  background-color: var(--bg-purple) !important;
+  color: var(--color-lighter) !important;
+}
+/* task details */
+.task-details-descripion {
+  max-height: 150px;
+}
+.task-details-subtask-description {
+  max-height: 300px;
+  min-height: 10px;
+}
+/* current list */
+.currentList-task {
+  transition: 0.3s ease-in-out !important;
+  background-color: var(--bg-dark) !important;
+}
+.currentList-task-focus {
+  background-color: var(--bg-purple) !important;
+}
+.currentList-task-focus * {
+  color: var(--color-lighter);
+}
+.currentList-task:hover {
+  background-color: var(--bg-purple) !important;
+}
+.currentList-task:hover * {
+  transition: 0.3s;
+  color: var(--color-lighter);
+}
+.currentList-tasks-container:not(:last-child) {
+  border-bottom: solid rgb(82, 82, 82) 1px;
+}
+.currentList-task-icon-radius {
+  border-radius: 5px;
+}
+.currentList-task-subtasksIcon {
+  height: 15px;
+  width: 25px;
+  color: var(--color-light);
+  background-color: rgb(167, 105, 238);
+}
+.task-list-item-details-list {
+  display: flex;
+  flex-direction: row;
+}
+@media screen and (0px < width < 700px) {
+  .task-list-item-details-list {
+    display: none;
+  }
+}
+/*  Subtask modal*/
+.add-task-subtask-container {
+  border: solid 1px var(--bg-purple);
+}
+.add-task-subtask-options {
+  background-color: var(--bg-purple);
+  transition: 0.3s;
+}
+/* mobile elements*/
+.section-opener {
+  background-color: var(--bg-purple);
+  transition: 0.3s;
+  opacity: 0.5;
+}
+.section-opener:hover {
+  opacity: 1;
+}
+.section-opener-task-details {
+  display: none;
+}
+.section-opener-navbar {
+  display: none;
+}
+@media screen and (width <=1024px) {
+  .section-opener-task-details {
+    display: block;
+  }
+}
+@media screen and (width < 1280px) {
+  .section-opener-navbar {
+    display: block;
+  }
+}

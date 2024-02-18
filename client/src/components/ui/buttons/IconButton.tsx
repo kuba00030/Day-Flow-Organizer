@@ -11,7 +11,7 @@ export default function IconButton(props: TNavIconButton) {
   return (
     <Button
       size={props.size}
-      className={props.buttonClass}
+      className={`d-flex ${props.buttonClass}`}
       onClick={props.function}
     >
       {props.icon}

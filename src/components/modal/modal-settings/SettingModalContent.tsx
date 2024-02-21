@@ -15,8 +15,7 @@ import hasListChangedHook from "./hook/hasListChangedHook";
 import deleteList from "../../../utils/task-list/delete/deleteList";
 
 export default function SettingsModalContent() {
-  const { taskLists, setTaskLists, currentList, setCurrentList } =
-    useContext(TasksContext);
+  const { taskLists, setTaskLists, setCurrentList } = useContext(TasksContext);
   const { authContext } = useAuthContext();
   const { modalContext, setModalContext } = useModalContext();
   const [editedLists, setEditedLists] = useState<TaskLists>([]);

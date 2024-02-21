@@ -31,7 +31,6 @@ export default function EditTaskModalContent() {
     taskLists,
     setTaskLists,
     setCurrentList,
-    currentList,
   } = useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
   const { authContext } = useAuthContext();

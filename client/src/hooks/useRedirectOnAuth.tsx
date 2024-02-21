@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/authContext";
+import useNavigateTo from "./useNavigateTo";
 
 export default function useRedirectOnAuth() {
   const { authContext } = useAuthContext();
-  const navigate = useNavigate();
+  const { navigateTo } = useNavigateTo();
 
-  const redirectOnAuth = (path: string, isLogged: boolean) => {
+  const redirectOnAuth = (path: string) => {
     useEffect(() => {
-      if (authContext.isLogged === isLogged) {
-        navigate(path);
+      if (authContext.isLogged) {
+        navigateTo(path);
       }
     }, [authContext]);
   };

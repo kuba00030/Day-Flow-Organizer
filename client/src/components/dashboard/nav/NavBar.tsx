@@ -22,34 +22,48 @@ import SettingsModalContent from "../../modal/modal-settings/SettingModalContent
 import AddButton from "../../ui/buttons/AddButton";
 import { useRef, useState } from "react";
 import { IoIosArrowForward as ArrowIcon } from "react-icons/io";
-import useSlideInOnClick from "../../../hooks/useSlideInOnClick";
 import useNavigateTo from "../../../hooks/useNavigateTo";
+import useOpenSection from "../../../hooks/useOpenSection";
 
 export default function NavBar() {
-  const { taskLists, setCurrentList, setCurrentTask, setEditedTask } =
-    useTasksContext();
+  const {
+    taskLists,
+    currentList,
+    setCurrentList,
+    setCurrentTask,
+    setEditedTask,
+  } = useTasksContext();
   const { modalContext, setModalContext } = useModalContext();
   const [navbarIsOpened, setNavbarIsOpened] = useState<boolean>(false);
   const navbarRef = useRef(null);
+  const navbarOpenerRef = useRef(null);
   const { navigateTo } = useNavigateTo();
+  const { openSection } = useOpenSection();
 
-  useSlideInOnClick(
+  openSection(
     navbarRef,
+    navbarOpenerRef,
     navbarIsOpened,
     setNavbarIsOpened,
     "left",
-    20,
     1280
   );
+
   return (
     <div ref={navbarRef} className="navbar-container my-bg-darker p-0">
-      <ArrowIcon
-        className="h-100 my-color-lighter section-opener section-opener-navbar"
-        style={{ width: "20px" }}
+      <div
+        ref={navbarOpenerRef}
+        className="h-100 align-items-center section-opener-navbar section-opener"
         onClick={() => {
           setNavbarIsOpened(!navbarIsOpened);
         }}
-      />
+      >
+        <ArrowIcon
+          className="my-color-lighter large-icon"
+          style={{ transform: `rotate(${navbarIsOpened ? 180 : 0}deg)` }}
+        />
+      </div>
+
       <div className="d-flex flex-column flex-1 p-4 my-scrollbar">
         <Container className="d-flex flex-column p-0 gap-2">
           <NavSearchBar />
@@ -64,61 +78,71 @@ export default function NavBar() {
                   ).length
                 }
                 onClick={(e) => {
-                  const tasks = getTasksInDaysRange(taskLists, 7);
+                  if (currentList.listName !== "Upcoming") {
+                    const tasks = getTasksInDaysRange(taskLists, 7);
 
-                  setCurrentList({
-                    listName: "Upcoming",
-                    listColor: "",
-                    listActive: "",
-                    tasks: tasks,
-                  });
+                    setCurrentList({
+                      listName: "Upcoming",
+                      listColor: "",
+                      listActive: "",
+                      tasks: tasks,
+                    });
 
-                  if (!tasks.length) {
-                    setCurrentTask(undefined);
-                    setEditedTask(undefined);
+                    if (!tasks.length) {
+                      setCurrentTask(undefined);
+                      setEditedTask(undefined);
+                    } else {
+                      setCurrentTask(tasks[0]);
+                      setEditedTask(tasks[0]);
+                    }
+
+                    styleSelectedElement(
+                      '[data-style*="navbar-list"]',
+                      "data-style",
+                      e,
+                      "nav-accordion-item-focus"
+                    );
+
+                    navigateTo("/dashboard");
                   }
-
-                  styleSelectedElement(
-                    '[data-style*="navbar-list"]',
-                    "data-style",
-                    e,
-                    "nav-accordion-item-focus"
-                  );
-
-                  navigateTo("/dashboard");
                 }}
                 icon={<UpcomingIcon className="regular-icon me-2" />}
               />,
               <NavAccordionItem
                 header="Today"
                 itemValue={
-                  getTasksInDaysRange(taskLists, 0).filter(
+                  getTasksInDaysRange(taskLists, 1).filter(
                     (task) => task.taskStatus === false
                   ).length
                 }
                 onClick={(e) => {
-                  const tasks = getTasksInDaysRange(taskLists, 0);
+                  if (currentList.listName !== "Today") {
+                    const tasks = getTasksInDaysRange(taskLists, 1);
 
-                  setCurrentList({
-                    listName: "Today",
-                    listColor: "",
-                    listActive: "",
-                    tasks: tasks,
-                  });
+                    setCurrentList({
+                      listName: "Today",
+                      listColor: "",
+                      listActive: "",
+                      tasks: tasks,
+                    });
 
-                  if (!tasks.length) {
-                    setCurrentTask(undefined);
-                    setEditedTask(undefined);
+                    if (!tasks.length) {
+                      setCurrentTask(undefined);
+                      setEditedTask(undefined);
+                    } else {
+                      setCurrentTask(tasks[0]);
+                      setEditedTask(tasks[0]);
+                    }
+
+                    styleSelectedElement(
+                      '[data-style*="navbar-list"]',
+                      "data-style",
+                      e,
+                      "nav-accordion-item-focus"
+                    );
+
+                    navigateTo("/dashboard");
                   }
-
-                  styleSelectedElement(
-                    '[data-style*="navbar-list"]',
-                    "data-style",
-                    e,
-                    "nav-accordion-item-focus"
-                  );
-
-                  navigateTo("/dashboard");
                 }}
                 icon={<TodayIcon className="regular-icon me-2 " />}
               />,
@@ -164,26 +188,31 @@ export default function NavBar() {
                     list.tasks.filter((task) => task.taskStatus === false)
                   )}
                   onClick={(e) => {
-                    setCurrentList({
-                      listName: list.listName,
-                      tasks: list.tasks,
-                      listColor: list.listColor,
-                      listActive: list.listActive,
-                    });
+                    if (currentList.listName !== list.listName) {
+                      setCurrentList({
+                        listName: list.listName,
+                        tasks: list.tasks,
+                        listColor: list.listColor,
+                        listActive: list.listActive,
+                      });
 
-                    if (!list.tasks.length) {
-                      setCurrentTask(undefined);
-                      setEditedTask(undefined);
+                      if (!list.tasks.length) {
+                        setCurrentTask(undefined);
+                        setEditedTask(undefined);
+                      } else {
+                        setCurrentTask(list.tasks[0]);
+                        setEditedTask(list.tasks[0]);
+                      }
+
+                      styleSelectedElement(
+                        '[data-style*="navbar-list"]',
+                        "data-style",
+                        e,
+                        "nav-accordion-item-focus"
+                      );
+
+                      navigateTo("/dashboard");
                     }
-
-                    styleSelectedElement(
-                      '[data-style*="navbar-list"]',
-                      "data-style",
-                      e,
-                      "nav-accordion-item-focus"
-                    );
-
-                    navigateTo("/dashboard");
                   }}
                   key={`list category: ${list.listName}`}
                   icon={
@@ -201,11 +230,8 @@ export default function NavBar() {
           />
           <div className="navbar-button-container justify-content-between mt-4">
             <AddButton
-              txt="Add new list"
-              size="sm"
-              buttonClass="flex-row"
-              buttonValClass="my-color-lighter txt-small"
-              onClick={() => {
+              buttonTxt="Add new list"
+              function={() => {
                 setModalContext({
                   showModal: !modalContext.showModal,
                   modalContent: <AddNewListModalContent />,

@@ -7,6 +7,8 @@ type TasksList = {
 
 export default function TasksList(props: TasksList) {
   return (
-    <div className="d-flex flex-column gap-4">{renderTaskList(props.list)}</div>
+    <div className="d-flex flex-column gap-4 flex-1">
+      {renderTaskList(props.list)}
+    </div>
   );
 }

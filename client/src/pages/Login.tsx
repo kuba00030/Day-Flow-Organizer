@@ -13,10 +13,11 @@ import useRedirectOnAuth from "../hooks/useRedirectOnAuth";
 
 export default function Login() {
   const { redirectOnAuth } = useRedirectOnAuth();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassowrd] = useState<string>("");
 
-  redirectOnAuth("dashboard", true);
+  redirectOnAuth("dashboard");
 
   return (
     <div className="login-register-container">
@@ -70,7 +71,7 @@ export default function Login() {
         </Form.Text>
         <ButtonGroup className="d-flex flex-column gap-2">
           <IconButton
-            buttonClass="flex-row rounded gap-2 btn-purple-outline align-items-center justify-content-center "
+            buttonClass="d-flex flex-row rounded gap-2 btn-purple-outline align-items-center justify-content-center "
             buttonValClass="txt-small fw-semibold my-color-lighter"
             icon={<FcGoogle className="text-primary regular-icon" />}
             txt="Sign in with Google"

@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-type TInputLabeled = {
+type InputLabeled = {
   containerStyle?: string;
   inputType: string;
   inputWrapperStyle?: string;
@@ -13,28 +13,18 @@ type TInputLabeled = {
   inputKey?: string;
   pattern?: string;
 };
-export default function InputLabeled(props: TInputLabeled) {
+export default function InputLabeled(props: InputLabeled) {
   return (
-    <Form.Group
-      className={`fw-semibold
-        ${
-          props.containerStyle
-            ? props.containerStyle
-            : "d-flex flex-column justify-content-center"
-        } 
-      `}
-    >
+    <Form.Group className={props.containerStyle}>
       {props.labelValue ? (
-        <Form.Label className={props.labelStyle ? props.labelStyle : ""}>
-          {props.labelValue}
-        </Form.Label>
+        <Form.Label className={props.labelStyle}>{props.labelValue}</Form.Label>
       ) : null}
       <div
         data-animation={props.animationData}
         className={props.inputWrapperStyle}
       >
         <input
-          pattern=""
+          pattern={props.pattern}
           key={props.inputKey}
           className={props.inputStyle}
           type={props.inputType}

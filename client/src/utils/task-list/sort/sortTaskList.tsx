@@ -43,6 +43,7 @@ export default function sortTaskList(
     sortByLatest(sortedTasks);
   }
   const sortedList: TaskList = { ...taskList, tasks: sortedTasks };
+
   setList(sortedList);
 
   return sortedList;

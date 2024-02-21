@@ -21,13 +21,15 @@ export default async function setTaskDB(userID: string, givenTask: Task) {
       task_end_date: givenTask.end,
       task_status: givenTask.taskStatus,
       subtasks: givenTask.subtasks.map((subtask) => {
-        return {
-          subtask_id: subtask.subtaskID,
-          subtask_title: subtask.title,
-          subtask_status: subtask.subtaskStatus,
-          subtask_description:
-            subtask.description !== undefined ? subtask.description : "",
-        };
+        if (subtask.title !== "") {
+          return {
+            subtask_id: subtask.subtaskID,
+            subtask_title: subtask.title,
+            subtask_status: subtask.subtaskStatus,
+            subtask_description:
+              subtask.description !== undefined ? subtask.description : "",
+          };
+        }
       }),
     },
     { merge: true }

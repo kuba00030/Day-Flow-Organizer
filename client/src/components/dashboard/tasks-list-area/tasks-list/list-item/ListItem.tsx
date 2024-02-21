@@ -1,6 +1,5 @@
 import { Button } from "react-bootstrap";
 import { Task, useTasksContext } from "../../../../../context/tasksContext";
-import styleSelectedElement from "../../../../../utils/task-list/select/styleSelectedElement";
 import selectTask from "../../../../../utils/task-list/select/selectTask";
 import ListItemHeader from "./ListItemHeader";
 import ListItemDate from "./ListItemDate";
@@ -12,7 +11,6 @@ import markTaskDone from "../../../../../utils/task-list/update/markTaskDone";
 
 type TTaskListItem = {
   task: Task;
-  index: number;
   animationData?: string;
 };
 
@@ -28,7 +26,7 @@ export default function ListItem(props: TTaskListItem) {
 
   return (
     <div
-      className="d-flex flex-row flex-1 gap-2 p-2 ms-1 currentList-tasks-container fadeIn"
+      className="d-flex flex-row gap-2 p-2 ms-1 currentList-tasks-container fadeIn"
       key={props.task.title}
     >
       <input
@@ -47,21 +45,14 @@ export default function ListItem(props: TTaskListItem) {
       />
 
       <Button
-        className={`d-flex flex-column align-items-start border-0 fw-semibold p-3 gap-2 currentList-task scaleHover ${
-          props.index === 0 ? "currentList-task-focus scaleHoverFocus" : ""
+        className={`d-flex flex-column flex-1 align-items-start border-0 fw-semibold p-3 gap-2 currentList-task scaleHover ${
+          currentTask && props.task.taskID === currentTask.taskID
+            ? "currentList-task-focus scaleHoverFocus"
+            : ""
         }`}
-        style={{ flex: 1 }}
-        data-style={`current-list-item-${props.task.taskID}`}
-        onClick={(e) => {
+        onClick={() => {
           if (currentTask.taskID !== props.task.taskID) {
             selectTask(500, 100, setCurrentTask, props.task, setEditedTask);
-            styleSelectedElement(
-              '[data-style*="current-list-item"]',
-              "data-style",
-              e,
-              "currentList-task-focus",
-              "scaleHoverFocus"
-            );
           }
         }}
       >

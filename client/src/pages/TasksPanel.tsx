@@ -43,13 +43,11 @@ export default function TasksPanel() {
           keyProp={currentList.listName}
           className="txt-larger fw-semibold ms-2 mb-2 my-color-light fadeIn"
         />
-        <div className="d-flex flex-column gap-3" style={{ flex: 1 }}>
-          <div className="d-flex flex-row align-items-center gap-4">
+        <div className="d-flex flex-column gap-3 flex-1 my-scrollbar">
+          <div className="d-flex flex-row align-items-center gap-4 me-1">
             <AddButton
-              txt="Add task"
-              buttonClass="flex-row me-auto"
-              buttonValClass="my-color-lighter txt-small"
-              onClick={() => {
+              buttonTxt="Add task"
+              function={() => {
                 if (taskLists.length > 0) {
                   setModalContext({
                     showModal: !modalContext.showModal,
@@ -68,12 +66,12 @@ export default function TasksPanel() {
             />
 
             <ListSelect
-              containerStyle="flex-row p-0 gap-2 fw-semibold ms-auto align-items-center"
+              containerStyle="d-flex flex-row p-0 gap-2 fw-semibold ms-auto align-items-center bg-transparent"
               label="Sort by:"
               labelStyle="my-color-light txt-small"
-              selectStyle="border-0 rounded fw-semibold txt-small text-start p-2 select-purple my-color-lighter"
+              selectStyle="border-0 rounded fw-semibold txt-small text-center p-2 select-purple my-color-lighter"
               optionStyle="fw-semibold txt-smaller "
-              options={["Oldest", "Latest", "Done"]}
+              options={["Oldest", "Latest", "Done", "Ongoing"]}
               selectedList={sortListOptions}
               onChange={(e) => {
                 setSortListOptions(e.target.value);

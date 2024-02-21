@@ -7,10 +7,7 @@ export default function renderTaskList(taskList: TaskList) {
       return renderTask(taskList.tasks);
     } else {
       return (
-        <div
-          className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small flex-1">
           No tasks for upcoming days
         </div>
       );
@@ -21,10 +18,7 @@ export default function renderTaskList(taskList: TaskList) {
       return renderTask(taskList.tasks);
     } else {
       return (
-        <div
-          className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex justify-content-center align-items-center text-center text-secondary fw-semibold txt-small flex-1">
           No tasks for today
         </div>
       );
@@ -35,10 +29,7 @@ export default function renderTaskList(taskList: TaskList) {
       return renderTask(taskList.tasks);
     } else {
       return (
-        <div
-          className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex justify-content-center align-items-center text-center  text-secondary fw-semibold txt-small flex-1">
           Add your first task
         </div>
       );

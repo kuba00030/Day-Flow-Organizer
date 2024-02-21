@@ -29,9 +29,8 @@ export default function SubtasksDetails(props: SubtasksDetails) {
       </div>
 
       <AddButton
-        txt="Add subtask"
-        buttonClass="txt-small me-auto"
-        onClick={() => {
+        buttonTxt="Add subtask"
+        function={() => {
           setModalContext({
             modalContent: <AddSubtaskModalContent />,
             showModal: !modalContext.showModal,

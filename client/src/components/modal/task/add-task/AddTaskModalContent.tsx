@@ -64,6 +64,7 @@ export default function AddTaskModalContent() {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker modal-body overflow-auto">
         <InputLabeled
+          containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Title"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
           inputType="text"
@@ -75,6 +76,7 @@ export default function AddTaskModalContent() {
           }}
         />
         <TxtAreaLabeled
+          containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Description"
           placeholder="Description..."
           labelClass="my-color-light fw-semibold mb-1 txt-small"
@@ -87,7 +89,7 @@ export default function AddTaskModalContent() {
 
         <div className="d-flex flex-column p-0 gap-2 me-auto">
           <ListSelect
-            containerStyle="flex-row p-0 gap-2 justify-content-between fw-semibold"
+            containerStyle="d-flex flex-row p-0 gap-2 fw-semibold ms-auto align-items-center bg-transparent w-100 justify-content-between"
             label="List"
             labelStyle="my-color-light"
             selectStyle="border-0 rounded fw-semibold txt-small text-start p-1 select-purple my-color-lighter"
@@ -128,10 +130,8 @@ export default function AddTaskModalContent() {
           />
         </div>
         <AddButton
-          txt="Add subtask"
-          size="sm"
-          buttonClass="txt-small me-auto my-color-lighter"
-          onClick={() => {
+          buttonTxt="Add subtask"
+          function={() => {
             const newSubtaskID = new Date().getTime();
             setNewTask({
               ...newTask,
@@ -176,7 +176,9 @@ export default function AddTaskModalContent() {
         <Button
           size="sm"
           className={`${
-            !newTaskIsVlid() ? "btn-purple" : "bg-warning text-secondary"
+            !newTaskIsVlid()
+              ? "btn-purple my-color-light"
+              : "bg-warning text-secondary"
           } border-0 fw-semibold my-color-lighter txt-small`}
           onClick={async () => {
             if (newTaskIsVlid()) {

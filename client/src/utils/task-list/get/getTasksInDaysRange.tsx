@@ -13,17 +13,16 @@ export default function getTasksInDaysRange(
     }
   });
 
+  const currentDate = new Date(getCurrentDate());
+  const startDate = new Date(currentDate.setHours(0, 0, 0, 0));
+  const endDate = new Date(
+    currentDate.getTime() + endDateOffset * 24 * 60 * 60 * 1000
+  );
+
   tasks = tasks.filter((task) => {
     const taskDate = new Date(task.start);
 
-    return (
-      taskDate >= new Date(getCurrentDate()) &&
-      taskDate <=
-        new Date(
-          new Date(getCurrentDate()).getTime() +
-            endDateOffset * 24 * 60 * 60 * 1000
-        )
-    );
+    return taskDate >= startDate && taskDate <= endDate;
   });
 
   return tasks;

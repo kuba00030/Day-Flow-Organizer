@@ -52,10 +52,8 @@ export default function StickyNotes() {
       />
 
       <AddButton
-        txt="Add note"
-        buttonClass="flex-row txt-small me-auto"
-        buttonValClass="my-color-lighter"
-        onClick={() => {
+        buttonTxt="Add note"
+        function={() => {
           setModalContext({
             showModal: !modalContext.showModal,
             modalContent: <AddNoteModalContent />,

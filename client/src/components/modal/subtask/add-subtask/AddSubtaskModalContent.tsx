@@ -34,6 +34,7 @@ export default function AddSubtaskModalContent() {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker">
         <InputLabeled
+          containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
           labelValue="Subtask title"
           inputType="text"
@@ -45,6 +46,7 @@ export default function AddSubtaskModalContent() {
           }}
         />
         <TxtAreaLabeled
+          containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Subtask Description"
           placeholder="Subtask description..."
           labelClass="my-color-light fw-semibold mb-1"

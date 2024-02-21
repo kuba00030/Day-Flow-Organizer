@@ -21,8 +21,6 @@ export default function ListSettings(props: TListSettings) {
     >
       <InputLabeled
         inputType="text"
-        labelStyle="my-color-light fw-semibold mb-1 txt-small"
-        labelValue="List name"
         inputStyle="shadowHover shadowFocus w-100 border-0 p-2 my-bg-dark my-color-light fw-semibold rounded"
         inputValue={props.list.listName}
         onChange={(e) => {
@@ -36,9 +34,8 @@ export default function ListSettings(props: TListSettings) {
         }}
       />
       <InputLabeled
-        labelValue="List color"
+        containerStyle="color-input-container "
         inputType="color"
-        labelStyle="my-color-light fw-semibold mb-1 txt-small"
         inputStyle="shadowHover shadowFocus w-100 border-0 p-2 my-bg-dark my-color-light fw-semibold rounded"
         inputValue={props.list.listColor}
         onChange={(e) => {
@@ -54,7 +51,7 @@ export default function ListSettings(props: TListSettings) {
       {props.listActive ? (
         <DeleteListIcon
           type="button"
-          className={`ms-1 mt-1 large-icon icon-light ${
+          className={`ms-1 mt-1 large-icon icon-light align-items-center ${
             props.listActive ? "" : "icon-danger"
           }`}
           onClick={() => {
@@ -70,7 +67,7 @@ export default function ListSettings(props: TListSettings) {
       ) : (
         <RestoreListIcon
           type="button"
-          className={`ms-1 mt-1 large-icon icon-light ${
+          className={`ms-1 mt-1 large-icon icon-light align-items-center${
             props.listActive ? "" : "icon-danger"
           }`}
           onClick={() => {

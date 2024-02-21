@@ -12,7 +12,7 @@ export type EventData = {
     taskStatus: boolean;
   };
 };
-export default function eventData(eventLists: TaskLists) {
+export default function eventData(eventLists: TaskLists, eventStyle: string) {
   const events: EventData[] = [];
 
   eventLists.forEach((list) => {
@@ -27,7 +27,7 @@ export default function eventData(eventLists: TaskLists) {
           list: task.list,
           taskStatus: task.taskStatus,
         },
-        className: "p-2 border-0 rounded eventHover",
+        className: eventStyle,
       };
       events.push(event);
     });

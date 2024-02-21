@@ -42,6 +42,9 @@
 .modal-body {
   max-height: 500px;
 }
+.color-input-container {
+  width: 75px;
+}
 /* mobile */
 @media screen and (480px > width) {
   .sticky-note-container {

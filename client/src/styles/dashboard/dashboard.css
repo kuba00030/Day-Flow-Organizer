@@ -262,11 +262,11 @@
 }
 @media screen and (width <=1024px) {
   .section-opener-task-details {
-    display: block;
+    display: flex;
   }
 }
 @media screen and (width < 1280px) {
   .section-opener-navbar {
-    display: block;
+    display: flex;
   }
 }

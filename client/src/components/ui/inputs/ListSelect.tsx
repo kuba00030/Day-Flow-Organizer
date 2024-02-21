@@ -11,7 +11,7 @@ type ListSelect = {
 };
 export default function ListSelect(props: ListSelect) {
   return (
-    <div className={`d-flex select-purple-container${props.containerStyle}`}>
+    <div className={props.containerStyle}>
       <div>
         <span className={props.labelStyle}>{props.label}</span>
       </div>

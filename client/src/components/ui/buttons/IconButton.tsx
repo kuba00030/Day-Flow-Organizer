@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-type TNavIconButton = {
+type IconButton = {
   icon: React.ReactNode;
   txt?: string;
   size?: "sm" | "lg";
@@ -7,17 +7,19 @@ type TNavIconButton = {
   buttonValClass?: string;
   function: () => void;
 };
-export default function IconButton(props: TNavIconButton) {
+export default function IconButton(props: IconButton) {
   return (
     <Button
       size={props.size}
-      className={`d-flex ${props.buttonClass}`}
+      className={props.buttonClass}
       onClick={props.function}
     >
       {props.icon}
       {props.txt ? (
         <span className={props.buttonValClass}>{props.txt}</span>
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Button>
   );
 }

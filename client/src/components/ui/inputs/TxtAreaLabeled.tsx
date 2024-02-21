@@ -14,18 +14,8 @@ type TxtAreaLabeled = {
 
 export default function TxtAreaLabeled(props: TxtAreaLabeled) {
   return (
-    <Form.Group
-      className={`fw-semibold 
-    ${
-      props.containerClass
-        ? props.containerClass
-        : "d-flex flex-column justify-content-center"
-    }
-  `}
-    >
-      <Form.Label className={props.labelClass ? props.labelClass : ""}>
-        {props.labelValue}
-      </Form.Label>
+    <Form.Group className={props.containerClass}>
+      <Form.Label className={props.labelClass}>{props.labelValue}</Form.Label>
       <div
         data-animation={props.animationData}
         className={props.inputWrapperClass}
@@ -34,7 +24,7 @@ export default function TxtAreaLabeled(props: TxtAreaLabeled) {
           placeholder={props.placeholder}
           value={props.txtAreaValue}
           onChange={props.onChange}
-          className={` ${props.txtAreaClass}`}
+          className={props.txtAreaClass}
           style={{ resize: "none" }}
         />
       </div>

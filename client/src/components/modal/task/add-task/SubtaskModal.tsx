@@ -7,7 +7,7 @@ import { IoIosArrowBack as ArrowIcon } from "react-icons/io";
 import { MdDeleteForever as DeleteIcon } from "react-icons/md";
 import { MdRestoreFromTrash as RestoreIcon } from "react-icons/md";
 import IconButton from "../../../ui/buttons/IconButton";
-import useSlideInOnClick from "../../../../hooks/useSlideInOnClick";
+import useOpenSection from "../../../../hooks/useOpenSection";
 
 type SubtaskModal = {
   subtask: SubtaskType;
@@ -20,6 +20,17 @@ export default function SubtaskModal(props: SubtaskModal): ReactNode {
   const [optionsOpened, setOptionsOpened] = useState<boolean>(false);
   const editedSubtasks = props.newTask.subtasks;
   const optionsRef = useRef(null);
+  const optionsOpenerRef = useRef(null);
+  const { openSection } = useOpenSection();
+
+  openSection(
+    optionsRef,
+    optionsOpenerRef,
+    optionsOpened,
+    setOptionsOpened,
+    "right",
+    500000000000
+  );
 
   const setSubtaskDescription = () => {
     let subtaskDesc = editedSubtasks[props.index].description;
@@ -39,18 +50,10 @@ export default function SubtaskModal(props: SubtaskModal): ReactNode {
     props.setNewTask({ ...props.newTask, subtasks: [...editedSubtasks] });
   };
 
-  useSlideInOnClick(
-    optionsRef,
-    optionsOpened,
-    setOptionsOpened,
-    "right",
-    20,
-    500000000000
-  );
-
   return (
     <div className="d-flex flex-column my-bg-dark rounded add-task-subtask-container scaleHover position-relative overflow-hidden pe-4 fadeIn">
       <InputLabeled
+        containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
         inputType="text"
         inputStyle="w-100 border-0 p-2 my-bg-dark my-color-light fw-semibold rounded"
         inputValue={props.subtask.title}
@@ -71,7 +74,7 @@ export default function SubtaskModal(props: SubtaskModal): ReactNode {
             labelClass="my-color-light fw-semibold mb-1 txt-small"
             placeholder="Subtask description..."
             txtAreaClass="task-details-descripion w-100 txt-small my-bg-dark border-0 my-color-light p-2 fw-semibold"
-            containerClass="d-flex flex-column flex-1"
+            containerClass="fw-semibold d-flex flex-column justify-content-center gap-2 flex-1"
             txtAreaValue={props.subtask.description}
             onChange={(e) => {
               editedSubtasks[props.index].description = e.target.value;
@@ -90,13 +93,19 @@ export default function SubtaskModal(props: SubtaskModal): ReactNode {
         className="position-absolute h-100 add-task-subtask-options my-color-lighter pe-2"
       >
         <div className="d-flex flex-row align-items-center h-100 gap-2">
-          <ArrowIcon
-            className="h-100"
-            style={{ width: "20px", cursor: "pointer" }}
+          <div
+            ref={optionsOpenerRef}
             onClick={() => {
               setOptionsOpened(!optionsOpened);
             }}
-          />
+            className="h-100 d-flex align-items-center section-opener"
+          >
+            <ArrowIcon
+              className="my-color-lighter large-icon"
+              style={{ transform: `rotate(${optionsOpened ? 180 : 0}deg)` }}
+            />
+          </div>
+
           <div className="d-flex flex-row gap-2">
             <IconButton
               txt="Subtask"

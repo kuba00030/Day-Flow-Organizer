@@ -1,8 +1,15 @@
-import { TaskLists } from "../../../context/tasksContext";
+import { TaskList, TaskLists } from "../../../context/tasksContext";
 
 export default function deleteList(
-  lists: TaskLists,
-  setTaskLists: (lists: TaskLists) => void
+  taskLists: TaskLists,
+  setTaskLists: (lists: TaskLists) => void,
+  setCurrentList: (list: TaskList) => void
 ) {
-  setTaskLists(lists.filter((list) => list.listActive === true));
+  let editedLists = taskLists;
+
+  editedLists = editedLists.filter((list) => list.listActive === true);
+
+  setTaskLists(editedLists);
+
+  setCurrentList(editedLists[0]);
 }

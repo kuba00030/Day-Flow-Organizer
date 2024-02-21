@@ -1,5 +1,5 @@
 import { Button, Container } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TaskList, useTasksContext } from "../../../../context/tasksContext";
 import InputLabeled from "../../../ui/inputs/InputLabeled";
 import ListSelect from "../../../ui/inputs/ListSelect";
@@ -10,12 +10,12 @@ import { useAuthContext } from "../../../../context/authContext";
 import updateTask from "../../../../utils/task-list/update/updateTask";
 import deleteTaskDB from "../../../../utils/api/delete-data/deleteTaskDB";
 import deleteTask from "../../../../utils/task-list/delete/deleteTask";
-import getElementsBySelector from "../../../../utils/task-list/get/getElementsBySelector";
 import SubtasksDetails from "./SubtasksDetails";
 import TxtAreaLabeled from "../../../ui/inputs/TxtAreaLabeled";
-import useSlideInOnClick from "../../../../hooks/useSlideInOnClick";
 import { IoIosArrowBack as ArrowIcon } from "react-icons/io";
 import { useCompareTasks } from "../../../../hooks/useCompareTasks";
+import useTaskDetailsAnimation from "../../../../hooks/useTaskDetailsAnimation";
+import useOpenSection from "../../../../hooks/useOpenSection";
 
 type TaskDetails = {
   sortedList: TaskList;
@@ -29,58 +29,51 @@ export default function TaskDetails(props: TaskDetails) {
     editedTask,
     taskLists,
     setTaskLists,
-    currentList,
     setCurrentList,
   } = useTasksContext();
   const { authContext } = useAuthContext();
   const [taskDetasilOpened, setTaskDetailsOpened] = useState<boolean>(false);
   const taskDetailsRef = useRef(null);
+  const taskDetailsOpener = useRef(null);
   const taskHasChanged = useCompareTasks(currentTask, editedTask);
+  const { taskDetailsAnimation } = useTaskDetailsAnimation();
+  const { openSection } = useOpenSection();
 
-  useEffect(() => {
-    let animationDuration = 500;
+  taskDetailsAnimation(500);
 
-    getElementsBySelector('[data-animation="slide-animation"]').forEach(
-      (element: HTMLDivElement) => {
-        element.classList.remove("slideInRight");
-        element.style.animationDuration = `${animationDuration}ms`;
-
-        setTimeout(() => {
-          element.classList.add("slideInRight");
-          element.classList.remove("opacity_0");
-        }, 1);
-
-        animationDuration += 100;
-      }
-    );
-  }, [currentTask]);
-
-  useSlideInOnClick(
+  openSection(
     taskDetailsRef,
+    taskDetailsOpener,
     taskDetasilOpened,
     setTaskDetailsOpened,
     "right",
-    20,
     1025
   );
+
   return (
     <div
       ref={taskDetailsRef}
       className="p-0 d-flex flex-row my-bg-darker task-details-container overflow-hidden"
     >
-      <ArrowIcon
-        className="h-100 my-color-lighter section-opener section-opener-task-details"
-        style={{ width: "20px" }}
+      <div
+        ref={taskDetailsOpener}
+        className="h-100 align-items-center section-opener-task-details section-opener"
         onClick={() => {
           setTaskDetailsOpened(!taskDetasilOpened);
         }}
-      />
+      >
+        <ArrowIcon
+          className="my-color-lighter large-icon"
+          style={{ transform: `rotate(${taskDetasilOpened ? 180 : 0}deg)` }}
+        />
+      </div>
       <div
         className="d-flex flex-column flex-1 justify-content-between gap-2 overflow-hidden"
         data-task-details="task-details-slider"
       >
         <div className="p-4 d-flex flex-column flex-1 gap-4 my-scrollbar">
           <InputLabeled
+            containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
             labelStyle="my-color-light txt-large"
             labelValue="Task:"
             inputType="text"
@@ -93,6 +86,7 @@ export default function TaskDetails(props: TaskDetails) {
             animationData="slide-animation"
           />
           <TxtAreaLabeled
+            containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
             labelValue="Description"
             inputWrapperClass="opacity_0 slideInRight"
             labelClass="my-color-light fw-semibold mb-1 txt-large"
@@ -105,10 +99,10 @@ export default function TaskDetails(props: TaskDetails) {
           />
           <div className="d-flex flex-column p-1 gap-2">
             <ListSelect
-              containerStyle="flex-row p-0 gap-2 w-100 justify-content-between align-items-center fw-semibold"
+              containerStyle="d-flex flex-row justify-content-between w-100 p-0 gap-2 fw-semibold ms-auto align-items-center bg-transparent"
               label="List"
               labelStyle="my-color-light"
-              selectStyle="border-0 rounded fw-semibold txt-small text-start p-2 select-purple my-color-lighter slideInRight opacity_0"
+              selectStyle="border-0 rounded fw-semibold txt-small text-center p-2 select-purple my-color-lighter slideInRight opacity_0"
               optionStyle="fw-semibold txt-smaller"
               options={taskLists.map((list) => list.listName)}
               selectedList={editedTask.list}
@@ -159,7 +153,6 @@ export default function TaskDetails(props: TaskDetails) {
                 deleteTask(
                   taskLists,
                   setTaskLists,
-                  currentList,
                   setCurrentList,
                   currentTask
                 );

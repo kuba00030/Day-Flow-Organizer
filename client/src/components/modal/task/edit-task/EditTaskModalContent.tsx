@@ -48,6 +48,7 @@ export default function EditTaskModalContent() {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker modal-body overflow-auto">
         <InputLabeled
+          containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
           labelValue="Task:"
           inputType="text"
@@ -58,6 +59,7 @@ export default function EditTaskModalContent() {
           }}
         />
         <TxtAreaLabeled
+          containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Description"
           labelClass="my-color-light fw-semibold mb-1 txt-small"
           txtAreaClass="task-details-descripion border-0 shadowHover shadowFocus w-100 txt-small modal-description my-bg-dark rounded fw-semibold my-color-light p-2"
@@ -69,7 +71,7 @@ export default function EditTaskModalContent() {
 
         <div className="d-flex flex-column p-0 gap-2 me-auto">
           <ListSelect
-            containerStyle="flex-row p-0 gap-2 justify-content-between fw-semibold"
+            containerStyle="d-flex flex-row p-0 gap-2 fw-semibold ms-auto align-items-center bg-transparent w-100 justify-content-between"
             label="List"
             labelStyle="my-color-light"
             selectStyle="border-0 rounded fw-semibold txt-small text-start p-1 select-purple my-color-lighter "
@@ -103,10 +105,8 @@ export default function EditTaskModalContent() {
           />
         </div>
         <AddButton
-          txt="Add subtask"
-          size="sm"
-          buttonClass="txt-small me-auto my-color-lighter"
-          onClick={() => {
+          buttonTxt="Add subtask"
+          function={() => {
             const newSubtaskID = new Date().getTime();
             setEditedTask({
               ...editedTask,
@@ -185,13 +185,7 @@ export default function EditTaskModalContent() {
               });
             } else {
               await deleteTaskDB(authContext.userID, editedTask);
-              deleteTask(
-                taskLists,
-                setTaskLists,
-                currentList,
-                setCurrentList,
-                currentTask
-              );
+              deleteTask(taskLists, setTaskLists, setCurrentList, currentTask);
               setModalContext({
                 ...modalContext,
                 showModal: !modalContext.showModal,

@@ -3,7 +3,6 @@ import { Task, TaskList, TaskLists } from "../../../context/tasksContext";
 export default function deleteTask(
   taskLists: TaskLists,
   setTaskLists: (lists: TaskLists) => void,
-  currentList: TaskList,
   setCurrentList: (list: TaskList) => void,
   taskToDel: Task
 ) {
@@ -17,9 +16,11 @@ export default function deleteTask(
     return list;
   });
 
+  const updatedList = updatedLists.find(
+    (list) => list.listName === taskToDel.list
+  );
+
   setTaskLists(updatedLists);
 
-  if (currentList.listName === taskToDel.list) {
-    setCurrentList(taskLists.find((list) => list.listName === taskToDel.list));
-  }
+  setCurrentList({ ...updatedList, tasks: updatedList.tasks });
 }

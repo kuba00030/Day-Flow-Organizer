@@ -45,6 +45,7 @@ export default function AddNoteModalContent() {
       </ModalHeader>
       <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker modal-body overflow-auto">
         <InputLabeled
+          containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Title"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
           inputType="text"
@@ -56,6 +57,7 @@ export default function AddNoteModalContent() {
           }}
         />
         <InputLabeled
+          containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Color"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
           inputType="color"
@@ -66,6 +68,7 @@ export default function AddNoteModalContent() {
           }}
         />
         <TxtAreaLabeled
+          containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Description"
           labelClass="my-color-light fw-semibold mb-1 txt-small"
           txtAreaClass="modal-description w-100 txt-small shadowHover shadowFocus my-bg-dark rounded border-0 my-color-light p-2 fw-semibold"

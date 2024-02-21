@@ -18,7 +18,7 @@ export default async function selectTask(
   if (taskElements.length) {
     // before task update set taskElements opacity = 0 (so its not possible to see task being updated)
     taskElements.forEach((element: HTMLDivElement) => {
-      // element.style.transition = "0ms";
+      element.style.transition = "0ms";
       element.classList.add("opacity_0");
     });
 
@@ -47,7 +47,7 @@ export default async function selectTask(
     });
 
     newTaskElements.forEach((element: HTMLDivElement) => {
-      // element.style.transition = "300ms";
+      element.style.transition = "300ms";
     });
   } else {
     setCurrentTask(currentTask);

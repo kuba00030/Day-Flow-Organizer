@@ -1,25 +1,22 @@
-import { Button } from "react-bootstrap";
 import { MdAdd as AddIcon } from "react-icons/md";
+import IconButton from "./IconButton";
+
 type AddButton = {
-  txt?: string;
-  size?: "sm" | "lg";
-  buttonClass: string;
-  buttonValClass?: string;
-  onClick: () => void;
+  function: () => void;
+  buttonTxt: string;
 };
+
 export default function AddButton(props: AddButton) {
   return (
-    <Button
-      size={props.size}
-      className={`d-flex flex-row fw-semibold align-items-center rounded btn-purple  ${props.buttonClass}`}
-      onClick={props.onClick}
-    >
-      <AddIcon className="regular-icon my-color-lighter" />
-      {props.txt ? (
-        <span className={`my-color-lighter ${props.buttonValClass}`}>
-          {props.txt}
-        </span>
-      ) : null}
-    </Button>
+    <IconButton
+      size="sm"
+      txt={props.buttonTxt}
+      buttonValClass="my-color-lighter txt-small"
+      buttonClass="flex-row d-flex flex-row fw-semibold align-items-center rounded btn-purple me-auto"
+      icon={<AddIcon className="regular-icon my-color-lighter" />}
+      function={() => {
+        props.function();
+      }}
+    />
   );
 }

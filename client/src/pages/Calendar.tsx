@@ -29,7 +29,7 @@ export default function Calendar() {
   const { modalContext, setModalContext } = useModalContext();
   const { authContext } = useAuthContext();
   const [sortedEvents, setSortedEvents] = useState<EventData[]>(
-    eventData(taskLists)
+    eventData(taskLists, "p-2 border-0 rounded eventHover")
   );
   const [sortListOptions, setSortListOptions] =
     useState<SortingCategories>("Ongoing");
@@ -99,7 +99,7 @@ export default function Calendar() {
   };
 
   const sortEvents = () => {
-    const events = [...eventData(taskLists)];
+    const events = [...eventData(taskLists, "p-2 border-0 rounded eventHover")];
     if (sortListOptions === "Ongoing") {
       setSortedEvents(
         events.filter((event) => event.data.taskStatus === false)
@@ -123,11 +123,8 @@ export default function Calendar() {
 
       <div className="d-flex flex-row w-100">
         <AddButton
-          txt="Add task"
-          size="sm"
-          buttonClass="flex-row txt-small me-auto"
-          buttonValClass="my-color-lighter"
-          onClick={() => {
+          buttonTxt="Add task"
+          function={() => {
             if (taskLists.length > 0) {
               setModalContext({
                 showModal: !modalContext.showModal,
@@ -146,10 +143,10 @@ export default function Calendar() {
         />
 
         <ListSelect
-          containerStyle="flex-row p-0 gap-2 fw-semibold ms-auto"
+          containerStyle="d-flex flex-row p-0 gap-2 fw-semibold ms-auto align-items-center bg-transparent"
           label="Sort by:"
           labelStyle="my-color-light"
-          selectStyle="border-0 rounded fw-semibold txt-small text-start p-1 select-purple my-color-lighter"
+          selectStyle="border-0 rounded fw-semibold txt-small text-start p-1 select-purple my-color-lighter p-2"
           optionStyle="fw-semibold txt-small"
           options={["Ongoing", "Done"]}
           selectedList={sortListOptions}

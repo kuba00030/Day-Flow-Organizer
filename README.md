@@ -195,7 +195,8 @@ export default function AddButton(props: AddButton) {
 
 #### PROPS:
 
-- function: () => void: Function that will be called when the button is clicked
+- function: () => void: Function that will be called when the button is clicked.
+- buttonTxt: Text value displayed inside the button.
 
 #### USAGE:
 

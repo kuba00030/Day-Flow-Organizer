@@ -3,7 +3,7 @@ import IconButton from "./IconButton";
 
 type AddButton = {
   function: () => void;
-  buttonTxt: string;
+  buttonTxt?: string;
 };
 
 export default function AddButton(props: AddButton) {

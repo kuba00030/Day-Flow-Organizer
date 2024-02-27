@@ -78,7 +78,10 @@ export default function NavBar() {
                   ).length
                 }
                 onClick={(e) => {
-                  if (currentList.listName !== "Upcoming") {
+                  if (
+                    currentList === undefined ||
+                    currentList.listName !== "Upcoming"
+                  ) {
                     const tasks = getTasksInDaysRange(taskLists, 7);
 
                     setCurrentList({
@@ -116,7 +119,10 @@ export default function NavBar() {
                   ).length
                 }
                 onClick={(e) => {
-                  if (currentList.listName !== "Today") {
+                  if (
+                    currentList === undefined ||
+                    currentList.listName !== "Today"
+                  ) {
                     const tasks = getTasksInDaysRange(taskLists, 1);
 
                     setCurrentList({
@@ -156,7 +162,7 @@ export default function NavBar() {
                     e,
                     "nav-accordion-item-focus"
                   );
-
+                  setCurrentList(undefined);
                   navigateTo("calendar");
                 }}
                 icon={<CalendarIcon className="regular-icon me-2" />}
@@ -171,7 +177,7 @@ export default function NavBar() {
                     e,
                     "nav-accordion-item-focus"
                   );
-
+                  setCurrentList(undefined);
                   navigateTo("sticky_notes");
                 }}
                 icon={<NotesIcon className="regular-icon me-2 " />}
@@ -188,7 +194,10 @@ export default function NavBar() {
                     list.tasks.filter((task) => task.taskStatus === false)
                   )}
                   onClick={(e) => {
-                    if (currentList.listName !== list.listName) {
+                    if (
+                      currentList === undefined ||
+                      currentList.listName !== list.listName
+                    ) {
                       setCurrentList({
                         listName: list.listName,
                         tasks: list.tasks,

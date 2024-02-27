@@ -55,7 +55,7 @@ export default function TasksContextProvider({
 }: ContextProviderProps) {
   const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
   const [editedTask, setEditedTask] = useState<Task | undefined>(undefined);
-  const [currentList, setCurrentList] = useState<TaskList>({
+  const [currentList, setCurrentList] = useState<TaskList | undefined>({
     listName: "Today",
     listColor: "",
     listActive: true,

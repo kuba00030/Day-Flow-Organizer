@@ -3,6 +3,7 @@
 - [Day Flow Organizer](#day-flow-organizer)
 - [Project Description](#project-description)
 - [Usage](#usege)
+  - [Go to](#go-to)
   - [Sign in and sign up](#sign-in-and-sign-up)
   - [Adding new list](#adding-new-list)
   - [Edit list](#edit-list)

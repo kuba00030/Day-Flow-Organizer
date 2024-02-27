@@ -47,6 +47,10 @@ The application allows you to add sticky notes, tasks, subtasks with their due d
 
 # Usage
 
+## Go to
+
+- https://kuba00030.github.io/Day-Flow-Organizer/
+
 ## Sign in and sign up
 
 - Sign up using your google account by clicking "Sign in with Google" button.

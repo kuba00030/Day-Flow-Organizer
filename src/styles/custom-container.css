@@ -46,12 +46,12 @@
   width: 75px;
 }
 /* mobile */
-@media screen and (480px > width) {
+@media only screen and (480px > width) {
   .sticky-note-container {
     grid-template-columns: 1fr;
   }
 }
-@media screen and (0px < width <= 500px) {
+@media only screen and (0px < width <= 500px) {
   .task-list-item-details-subtasks {
     display: none;
   }
@@ -62,7 +62,7 @@
     height: 350px;
   }
 }
-@media screen and (width < 1025px) {
+@media only screen and (max-width: 1025px) {
   .task-details-container {
     position: absolute;
     width: 280px;
@@ -74,20 +74,20 @@
     flex-direction: column;
   }
 }
-@media screen and (768px <= width <= 1024px) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
   .navbar-button-container {
     flex-direction: column;
     align-items: start;
     gap: clamp(8px, 5vh, 15px);
   }
 }
-@media screen and (1025px < width < 1500px) {
+@media only screen and (min-width: 1025px) and (max-width: 1500px) {
   .task-details-date-input {
     max-width: clamp(100px, 10vw, 300px);
   }
 }
 /* laptop / PC */
-@media screen and (width < 1280px) {
+@media only screen and (min-width: 1280px) {
   .navbar-container {
     position: absolute;
     flex-direction: row-reverse;
@@ -97,24 +97,24 @@
     top: 0px;
   }
 }
-@media screen and (1320px > width) {
+@media only screen and (min-width: 1320px) {
   .sticky-note-container {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media screen and (1640px > width) {
+@media only screen and (min-width: 1640px) {
   .sticky-note-container {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
-@media screen and (1024px <= width <= 1920px) {
+@media only screen and (min-width: 1024px) and(max-width:1920px) {
   .navbar-button-container {
     flex-direction: row;
     align-items: start;
     gap: clamp(8px, 5vh, 15px);
   }
 }
-@media screen and (min-width: 2560px) {
+@media only screen and (min-width: 2560px) {
   .dashboard-container {
     width: 70vw;
     height: 70vh;

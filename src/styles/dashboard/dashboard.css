@@ -260,12 +260,12 @@
 .section-opener-navbar {
   display: none;
 }
-@media screen and (width <=1024px) {
+@media only screen and (max-width: 1024px) {
   .section-opener-task-details {
     display: flex;
   }
 }
-@media screen and (width < 1280px) {
+@media only screen and (max-width: 1280px) {
   .section-opener-navbar {
     display: flex;
   }

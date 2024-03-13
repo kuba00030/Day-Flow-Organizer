@@ -9,11 +9,9 @@ export default function addTask(
 ) {
   const taskToAdd = newTask;
 
-  taskToAdd.subtasks = newTask.subtasks.map((subtask) => {
-    if (subtask.title !== "") {
-      return subtask;
-    }
-  });
+  taskToAdd.subtasks = newTask.subtasks.filter(
+    (subtask) => subtask.title !== ""
+  );
 
   const updatedTaskLists = [...taskLists];
 

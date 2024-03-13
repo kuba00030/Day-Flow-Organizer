@@ -32,13 +32,10 @@ export default function StickyNotes() {
     if (active.id === over.id) {
       return;
     }
-
     const oldIndex = notes.findIndex((note) => note.id === active.id);
     const newIndex = notes.findIndex((note) => note.id === over.id);
     const reorderedNotes = arrayMove(notes, oldIndex, newIndex);
-
     setNotes([...reorderedNotes]);
-
     await setDoc(doc(db, "users", authContext.userID), {
       notes: reorderedNotes,
     });

@@ -158,18 +158,18 @@
   border: solid 2px var(--bg-purple);
 }
 .modal-description {
-  height: clamp(100px, 20vh, 250px);
+  height: clamp(150px, 20vw, 250px);
 }
 .sticky-notes-container {
   border: solid 1px var(--bg-purple);
 }
-@media screen and (width < 700px) {
+@media screen and (max-width: 699px) {
   .sticky-note {
     width: auto;
     height: clamp(100px, 30vw, 250px);
   }
 }
-@media screen and (width < 480px) {
+@media screen and (max-width: 479px) {
   .sticky-note {
     width: auto;
   }
@@ -232,7 +232,7 @@
   display: flex;
   flex-direction: row;
 }
-@media screen and (0px < width < 700px) {
+@media screen and (max-width: 699px) {
   .task-list-item-details-list {
     display: none;
   }
@@ -265,7 +265,7 @@
     display: flex;
   }
 }
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1279px) {
   .section-opener-navbar {
     display: flex;
   }

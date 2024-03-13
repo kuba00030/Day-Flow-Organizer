@@ -46,7 +46,7 @@ export default function NavBar() {
     navbarIsOpened,
     setNavbarIsOpened,
     "left",
-    1280
+    1279
   );
 
   return (

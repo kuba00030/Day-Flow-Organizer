@@ -64,7 +64,7 @@ export default function EditSubtsakModalContent(
           Edit subtask
         </ModalTitle>
       </ModalHeader>
-      <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker">
+      <ModalBody className="d-flex flex-column gap-4 border-0 my-bg-darker modal-body overflow-auto">
         <InputLabeled
           containerStyle="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelStyle="my-color-light fw-semibold mb-1 txt-small"
@@ -78,11 +78,12 @@ export default function EditSubtsakModalContent(
           }}
         />
         <TxtAreaLabeled
-          containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
+          containerClass="fw-semibold d-flex flex-column flex-grow-1 gap-2"
           labelValue="Subtask Description"
           placeholder="Subtask description..."
           labelClass="my-color-light fw-semibold mb-1"
-          txtAreaClass="modal-description w-100 txt-small shadowHover shadowFocus my-bg-dark rounded border-0 my-color-light p-2 fw-semibold"
+          inputWrapperClass="d-flex flex-grow-1 shadowHover shadowFocus rounded my-bg-dark overflow-hidden p-2"
+          txtAreaClass="flex-grow-1 txt-small  border-0 bg-transparent my-color-light fw-semibold overflow-auto"
           txtAreaValue={editedSubtask.description}
           onChange={(e) => {
             setEditedSubtask({ ...editedSubtask, description: e.target.value });

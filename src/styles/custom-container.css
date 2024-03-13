@@ -2,18 +2,17 @@
   height: auto;
   max-width: 300px;
 }
-.navbar-container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 25%;
-  transition: 0.3s;
-}
 .dashboard-container {
   width: 100vw;
   height: 100vh;
   padding: 25px;
   display: flex;
+}
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  width: clamp(260px, 20vw, 25%);
+  transition: 0.3s;
 }
 .sticky-note-container {
   display: grid;
@@ -26,7 +25,7 @@
 }
 .task-details-container {
   position: relative;
-  width: 25%;
+  width: clamp(260px, 20vw, 25%);
   transition: 0.3s;
 }
 .task-details-date-container {
@@ -40,32 +39,28 @@
   flex-direction: row;
 }
 .modal-body {
-  max-height: 500px;
+  height: clamp(150px, 50vh, 500px);
 }
 .color-input-container {
   width: 75px;
 }
 /* mobile */
-@media only screen and (480px > width) {
+@media only screen and (max-width: 479px) {
   .sticky-note-container {
     grid-template-columns: 1fr;
   }
 }
-@media only screen and (0px < width <= 500px) {
+@media only screen and (max-width: 500px) {
   .task-list-item-details-subtasks {
     display: none;
   }
   .dashboard-container {
     overflow: scroll;
   }
-  .modal-body {
-    height: 350px;
-  }
 }
-@media only screen and (max-width: 1025px) {
+@media only screen and (max-width: 1024px) {
   .task-details-container {
     position: absolute;
-    width: 280px;
     height: 100%;
     top: 0px;
   }
@@ -87,17 +82,16 @@
   }
 }
 /* laptop / PC */
-@media only screen and (min-width: 1280px) {
+@media only screen and (max-width: 1279px) {
   .navbar-container {
     position: absolute;
     flex-direction: row-reverse;
     height: 100%;
-    width: 280px;
     z-index: 5;
     top: 0px;
   }
 }
-@media only screen and (min-width: 1320px) {
+@media only screen and (min-width: 480px) and (max-width: 1639px) {
   .sticky-note-container {
     grid-template-columns: 1fr 1fr;
   }
@@ -107,7 +101,7 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
-@media only screen and (min-width: 1024px) and(max-width:1920px) {
+@media only screen and (min-width: 1024px) and (max-width: 1920px) {
   .navbar-button-container {
     flex-direction: row;
     align-items: start;

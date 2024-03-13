@@ -61,7 +61,7 @@ export default function EditTaskModalContent() {
           containerClass="fw-semibold d-flex flex-column justify-content-center gap-2"
           labelValue="Description"
           labelClass="my-color-light fw-semibold mb-1 txt-small"
-          txtAreaClass="task-details-descripion border-0 shadowHover shadowFocus w-100 txt-small modal-description my-bg-dark rounded fw-semibold my-color-light p-2"
+          txtAreaClass="border-0 shadowHover shadowFocus w-100 txt-small modal-description my-bg-dark rounded fw-semibold my-color-light p-2"
           txtAreaValue={editedTask.description}
           onChange={(e) => {
             editTask(editedTask, setEditedTask, "description", e);

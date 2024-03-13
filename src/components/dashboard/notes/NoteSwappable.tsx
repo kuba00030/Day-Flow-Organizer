@@ -4,6 +4,7 @@ import EditNoteModalContent from "../../modal/sticky-note/edit-note/EditNoteModa
 import { CSS } from "@dnd-kit/utilities";
 import { Note } from "../../../context/noteContext";
 import breakLines from "../../../utils/notes/breakLines";
+import { GrDrag as DragIcon } from "react-icons/gr";
 
 type SwappableElement = {
   note: Note;
@@ -12,8 +13,14 @@ type SwappableElement = {
 
 export default function (props: SwappableElement) {
   const { modalContext, setModalContext } = useModalContext();
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.note.id });
+  const {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: props.note.id });
   const styles = {
     transition,
     transform: CSS.Transform.toString(transform),
@@ -22,9 +29,8 @@ export default function (props: SwappableElement) {
     <div
       ref={setNodeRef}
       {...attributes}
-      {...listeners}
       style={styles}
-      onDoubleClick={() => {
+      onClick={() => {
         setModalContext({
           modalContent: (
             <EditNoteModalContent note={props.note} index={props.index} />
@@ -45,12 +51,21 @@ export default function (props: SwappableElement) {
             : {}
         }
       >
-        <div>
-          <span className="txt-large my-color-lighter">{props.note.title}</span>
+        <div className="d-flex flex-row justify-content-between">
+          <div className="txt-large my-color-lighter text-truncate">
+            {props.note.title}
+          </div>
+          <div
+            className="draggable-handle my-color-lighter d-flex align-items-center"
+            {...listeners}
+            ref={setActivatorNodeRef}
+          >
+            <DragIcon className="regular-icon my-color-lighter" />
+          </div>
         </div>
-        <span className="my-color-light" style={{ wordBreak: "break-word" }}>
+        <div className="my-color-light" style={{ wordBreak: "break-word" }}>
           {breakLines(props.note.description)}
-        </span>
+        </div>
       </div>
     </div>
   );

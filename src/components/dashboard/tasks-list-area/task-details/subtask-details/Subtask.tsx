@@ -30,7 +30,7 @@ export default function Subtask(props: TSubtask) {
       onMouseUp={() => {
         setEditedTask({ ...editedTask, subtasks: props.reorderedSubtasks });
       }}
-      onDoubleClick={() => {
+      onClick={() => {
         setModalContext({
           ...modalContext,
           modalContent: (
@@ -48,7 +48,7 @@ export default function Subtask(props: TSubtask) {
 
         <input
           type="checkbox"
-          onDoubleClick={(e) => {
+          onClick={(e) => {
             e.stopPropagation();
           }}
           onChange={async () => {

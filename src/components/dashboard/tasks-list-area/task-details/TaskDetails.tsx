@@ -47,7 +47,7 @@ export default function TaskDetails(props: TaskDetails) {
     taskDetasilOpened,
     setTaskDetailsOpened,
     "right",
-    1025
+    1024
   );
 
   return (

@@ -2,6 +2,8 @@
 
 - [Day Flow Organizer](#day-flow-organizer)
 - [Project Description](#project-description)
+- [Technologies](#technologies)
+- [Installation](#installation)
 - [Usage](#usege)
   - [Go to](#go-to)
   - [Sign in and sign up](#sign-in-and-sign-up)
@@ -45,6 +47,11 @@ The application allows you to add sticky notes, tasks, subtasks with their due d
 - Fullcalendar
 - React-icons
 - Firebase
+
+# Installation
+
+- Use "git clone https://github.com/kuba00030/Day-Flow-Organizer' in your terminal.
+- When the cloning process is completed, use 'npm install' in your terminal to install all dependencies.
 
 # Usage
 

@@ -8,8 +8,8 @@
   - [Adding new list](#adding-new-list)
   - [Edit list](#edit-list)
   - [Adding tasks](#adding-tasks)
-  - [View your task](#view-our-task)
-  - [Sticky notes](#3sticky-notes)
+  - [View your task](#view-your-task)
+  - [Sticky notes](#sticky-notes)
   - [Calendar](#calendar)
 - [Code examples](#code-examples)
   - [UI components](#ui-components)
@@ -94,7 +94,7 @@ The application allows you to add sticky notes, tasks, subtasks with their due d
 - From this level you can mark a specific task as "Done" using the small button located on the left side of the displayed task.
   ![Screenshot (535)](https://github.com/kuba00030/Day-Flow-Organizer/assets/83354878/5e3778dc-821f-4953-986c-def4a975f15f)
 - Information about the task selected from the list is displayed on the right side of the screen. All fields except the displayed subtasks (if the task has them) are editable.
-- To edit a subtask's data, double-click on it and a window will appear allowing you to edit it. It is only possible to edit the order of subtasks by grabbing and moving it to the desired position or marking the subtask as "done" using the small button located on the right side of the displayed subtask.
+- To edit a subtask's data, click on it and a window will appear allowing you to edit it. It is only possible to edit the order of subtasks by grabbing and moving it to the desired position or marking the subtask as "done" using the small button located on the right side of the displayed subtask.
 - To delete the selected task, use the "Delete task" button located at the very bottom right of the screen.
 
 ## Sticky notes
@@ -103,7 +103,7 @@ The application allows you to add sticky notes, tasks, subtasks with their due d
   ![Screenshot (536)](https://github.com/kuba00030/Day-Flow-Organizer/assets/83354878/18e783f2-482a-4466-9024-6889c1907f83)
 - Enter the data and confirm it by using the button that will automatically change its style if the form is validated.
   ![Screenshot (537)](https://github.com/kuba00030/Day-Flow-Organizer/assets/83354878/903977c1-9808-4d4b-acfd-2328fed62291)
-- To edit or delete a specific note, double-click on it to view its information and then edit or delete it. It is also possible to edit the order of displayed notes. To do this, grab the selected note and move it to the desired position.
+- To edit or delete a specific note, click on it to view its information and then edit or delete it. It is also possible to edit the order of displayed notes. To do this, grab the 'drag indicator' located on the right side next to the note title and move it to the desired position.
 
 ## Calendar
 
@@ -699,20 +699,18 @@ export default function useOpenSection() {
     slideInFrom: "right" | "left",
     endTriggerWidth: number
   ) => {
-    let windwoWidth: number = window.innerWidth;
+    let windowWidth: number = window.innerWidth;
 
     window.addEventListener("resize", () => {
-      windwoWidth = window.innerWidth;
-      if (windwoWidth >= endTriggerWidth && sectionRef.current !== null) {
+      windowWidth = window.innerWidth;
+      if (windowWidth > endTriggerWidth && sectionRef.current !== null) {
         sectionRef.current.style[slideInFrom === "left" ? "left" : "right"] =
           "0px";
         setIsOpened(false);
       }
-
-      if (windwoWidth < endTriggerWidth && sectionRef.current !== null) {
+      if (windowWidth <= endTriggerWidth && sectionRef.current !== null) {
         const sectionOpenerWidth: number = sectionOpenerRef.current.offsetWidth;
         const width = sectionRef.current.offsetWidth;
-
         if (isOpened) {
           sectionRef.current.style[slideInFrom === "left" ? "left" : "right"] =
             "0px";
@@ -727,8 +725,7 @@ export default function useOpenSection() {
     useEffect(() => {
       const width = sectionRef.current.offsetWidth;
       const sectionOpenerWidth: number = sectionOpenerRef.current.offsetWidth;
-
-      if (windwoWidth < endTriggerWidth && sectionRef.current !== null) {
+      if (windowWidth <= endTriggerWidth && sectionRef.current !== null) {
         if (isOpened) {
           sectionRef.current.style[slideInFrom === "left" ? "left" : "right"] =
             "0px";

@@ -4,7 +4,7 @@
 - [Project Description](#project-description)
 - [Technologies](#technologies)
 - [Installation](#installation)
-- [Usage](#usege)
+- [Usage](#usage)
   - [Go to](#go-to)
   - [Sign in and sign up](#sign-in-and-sign-up)
   - [Adding new list](#adding-new-list)
